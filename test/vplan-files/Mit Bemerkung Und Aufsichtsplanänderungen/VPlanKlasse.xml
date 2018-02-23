@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="vplank.xsl"?>
+<vp>
+  <kopf>
+    <datei>VPlanKlasse.xml</datei>
+    <titel>Donnerstag, 31. August 2017 </titel>
+    <schulname>Martin-Andersen-Nexö-Gymnasium Dresden</schulname>
+    <datum>04.09.2017, 12:36</datum>
+    <kopfinfo>
+      <abwesendl>Ber, Bon, Fir, Gos, Got, Hen, Her, Hfm, Kra (7-12), Neh, Pla, San, Sch, ScJ, Sen, Sta, Wol</abwesendl>
+      <abwesendk>5a, 5b, 5c, 8a, 8b, 8c, JG12</abwesendk>
+      <aenderungl>Aur, Bec, Ehr, Esc, Gei, Gru, Hal, Hei, Hfl, Hlm, Kab, Keg, Khn, Kip, Köh, Kra, Mic, Mül, Nen, Opi, Rot, ScA, Scd, ScR, ScS, Ulb, Wal</aenderungl>
+      <aenderungk>10a, 10b, 10c, 6a, 6b, 6c, 7a, 7b, 7c, 9a, 9b, 9c, JG11</aenderungk>
+    </kopfinfo>
+  </kopf>
+  <freietage>
+    <ft>170801</ft>
+    <ft>170802</ft>
+    <ft>170803</ft>
+    <ft>170804</ft>
+    <ft>171002</ft>
+    <ft>171003</ft>
+    <ft>171004</ft>
+    <ft>171005</ft>
+    <ft>171006</ft>
+    <ft>171009</ft>
+    <ft>171010</ft>
+    <ft>171011</ft>
+    <ft>171012</ft>
+    <ft>171013</ft>
+    <ft>171030</ft>
+    <ft>171031</ft>
+    <ft>171122</ft>
+    <ft>171208</ft>
+    <ft>171225</ft>
+    <ft>171226</ft>
+    <ft>171227</ft>
+    <ft>171228</ft>
+    <ft>171229</ft>
+    <ft>180101</ft>
+    <ft>180102</ft>
+    <ft>180103</ft>
+    <ft>180212</ft>
+    <ft>180213</ft>
+    <ft>180214</ft>
+    <ft>180215</ft>
+    <ft>180216</ft>
+    <ft>180219</ft>
+    <ft>180220</ft>
+    <ft>180221</ft>
+    <ft>180222</ft>
+    <ft>180223</ft>
+    <ft>180329</ft>
+    <ft>180330</ft>
+    <ft>180402</ft>
+    <ft>180403</ft>
+    <ft>180404</ft>
+    <ft>180405</ft>
+    <ft>180406</ft>
+    <ft>180501</ft>
+    <ft>180510</ft>
+    <ft>180511</ft>
+    <ft>180521</ft>
+    <ft>180522</ft>
+    <ft>180702</ft>
+    <ft>180703</ft>
+    <ft>180704</ft>
+    <ft>180705</ft>
+    <ft>180706</ft>
+    <ft>180709</ft>
+    <ft>180710</ft>
+    <ft>180711</ft>
+    <ft>180712</ft>
+    <ft>180713</ft>
+    <ft>180716</ft>
+    <ft>180717</ft>
+    <ft>180718</ft>
+    <ft>180719</ft>
+    <ft>180720</ft>
+    <ft>180723</ft>
+    <ft>180724</ft>
+    <ft>180725</ft>
+    <ft>180726</ft>
+    <ft>180727</ft>
+    <ft>180730</ft>
+    <ft>180731</ft>
+  </freietage>
+  <haupt>
+    <aktion>
+      <klasse>6a</klasse>
+      <stunde>1</stunde>
+      <fach>FR</fach>
+      <lehrer legeaendert="ae">Nen</lehrer>
+      <raum>116</raum>
+      <info>für FR Sch </info>
+    </aktion>
+    <aktion>
+      <klasse>6a</klasse>
+      <stunde>7</stunde>
+      <fach>GEO</fach>
+      <lehrer legeaendert="ae">Gei</lehrer>
+      <raum>205</raum>
+      <info>für GEO Sta , Aufgaben</info>
+    </aktion>
+    <aktion>
+      <klasse>6b</klasse>
+      <stunde>3</stunde>
+      <fach>EN</fach>
+      <lehrer legeaendert="ae">Kab</lehrer>
+      <raum>120</raum>
+      <info>für EN Ber </info>
+    </aktion>
+    <aktion>
+      <klasse>6b,6c</klasse>
+      <stunde>4</stunde>
+      <fach fageaendert="ae">SPO</fach>
+      <lehrer legeaendert="ae">ScR</lehrer>
+      <raum rageaendert="ae">TH 1</raum>
+      <info>für ETH Her </info>
+    </aktion>
+    <aktion>
+      <klasse>6c</klasse>
+      <stunde>1-2</stunde>
+      <fach>MA</fach>
+      <lehrer legeaendert="ae">Bec</lehrer>
+      <raum>121</raum>
+      <info>für MA Fir </info>
+    </aktion>
+    <aktion>
+      <klasse>7a</klasse>
+      <stunde>2</stunde>
+      <fach>GEO</fach>
+      <lehrer legeaendert="ae">Hei</lehrer>
+      <raum>205</raum>
+      <info>für GEO Wol , Test findet statt</info>
+    </aktion>
+    <aktion>
+      <klasse>7b</klasse>
+      <stunde>3</stunde>
+      <fach fageaendert="ae">MU</fach>
+      <lehrer legeaendert="ae">Hei</lehrer>
+      <raum rageaendert="ae">206</raum>
+      <info>für PH Fir </info>
+    </aktion>
+    <aktion>
+      <klasse>7c</klasse>
+      <stunde>5</stunde>
+      <fach fageaendert="ae">SPO</fach>
+      <lehrer legeaendert="ae">ScR</lehrer>
+      <raum rageaendert="ae">TH 1</raum>
+      <info>für KU Got </info>
+    </aktion>
+    <aktion>
+      <klasse>7c</klasse>
+      <stunde>6</stunde>
+      <fach fageaendert="ae">MU</fach>
+      <lehrer legeaendert="ae">Kra</lehrer>
+      <raum rageaendert="ae">206</raum>
+      <info>für KU Got </info>
+    </aktion>
+    <aktion>
+      <klasse>9a</klasse>
+      <stunde>1</stunde>
+      <fach fageaendert="ae">GE</fach>
+      <lehrer legeaendert="ae">Köh</lehrer>
+      <raum rageaendert="ae">215</raum>
+      <info>für FR Wol </info>
+    </aktion>
+    <aktion>
+      <klasse>9a</klasse>
+      <stunde>5</stunde>
+      <fach fageaendert="ae">SPO</fach>
+      <lehrer legeaendert="ae">Hfl</lehrer>
+      <raum rageaendert="ae">TH 2</raum>
+      <info>ganze Klasse Sport; PH Fir fällt aus</info>
+    </aktion>
+    <aktion>
+      <klasse>9a</klasse>
+      <stunde>6</stunde>
+      <fach fageaendert="ae">SPO</fach>
+      <lehrer legeaendert="ae">Hfl</lehrer>
+      <raum>,TH 1</raum>
+      <info>ganze Klasse Sport; EN Bon fällt aus</info>
+    </aktion>
+    <aktion>
+      <klasse>9a</klasse>
+      <stunde>7</stunde>
+      <fach>CH</fach>
+      <lehrer>Keg</lehrer>
+      <raum rageaendert="ae">308</raum>
+      <info></info>
+    </aktion>
+    <aktion>
+      <klasse>9a-9c</klasse>
+      <stunde>8-9</stunde>
+      <fach fageaendert="ae">---</fach>
+      <lehrer legeaendert="ae"></lehrer>
+      <raum rageaendert="ae"></raum>
+      <info>LZB Sen fällt aus</info>
+    </aktion>
+    <aktion>
+      <klasse>9b</klasse>
+      <stunde>6</stunde>
+      <fach fageaendert="ae">CH</fach>
+      <lehrer legeaendert="ae">ScS</lehrer>
+      <raum rageaendert="ae">311</raum>
+      <info>für GE Gos </info>
+    </aktion>
+    <aktion>
+      <klasse>9c</klasse>
+      <stunde>7</stunde>
+      <fach>EN</fach>
+      <lehrer legeaendert="ae">Mic</lehrer>
+      <raum>007</raum>
+      <info>für EN Sch , EN bei Hr. Rothe</info>
+    </aktion>
+    <aktion>
+      <klasse>10a</klasse>
+      <stunde>7</stunde>
+      <fach fageaendert="ae">SPO</fach>
+      <lehrer legeaendert="ae">Hfl</lehrer>
+      <raum rageaendert="ae">K25</raum>
+      <info>für BIO Sen , ganze Klasse Sport</info>
+    </aktion>
+    <aktion>
+      <klasse>10b</klasse>
+      <stunde>3</stunde>
+      <fach fageaendert="ae">DE</fach>
+      <lehrer legeaendert="ae">Köh</lehrer>
+      <raum rageaendert="ae">215</raum>
+      <info>für BIO Hfm </info>
+    </aktion>
+    <aktion>
+      <klasse>10b</klasse>
+      <stunde>7</stunde>
+      <fach fageaendert="ae">CH</fach>
+      <lehrer legeaendert="ae">ScS</lehrer>
+      <raum rageaendert="ae">311</raum>
+      <info>für GE Her </info>
+    </aktion>
+    <aktion>
+      <klasse>10c</klasse>
+      <stunde>2</stunde>
+      <fach>EN</fach>
+      <lehrer legeaendert="ae">Khn</lehrer>
+      <raum>013</raum>
+      <info>für EN Sch </info>
+    </aktion>
+    <aktion>
+      <klasse>10c</klasse>
+      <stunde>6</stunde>
+      <fach fageaendert="ae">PH</fach>
+      <lehrer legeaendert="ae">Gei</lehrer>
+      <raum rageaendert="ae">404</raum>
+      <info>für KL Sch </info>
+    </aktion>
+    <aktion>
+      <klasse>JG11/ eth2</klasse>
+      <stunde>1-2</stunde>
+      <fach>ETH</fach>
+      <lehrer legeaendert="ae">(Her)</lehrer>
+      <raum>219</raum>
+      <info>selbst., Aufgaben zu Hause</info>
+    </aktion>
+    <aktion>
+      <klasse>JG11/ PH2</klasse>
+      <stunde>3-4</stunde>
+      <fach fageaendert="ae">---</fach>
+      <lehrer legeaendert="ae"></lehrer>
+      <raum rageaendert="ae"></raum>
+      <info>PH2 Pla fällt aus</info>
+    </aktion>
+    <aktion>
+      <klasse>JG11/ EN1</klasse>
+      <stunde>3-4</stunde>
+      <fach fageaendert="ae">---</fach>
+      <lehrer legeaendert="ae"></lehrer>
+      <raum rageaendert="ae"></raum>
+      <info>EN1 Bon fällt aus</info>
+    </aktion>
+    <aktion>
+      <klasse>JG11/ BIO1</klasse>
+      <stunde>5-6</stunde>
+      <fach>BIO</fach>
+      <lehrer legeaendert="ae">(Hfm)</lehrer>
+      <raum rageaendert="ae"> </raum>
+      <info>Teilnahme am Kurs BIO 11/2, R.320</info>
+    </aktion>
+    <aktion>
+      <klasse>JG11/ MA1</klasse>
+      <stunde>7</stunde>
+      <fach fageaendert="ae">---</fach>
+      <lehrer legeaendert="ae"></lehrer>
+      <raum rageaendert="ae"></raum>
+      <info>MA1 ScJ fällt aus</info>
+    </aktion>
+    <aktion>
+      <klasse>JG11/ spo2</klasse>
+      <stunde>8-9</stunde>
+      <fach fageaendert="ae">---</fach>
+      <lehrer legeaendert="ae"></lehrer>
+      <raum rageaendert="ae"></raum>
+      <info>spo2 San fällt aus</info>
+    </aktion>
+  </haupt>
+  <fuss>
+    <fusszeile>
+      <fussinfo>Zusatz-Info</fussinfo>
+    </fusszeile>
+  </fuss>
+</vp>
