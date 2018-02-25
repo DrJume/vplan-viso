@@ -6,12 +6,12 @@ jsome.colors = {
   str: 'cyan', // stands for strings
   bool: 'magentaBright', // stands for booleans
   regex: 'blue', // stands for regular expressions
-  undef: 'gray', // stands for undefined
-  null: 'gray', // stands for null
+  undef: 'white', // stands for undefined
+  null: 'white', // stands for null
   attr: 'redBright', // objects attributes -> { attr : value }
-  quot: 'white', // strings quotes -> "..."
-  punc: 'white', // commas seperating arrays and objects values -> [ , , , ]
-  brack: 'white', // for both {} and []
+  quot: 'whiteBright', // strings quotes -> "..."
+  punc: 'whiteBright', // commas seperating arrays and objects values -> [ , , , ]
+  brack: 'whiteBright', // for both {} and []
 }
 
 function generateDatePrefix() {
@@ -37,7 +37,7 @@ function generateLogPrefix(type) {
     info: 'green INFO',
     error: 'red ERR',
     warning: 'yellow WARN',
-    debug: 'cyanBright DEBUG',
+    debug: 'blueBright DEBUG',
   }
 
   if (!typeLabels[type]) {
@@ -48,6 +48,9 @@ function generateLogPrefix(type) {
 }
 
 function prettyJSON(data) {
+  if (data === undefined) {
+    return undefined
+  }
   return jsome.getColoredString(data)
   // return JSON.stringify(data, null, 2) // 2-space indentation, without "replacer"
 }
