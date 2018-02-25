@@ -1,5 +1,11 @@
 const fs = require('fs')
 const { promisify } = require('util')
 
-module.exports.unlink = promisify(fs.unlink)
-module.exports.mkdir = promisify(fs.mkdir)
+const PromisifiedFs = {
+  unlink: promisify(fs.unlink),
+  mkdir: promisify(fs.mkdir),
+  readFile: promisify(fs.readFile),
+  writeFile: promisify(fs.writeFile),
+}
+
+module.exports = PromisifiedFs

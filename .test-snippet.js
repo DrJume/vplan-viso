@@ -15,7 +15,7 @@
 // log.warn(testobj, 'label')
 // log.debug(testobj, 'label')
 
-// const try_ = require('helpers/try-wrapper') // eslint-disable-line import/no-unresolved
+// const try_ = require('helpers/try-wrapper') 
 
 // function testSync(...arg) {
 //   if (arg.length === 0) {

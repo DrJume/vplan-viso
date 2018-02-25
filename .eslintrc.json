@@ -6,7 +6,8 @@
         "no-underscore-dangle" : "off",
         "one-var-declaration-per-line": "off",
         "one-var": "off",
-        "no-param-reassign": "off"
+        "no-param-reassign": "off",
+        "import/no-unresolved": "off"
     },
     "globals": {
         "log": true

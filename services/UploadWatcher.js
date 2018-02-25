@@ -1,8 +1,8 @@
 const chokidar = require('chokidar')
 const fs = require('fs')
 
-const try_ = require('helpers/try-wrapper') // eslint-disable-line import/no-unresolved
-const promiseFs = require('helpers/promisified-fs') // eslint-disable-line import/no-unresolved
+const try_ = require('helpers/try-wrapper')
+const promiseFs = require('helpers/promisified-fs')
 
 const uploadDir = 'upload/'
 const heuteDir = 'heute/'
@@ -28,24 +28,20 @@ module.exports = async function UploadWatcher(callback) {
     cwd: '.',
     awaitWriteFinish: true,
   })
-    .on('add', async (pathReturned) => {
-      const path = pathReturned.replace(uploadDir, '')
+    .on('add', async (fullFilePath) => {
+      const dayPath = fullFilePath.replace(uploadDir, '')
 
-      if (path.startsWith(heuteDir)) {
-        const filename = path.replace(heuteDir, '')
-        callback('heute', filename)
+      if (dayPath.startsWith(heuteDir)) {
+        callback('heute', fullFilePath)
         return
       }
-      if (path.startsWith(morgenDir)) {
-        const filename = path.replace(morgenDir, '')
-        callback('morgen', filename)
+      if (dayPath.startsWith(morgenDir)) {
+        callback('morgen', fullFilePath)
         return
       }
 
       // Uploaded to wrong directory (not in heute/ or morgen/)
-      callback(undefined, path)
 
-      const fullFilePath = uploadDir + path
       log.warn(`UNVALID_UPLOAD_GETS_DELETED: ${fullFilePath}`)
 
       await try_(promiseFs.unlink(fullFilePath))
