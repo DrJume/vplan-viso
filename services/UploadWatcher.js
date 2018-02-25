@@ -14,7 +14,7 @@ module.exports = async function UploadWatcher(callback) {
     !fs.existsSync(uploadDir + heuteDir) ||
     !fs.existsSync(uploadDir + morgenDir)
   ) {
-    log.info('UPLOAD_DIR_TREE_CORRUPT')
+    log.err('UPLOAD_DIR_TREE_CORRUPT')
 
     await try_(promiseFs.mkdir(uploadDir))
     await try_(promiseFs.mkdir(uploadDir + heuteDir))
@@ -45,7 +45,7 @@ module.exports = async function UploadWatcher(callback) {
       callback(undefined, path)
 
       const fullFilePath = uploadDir + path
-      log.info(`UNVALID_UPLOAD_GETS_DELETED ${fullFilePath}`)
+      log.warn(`UNVALID_UPLOAD_GETS_DELETED: ${fullFilePath}`)
 
       await try_(promiseFs.unlink(fullFilePath))
     })
