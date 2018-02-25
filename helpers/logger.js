@@ -56,7 +56,7 @@ function generateLogString(prefix, data, label) {
   if (!label) {
     return chalk`${prefix} ${prettyJSON(data)}`
   }
-  return chalk`${prefix} {white (${label})} ${prettyJSON(data)}`
+  return chalk`${prefix} {whiteBright.bold (${label})} ${prettyJSON(data)}`
 }
 
 const Logger = {

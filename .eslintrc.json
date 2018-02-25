@@ -5,7 +5,8 @@
         "no-console": "off",
         "no-underscore-dangle" : "off",
         "one-var-declaration-per-line": "off",
-        "one-var": "off"
+        "one-var": "off",
+        "no-param-reassign": "off"
     },
     "globals": {
         "log": true

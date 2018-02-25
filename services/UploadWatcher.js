@@ -14,11 +14,12 @@ module.exports = async function UploadWatcher(callback) {
     !fs.existsSync(uploadDir + heuteDir) ||
     !fs.existsSync(uploadDir + morgenDir)
   ) {
-    log.err('UPLOAD_DIR_TREE_CORRUPT')
+    log.warn('UPLOAD_DIR_TREE_CORRUPT')
+    log.info('CREATING_UPLOAD_DIR')
 
-    await try_(promiseFs.mkdir(uploadDir))
-    await try_(promiseFs.mkdir(uploadDir + heuteDir))
-    await try_(promiseFs.mkdir(uploadDir + morgenDir))
+    await try_(promiseFs.mkdir(uploadDir), { logLabel: 'IGNORE_IF_EEXIST' })
+    await try_(promiseFs.mkdir(uploadDir + heuteDir), { logLabel: 'IGNORE_IF_EEXIST' })
+    await try_(promiseFs.mkdir(uploadDir + morgenDir), { logLabel: 'IGNORE_IF_EEXIST' })
   }
 
   log.info(`WATCHING_UPLOAD_DIR: ${uploadDir}`)

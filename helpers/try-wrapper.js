@@ -2,7 +2,13 @@ function isFunction(functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
 }
 
-function tryWrapper(executionObj, { args, errDetails } = {}) {
+function tryWrapper(executionObj, {
+  args, logLvl = 'err', logLabel, errDetails,
+} = {}) {
+  if (!log[logLvl]) {
+    logLvl = 'err'
+  }
+
   if (Promise.resolve(executionObj) === executionObj) {
     // executionObj is a Promise
     return executionObj
@@ -18,7 +24,7 @@ function tryWrapper(executionObj, { args, errDetails } = {}) {
           })
         }
 
-        log.err(err)
+        log[logLvl](err, logLabel)
         return [err, undefined]
       })
   }
@@ -44,7 +50,7 @@ function tryWrapper(executionObj, { args, errDetails } = {}) {
         })
       }
 
-      log.err(err)
+      log[logLvl](err, logLabel)
       return [err, undefined]
     }
   }
