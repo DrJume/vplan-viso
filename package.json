@@ -24,6 +24,7 @@
   "dependencies": {
     "chalk": "^2.3.1",
     "chokidar": "^1.7.0",
-    "jsome": "^2.5.0"
+    "jsome": "^2.5.0",
+    "xml-js": "^1.6.2"
   }
 }

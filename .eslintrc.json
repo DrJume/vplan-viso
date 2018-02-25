@@ -2,7 +2,7 @@
     "extends": "airbnb-base",
     "rules": {
         "semi": ["error", "never"],
-        "no-console": "off",
+        "no-console": "error",
         "no-underscore-dangle" : "off",
         "one-var-declaration-per-line": "off",
         "one-var": "off",
