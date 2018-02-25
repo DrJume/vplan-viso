@@ -3,9 +3,9 @@ const jsome = require('jsome')
 
 jsome.colors = {
   num: 'yellowBright', // stands for numbers
-  str: 'green', // stands for strings
+  str: 'cyan', // stands for strings
   bool: 'magentaBright', // stands for booleans
-  regex: 'cyan', // stands for regular expressions
+  regex: 'blue', // stands for regular expressions
   undef: 'gray', // stands for undefined
   null: 'gray', // stands for null
   attr: 'redBright', // objects attributes -> { attr : value }
