@@ -22,9 +22,15 @@
     "eslint-plugin-import": "^2.9.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "boom": "^7.1.1",
     "chalk": "^2.3.1",
     "chokidar": "^1.7.0",
+    "express": "^4.16.2",
     "jsome": "^2.5.0",
+    "morgan": "^1.9.0",
+    "serve-favicon": "^2.4.5",
+    "serve-static": "^1.13.2",
     "xml-js": "^1.6.2"
   }
 }
