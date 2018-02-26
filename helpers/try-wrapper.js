@@ -1,5 +1,9 @@
-function isFunction(functionToCheck) {
-  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
+function isPromise(objToCheck) {
+  return Promise.resolve(objToCheck) === objToCheck
+}
+
+function isFunction(objToCheck) {
+  return objToCheck && {}.toString.call(objToCheck) === '[object Function]'
 }
 
 function tryWrapper(executionObj, {
@@ -9,8 +13,7 @@ function tryWrapper(executionObj, {
     logLvl = 'err'
   }
 
-  if (Promise.resolve(executionObj) === executionObj) {
-    // executionObj is a Promise
+  if (isPromise(executionObj)) {
     return executionObj
       .then(data => [null, data])
       .catch((err) => {
@@ -30,7 +33,6 @@ function tryWrapper(executionObj, {
   }
 
   if (isFunction(executionObj)) {
-    // executionObj is a normal function
     try {
       if (!args) {
         const data = executionObj()
