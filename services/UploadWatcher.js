@@ -1,28 +1,31 @@
 const chokidar = require('chokidar')
 const fs = require('fs')
+const pathTools = require('path')
 
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('helpers/promisified-fs')
 
-const uploadDir = 'upload/'
-const heuteDir = 'heute/'
-const morgenDir = 'morgen/'
+const uploadDir = `upload${pathTools.sep}`
+const heuteDir = `heute${pathTools.sep}`
+const morgenDir = `morgen${pathTools.sep}`
+const heutePath = pathTools.join(uploadDir, heuteDir)
+const morgenPath = pathTools.join(uploadDir, morgenDir)
 
 module.exports = async function UploadWatcher(callback) {
   if (
     !fs.existsSync(uploadDir) ||
-    !fs.existsSync(uploadDir + heuteDir) ||
-    !fs.existsSync(uploadDir + morgenDir)
+    !fs.existsSync(heutePath) ||
+    !fs.existsSync(morgenPath)
   ) {
-    log.warn('UPLOAD_DIR_TREE_CORRUPT')
-    log.info('CREATING_UPLOAD_DIR')
+    log.warn('', 'UPLOAD_DIR_TREE_CORRUPT')
+    log.info('', 'CREATING_UPLOAD_DIR')
 
     await try_(promiseFs.mkdir(uploadDir), { logLabel: 'IGNORE_IF_EEXIST' })
-    await try_(promiseFs.mkdir(uploadDir + heuteDir), { logLabel: 'IGNORE_IF_EEXIST' })
-    await try_(promiseFs.mkdir(uploadDir + morgenDir), { logLabel: 'IGNORE_IF_EEXIST' })
+    await try_(promiseFs.mkdir(heutePath), { logLabel: 'IGNORE_IF_EEXIST' })
+    await try_(promiseFs.mkdir(morgenPath), { logLabel: 'IGNORE_IF_EEXIST' })
   }
 
-  log.info(`WATCHING_UPLOAD_DIR: ${uploadDir}`)
+  log.info(uploadDir, 'WATCHING_UPLOAD_DIR')
 
   chokidar.watch(uploadDir, {
     cwd: '.',
@@ -41,8 +44,7 @@ module.exports = async function UploadWatcher(callback) {
       }
 
       // Uploaded to wrong directory (not in heute/ or morgen/)
-
-      log.warn(`UNVALID_UPLOAD_GETS_DELETED: ${fullFilePath}`)
+      log.warn(fullFilePath, 'INVALID_LOCATION_UPLOAD_DELETED')
 
       await try_(promiseFs.unlink(fullFilePath))
     })

@@ -5,7 +5,7 @@ const promiseFs = require('helpers/promisified-fs')
 const try_ = require('helpers/try-wrapper')
 
 const Parser = {
-  async parse(filePath) {
+  async parseToFile(filePath) {
     let err, xmlData // eslint-disable-next-line prefer-const
     [err, xmlData] = await try_(
       promiseFs.readFile(filePath, { encoding: 'utf-8' }),

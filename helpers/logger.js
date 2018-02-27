@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const chalk = require('chalk')
 const jsome = require('jsome')
 
@@ -37,7 +38,7 @@ function generateLogPrefix(type) {
     info: 'green INFO',
     error: 'red ERR',
     warning: 'yellow WARN',
-    debug: 'blueBright DEBUG',
+    debug: 'blueBright.underline DEBUG',
   }
 
   if (!typeLabels[type]) {

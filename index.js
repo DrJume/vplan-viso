@@ -13,14 +13,26 @@ const UploadWatcher = require('services/UploadWatcher')
 const XmlParser = require('services/XmlParser')
 
 UploadWatcher(async (day, filePath) => {
-  log.info(`${day}: ${filePath}`, 'FILE_UPLOAD')
+  log.debug(`${day}: ${filePath}`, 'FILE_APPEARED')
 
   if (pathTools.extname(filePath) !== '.xml') {
-    log.info(filePath, 'NON_XML_FILE')
+    // Don't delete parsed JSON Files
+    if (pathTools.extname(filePath) === '.json') {
+      log.info(filePath, 'JSON_FILE_FOUND')
+      return
+    }
+
+    log.warn(filePath, 'NON_XML_FILE')
+
+    log.warn(filePath, 'UNKOWN_FILETYPE_UPLOAD_DELETED')
+    await try_(
+      promiseFs.unlink(filePath),
+      { logLabel: 'FILE_DELETE_ERR' },
+    )
     return
   }
 
-  await XmlParser.parse(filePath)
+  await XmlParser.parseToFile(filePath)
 
   let err // eslint-disable-next-line prefer-const
   [err] = await try_(
