@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Vertretungsplan Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
+  "engines": {
+    "node": "8.9.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +14,7 @@
     "url": "git+https://github.com/DrJume/vplan-viso.git"
   },
   "author": "Julian Meinking",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/DrJume/vplan-viso/issues"
   },
