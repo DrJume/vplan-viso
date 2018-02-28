@@ -26,7 +26,7 @@ const Parser = {
       name: pathTools.basename(filePath, pathTools.extname(filePath)),
       ext: '.json',
     })
-    log.debug(jsonFilePath, 'JSON_NEW_FILEPATH');
+    log.debug('JSON_NEW_FILEPATH', jsonFilePath);
 
     [err] = await try_(
       promiseFs.writeFile(jsonFilePath, jsonData),

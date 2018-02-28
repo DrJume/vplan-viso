@@ -3,5 +3,8 @@
   "ignore": [
     "upload/",
     "test/"
+  ],
+  "watch": [
+    "test/test-script.js"
   ]
 }

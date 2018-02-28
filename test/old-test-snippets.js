@@ -10,12 +10,8 @@
 //   null: null,
 // }
 
-// log.info(testobj)
-// log.err(testobj, 'hskjdhfksjdhfkjh')
-// log.warn(testobj, 'label')
-// log.debug(testobj, 'label')
 
-// const try_ = require('helpers/try-wrapper') 
+// const try_ = require('helpers/try-wrapper')
 
 // function testSync(...arg) {
 //   if (arg.length === 0) {
@@ -28,9 +24,6 @@
 // let err, data
 
 // [err, data] = try_(testSync)
-// log.debug([err, data]);
+// log.debug('', [err, data]);
 // [err, data] = try_(testSync, { args: [123, 456] })
-// log.debug([err, data])
-
-
-// process.exit()
+// log.debug('', [err, data])

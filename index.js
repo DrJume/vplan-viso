@@ -1,30 +1,36 @@
 process.env.NODE_PATH = __dirname
 require('module')._initPaths() // Might break in the future
 
+// Start test-script, process exits after it
+// require('test/test-script')
+
+const logger = require('helpers/logger')
+
+global.log = logger
+
+log.info('VPLAN-VISO_INIT')
+
 const pathTools = require('path')
 
 const promiseFs = require('helpers/promisified-fs')
 const try_ = require('helpers/try-wrapper')
-const logger = require('helpers/logger')
-
-global.log = logger
 
 const UploadWatcher = require('services/UploadWatcher')
 const XmlParser = require('services/XmlParser')
 
 UploadWatcher(async (day, filePath) => {
-  log.debug(`${day}: ${filePath}`, 'FILE_APPEARED')
+  log.debug('FILE_APPEARED', `${day}: ${filePath}`)
 
   if (pathTools.extname(filePath) !== '.xml') {
     // Don't delete parsed JSON Files
     if (pathTools.extname(filePath) === '.json') {
-      log.info(filePath, 'JSON_FILE_FOUND')
+      log.info('JSON_FILE_FOUND', filePath)
       return
     }
 
-    log.warn(filePath, 'NON_XML_FILE')
+    log.warn('NON_XML_FILE', filePath)
 
-    log.warn(filePath, 'UNKOWN_FILETYPE_UPLOAD_DELETED')
+    log.warn('UNKNOWN_FILETYPE_UPLOAD_DELETED', filePath)
     await try_(
       promiseFs.unlink(filePath),
       { logLabel: 'FILE_DELETE_ERR' },

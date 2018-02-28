@@ -17,15 +17,15 @@ module.exports = async function UploadWatcher(callback) {
     !fs.existsSync(heutePath) ||
     !fs.existsSync(morgenPath)
   ) {
-    log.warn('', 'UPLOAD_DIR_TREE_CORRUPT')
-    log.info('', 'CREATING_UPLOAD_DIR')
+    log.warn('UPLOAD_DIR_TREE_CORRUPT')
+    log.info('CREATING_UPLOAD_DIR')
 
     await try_(promiseFs.mkdir(uploadDir), { logLabel: 'IGNORE_IF_EEXIST' })
     await try_(promiseFs.mkdir(heutePath), { logLabel: 'IGNORE_IF_EEXIST' })
     await try_(promiseFs.mkdir(morgenPath), { logLabel: 'IGNORE_IF_EEXIST' })
   }
 
-  log.info(uploadDir, 'WATCHING_UPLOAD_DIR')
+  log.info('WATCHING_UPLOAD_DIR', uploadDir)
 
   chokidar.watch(uploadDir, {
     cwd: '.',
@@ -44,7 +44,7 @@ module.exports = async function UploadWatcher(callback) {
       }
 
       // Uploaded to wrong directory (not in heute/ or morgen/)
-      log.warn(fullFilePath, 'INVALID_LOCATION_UPLOAD_DELETED')
+      log.warn('INVALID_LOCATION_UPLOAD_DELETED', fullFilePath)
 
       await try_(promiseFs.unlink(fullFilePath))
     })

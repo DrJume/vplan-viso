@@ -27,7 +27,7 @@ function tryWrapper(executionObj, {
           })
         }
 
-        log[logLvl](err, logLabel)
+        log[logLvl](logLabel, err)
         return [err, undefined]
       })
   }
@@ -52,7 +52,7 @@ function tryWrapper(executionObj, {
         })
       }
 
-      log[logLvl](err, logLabel)
+      log[logLvl](logLabel, err)
       return [err, undefined]
     }
   }

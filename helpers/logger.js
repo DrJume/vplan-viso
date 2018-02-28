@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, class-methods-use-this */
 const chalk = require('chalk')
 const jsome = require('jsome')
 
@@ -56,34 +56,45 @@ function prettyJSON(data) {
   // return JSON.stringify(data, null, 2) // 2-space indentation, without "replacer"
 }
 
-function generateLogString(prefix, data, label) {
+function generateLogString(prefix, args) {
+  const label = args[0]
+  const data = args[1]
+
+  if (args.length <= 1) { // only label
+    return chalk`${prefix} {whiteBright.bold (${label})}`
+  }
+
   if (!label) {
     return chalk`${prefix} ${prettyJSON(data)}`
   }
   return chalk`${prefix} {whiteBright.bold (${label})} ${prettyJSON(data)}`
 }
 
-const Logger = {
-  info(data, label) {
+class Logger {
+  // label, data
+  info(...args) {
     const logPrefix = generateLogPrefix('info')
 
-    console.info(generateLogString(logPrefix, data, label))
-  },
-  err(data, label) {
+    console.info(generateLogString(logPrefix, args))
+  }
+
+  err(...args) {
     const logPrefix = generateLogPrefix('error')
 
-    console.error(generateLogString(logPrefix, data, label))
-  },
-  warn(data, label) {
+    console.error(generateLogString(logPrefix, args))
+  }
+
+  warn(...args) {
     const logPrefix = generateLogPrefix('warning')
 
-    console.warn(generateLogString(logPrefix, data, label))
-  },
-  debug(data, label) {
+    console.warn(generateLogString(logPrefix, args))
+  }
+
+  debug(...args) {
     const logPrefix = generateLogPrefix('debug')
 
-    console.info(generateLogString(logPrefix, data, label))
-  },
+    console.info(generateLogString(logPrefix, args))
+  }
 }
 
-module.exports = Logger
+module.exports = new Logger()
