@@ -10,6 +10,7 @@
         "import/no-unresolved": "off"
     },
     "globals": {
-        "log": true
+        "log": true,
+        "__basedir": true
     }
 }
