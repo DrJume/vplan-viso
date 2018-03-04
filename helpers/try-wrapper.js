@@ -18,7 +18,7 @@ function tryWrapper(executionObj, {
       .then(data => [null, data])
       .catch((err) => {
         Object.assign(err, {
-          Error: err.toString(),
+          ErrorString: err.toString(),
         })
 
         if (errDetails) {
@@ -43,7 +43,7 @@ function tryWrapper(executionObj, {
       return [null, data]
     } catch (err) {
       Object.assign(err, {
-        Error: err.toString(),
+        ErrorString: err.toString(),
       })
 
       if (errDetails) {
