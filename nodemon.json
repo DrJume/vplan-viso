@@ -2,9 +2,6 @@
   "verbose": false,
   "ignore": [
     "upload/",
-    "test/"
-  ],
-  "watch": [
-    "test/test-script.js"
+    "test/vplan-files/"
   ]
 }

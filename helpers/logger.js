@@ -1,4 +1,4 @@
-/* eslint-disable no-console, class-methods-use-this */
+/* eslint-disable no-console */
 const chalk = require('chalk')
 const jsome = require('jsome')
 
@@ -56,45 +56,55 @@ function prettyJSON(data) {
   // return JSON.stringify(data, null, 2) // 2-space indentation, without "replacer"
 }
 
+/**
+ * @param {!string} prefix Defaults are date and log type.
+ * @param {?string} label Labels the log message.
+ * @param {object} [data] The data to log: gets prettified.
+ * @param {boolean} [printRaw] true: disables the prettification. Needs data.
+ */
 function generateLogString(prefix, args) {
   const label = args[0]
-  const data = args[1]
+  let data = args[1]
+  const printRaw = args[2]
 
   if (args.length <= 1) { // only label
     return chalk`${prefix} {whiteBright.bold (${label})}`
   }
 
-  if (!label) {
-    return chalk`${prefix} ${prettyJSON(data)}`
+  if (!printRaw) {
+    data = prettyJSON(data)
   }
-  return chalk`${prefix} {whiteBright.bold (${label})} ${prettyJSON(data)}`
+
+  if (!label) {
+    return chalk`${prefix} ${data}`
+  }
+  return chalk`${prefix} {whiteBright.bold (${label})} ${data}`
 }
 
-class Logger {
-  // label, data
+const Logger = {
   info(...args) {
     const logPrefix = generateLogPrefix('info')
 
     console.info(generateLogString(logPrefix, args))
-  }
+  },
 
   err(...args) {
     const logPrefix = generateLogPrefix('error')
 
     console.error(generateLogString(logPrefix, args))
-  }
+  },
 
   warn(...args) {
     const logPrefix = generateLogPrefix('warning')
 
     console.warn(generateLogString(logPrefix, args))
-  }
+  },
 
   debug(...args) {
     const logPrefix = generateLogPrefix('debug')
 
     console.info(generateLogString(logPrefix, args))
-  }
+  },
 }
 
-module.exports = new Logger()
+module.exports = Logger
