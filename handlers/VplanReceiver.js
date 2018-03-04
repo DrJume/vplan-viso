@@ -27,7 +27,7 @@ function RunVplanReceiver() {
       return
     }
 
-    await XmlParser.parseToFile(filePath)
+    await XmlParser.convertToFile(filePath)
 
     await try_(
       promiseFs.unlink(filePath),

@@ -5,7 +5,7 @@ const promiseFs = require('helpers/promisified-fs')
 const try_ = require('helpers/try-wrapper')
 
 const Parser = {
-  async parseToFile(filePath) {
+  async convertToFile(filePath) {
     let err, xmlData // eslint-disable-next-line prefer-const
     [err, xmlData] = await try_(
       promiseFs.readFile(filePath, { encoding: 'utf-8' }),
@@ -23,7 +23,8 @@ const Parser = {
 
     const jsonFilePath = pathTools.format({
       dir: pathTools.dirname(filePath),
-      name: pathTools.basename(filePath, pathTools.extname(filePath)),
+      // name: pathTools.basename(filePath, pathTools.extname(filePath)),
+      name: 'upload',
       ext: '.json',
     })
     log.debug('JSON_NEW_FILEPATH', jsonFilePath);
