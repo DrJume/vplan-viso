@@ -26,8 +26,8 @@
   log.info('VPLAN-VISO_INIT')
 
   // Running the handlers
-  const VplanReceiver = require('handler/VplanReceiver')
-  const WebServer = require('handler/WebServer')
+  const VplanReceiver = require('handlers/VplanReceiver')
+  const WebServer = require('handlers/WebServer')
 
   VplanReceiver.run()
   WebServer.run()
