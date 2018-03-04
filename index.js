@@ -27,6 +27,8 @@
 
   // Running the handlers
   const VplanReceiver = require('handler/VplanReceiver')
+  const WebServer = require('handler/WebServer')
 
   VplanReceiver.run()
+  WebServer.run()
 }())

@@ -34,7 +34,6 @@
     "jsome": "^2.5.0",
     "morgan": "^1.9.0",
     "serve-favicon": "^2.4.5",
-    "serve-static": "^1.13.2",
     "xml-js": "^1.6.2"
   }
 }
