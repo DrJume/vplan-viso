@@ -9,7 +9,7 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 ├── helpers/        # Helper modules for dev environment 
 ├── routes/         # HTTP-Endpoint router modules
 ├── services/       # Main composed libraries
-├── snippets/       # Small optional utility functions
+├── util/           # Small utility functions
 ├── test/           # Resources for testing
 ├── views/          # HTML view files
 └── index.js        # Entry module (async)

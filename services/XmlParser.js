@@ -1,8 +1,8 @@
 const xmlConvert = require('xml-js')
 const pathTools = require('path')
 
-const promiseFs = require('helpers/promisified-fs')
 const try_ = require('helpers/try-wrapper')
+const promiseFs = require('util/promisified-fs')
 
 const Parser = {
   async convertToFile(filePath) {

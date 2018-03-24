@@ -4,7 +4,7 @@
   "description": "Vertretungsplan Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
-    "node": "8.9.x"
+    "node": "8.10.x"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,16 +21,16 @@
   },
   "homepage": "https://github.com/DrJume/vplan-viso#readme",
   "devDependencies": {
-    "eslint": "^4.18.1",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.9.0"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
-    "boom": "^7.1.1",
-    "chalk": "^2.3.1",
-    "chokidar": "^1.7.0",
-    "express": "^4.16.2",
+    "boom": "^7.2.0",
+    "chalk": "^2.3.2",
+    "chokidar": "^2.0.3",
+    "express": "^4.16.3",
     "jsome": "^2.5.0",
     "morgan": "^1.9.0",
     "serve-favicon": "^2.4.5",

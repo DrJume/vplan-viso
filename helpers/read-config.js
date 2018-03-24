@@ -1,5 +1,5 @@
-const promiseFs = require('helpers/promisified-fs')
 const try_ = require('helpers/try-wrapper')
+const promiseFs = require('util/promisified-fs')
 
 const DefaultConfig = {
   port: 8080,

@@ -1,7 +1,7 @@
 const pathTools = require('path')
 
-const promiseFs = require('helpers/promisified-fs')
 const try_ = require('helpers/try-wrapper')
+const promiseFs = require('util/promisified-fs')
 
 const UploadWatcher = require('services/UploadWatcher')
 const XmlParser = require('services/XmlParser')

@@ -3,7 +3,7 @@ const fs = require('fs')
 const pathTools = require('path')
 
 const try_ = require('helpers/try-wrapper')
-const promiseFs = require('helpers/promisified-fs')
+const promiseFs = require('util/promisified-fs')
 
 const uploadDir = `upload${pathTools.sep}`
 const heuteDir = `heute${pathTools.sep}`

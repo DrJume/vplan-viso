@@ -1,7 +1,7 @@
 const try_ = require('helpers/try-wrapper')
-const promiseFs = require('helpers/promisified-fs')
+const promiseFs = require('util/promisified-fs')
 
-const lanIP = require('snippets/local-ip')
+const lanIP = require('util/local-ip')
 
 const fs = require('fs')
 const WritableStream = require('stream').Writable
