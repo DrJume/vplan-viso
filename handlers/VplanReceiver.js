@@ -1,4 +1,4 @@
-const pathTools = require('path')
+const path = require('path')
 
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified-fs')
@@ -10,9 +10,9 @@ function RunVplanReceiver() {
   UploadWatcher(async (day, filePath) => {
     log.debug('FILE_APPEARED', `${day}: ${filePath}`)
 
-    if (pathTools.extname(filePath) !== '.xml') {
+    if (path.extname(filePath) !== '.xml') {
       // Don't delete parsed JSON Files
-      if (pathTools.extname(filePath) === '.json') {
+      if (path.extname(filePath) === '.json') {
         log.info('JSON_FILE_FOUND', filePath)
         return
       }
@@ -20,19 +20,13 @@ function RunVplanReceiver() {
       log.warn('NON_XML_FILE', filePath)
 
       log.warn('UNKNOWN_FILETYPE_UPLOAD_DELETED', filePath)
-      await try_(
-        promiseFs.unlink(filePath),
-        { logLabel: 'FILE_DELETE_ERR' },
-      )
+      await try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
       return
     }
 
     await XmlParser.convertToFile(filePath)
 
-    await try_(
-      promiseFs.unlink(filePath),
-      { logLabel: 'FILE_DELETE_ERR' },
-    )
+    await try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
   })
 }
 

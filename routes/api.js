@@ -15,7 +15,7 @@ router.get('/heute', async (req, res) => {
   let err, jsonData // eslint-disable-next-line prefer-const
   [err, jsonData] = await try_(
     promiseFs.readFile('upload/heute/upload.json', { encoding: 'utf-8' }),
-    { logLabel: 'FILE_READ_ERR' },
+    'FILE_READ_ERR',
   )
   if (err) {
     res.send('No upload.json in heute/')
@@ -27,7 +27,7 @@ router.get('/morgen', async (req, res) => {
   let err, jsonData // eslint-disable-next-line prefer-const
   [err, jsonData] = await try_(
     promiseFs.readFile('upload/morgen/upload.json', { encoding: 'utf-8' }),
-    { logLabel: 'FILE_READ_ERR' },
+    'FILE_READ_ERR',
   )
   if (err) {
     res.send('No upload.json in morgen/')

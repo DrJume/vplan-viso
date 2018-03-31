@@ -16,9 +16,9 @@
   // require('test/test-script')
 
   // Node run location check, run node in project path
-  const pathTools = require('path')
+  const path = require('path')
 
-  if (pathTools.relative(process.cwd(), __basedir) !== '') {
+  if (path.relative(process.cwd(), __basedir) !== '') {
     log.err('WRONG_NODE_RUN_LOCATION', `Please run 'node index.js' within: ${__basedir}`)
     process.exit(1)
   }

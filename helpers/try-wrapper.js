@@ -6,12 +6,17 @@ function isFunction(objToCheck) {
   return objToCheck && {}.toString.call(objToCheck) === '[object Function]'
 }
 
-function tryWrapper(executionObj, {
-  args, logLvl = 'err', logLabel, errDetails,
-} = {}) {
-  if (!log[logLvl]) {
-    logLvl = 'err'
-  }
+function tryWrapper(
+  executionObj,
+  logOptionsString = '', // format="(logLvl:)LOG_LABEL"
+  { errData } = {},
+) {
+  const logOptions = logOptionsString.split(':')
+  if (logOptions.length < 2) logOptions.unshift('')
+
+  let [logLvl, label] = logOptions // eslint-disable-line prefer-const
+
+  if (!logLvl || !log[logLvl]) logLvl = 'err'
 
   if (isPromise(executionObj)) {
     return executionObj
@@ -21,38 +26,33 @@ function tryWrapper(executionObj, {
           ErrorString: err.toString(),
         })
 
-        if (errDetails) {
+        if (errData) {
           Object.assign(err, {
-            _details: errDetails,
+            _data: errData,
           })
         }
 
-        log[logLvl](logLabel, err)
+        log[logLvl](label, err)
         return [err, undefined]
       })
   }
 
   if (isFunction(executionObj)) {
     try {
-      if (!args) {
-        const data = executionObj()
-        return [null, data]
-      }
-
-      const data = executionObj(...args)
+      const data = executionObj()
       return [null, data]
     } catch (err) {
       Object.assign(err, {
         ErrorString: err.toString(),
       })
 
-      if (errDetails) {
+      if (errData) {
         Object.assign(err, {
-          _details: errDetails,
+          _data: errData,
         })
       }
 
-      log[logLvl](logLabel, err)
+      log[logLvl](label, err)
       return [err, undefined]
     }
   }

@@ -20,6 +20,7 @@ function RunWebServer() {
   const app = express()
 
   // Webserver logging system
+  if (!fs.existsSync('logs/')) { fs.mkdirSync('logs') }
   const LogFileStream = fs.createWriteStream('logs/access.log', { flags: 'a' }) // Appending file-write stream
   app.use(morgan( // log to file
     '[:date[clf]] :remote-addr (:remote-user) "HTTP/:http-version :method :url" :status (:res[content-type])',
@@ -37,7 +38,7 @@ function RunWebServer() {
     let err, content // eslint-disable-next-line prefer-const
     [err, content] = await try_(
       promiseFs.readFile(filePath, { encoding: 'utf-8' }),
-      { logLabel: 'FILE_READ_ERR' },
+      'FILE_READ_ERR',
     )
     if (err) {
       callback(err)

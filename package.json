@@ -4,16 +4,14 @@
   "description": "Vertretungsplan Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
-    "node": "8.10.x"
+    "node": "8.11.x"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "echo 'Error: no test specified' && exit 1",
+    "start": "node index.js",
+    "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DrJume/vplan-viso.git"
-  },
+  "repository": "github:DrJume/vplan-viso",
   "author": "Julian Meinking",
   "license": "MIT",
   "bugs": {
@@ -23,7 +21,7 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.9.0"
+    "eslint-plugin-import": "^2.10.0"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -33,7 +31,7 @@
     "express": "^4.16.3",
     "jsome": "^2.5.0",
     "morgan": "^1.9.0",
-    "serve-favicon": "^2.4.5",
+    "serve-favicon": "^2.5.0",
     "xml-js": "^1.6.2"
   }
 }
