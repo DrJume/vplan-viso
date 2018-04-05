@@ -5,7 +5,7 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 ### Project structure
 ```
 .
-├── handlers/       # Modules running the app duties
+├── handlers/       # Independent modules running the app duties
 ├── helpers/        # Helper modules for dev environment 
 ├── routes/         # HTTP-Endpoint router modules
 ├── services/       # Main composed libraries
