@@ -1,38 +1,30 @@
 const xmlConvert = require('xml-js')
-const path = require('path')
 
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified-fs')
 
-const Parser = {
-  async convertToFile(filePath) {
+const XmlParser = {
+  async convertToJSObject(filePath) {
     let err, xmlData // eslint-disable-next-line prefer-const
     [err, xmlData] = await try_(
       promiseFs.readFile(filePath, { encoding: 'utf-8' }),
       'FILE_READ_ERR',
     )
-    if (err) return
+    if (err) return undefined
 
     let jsonData // eslint-disable-next-line prefer-const
     [err, jsonData] = try_(() => xmlConvert.xml2json( // try-wrapper on syncronous func
       xmlData,
       { compact: true, attributesKey: '$', textKey: '_' },
     ), 'XML_PARSE_ERR')
-    if (err) return
+    if (err) return undefined
 
-    const jsonFilePath = path.format({
-      dir: path.dirname(filePath),
-      // name: path.basename(filePath, path.extname(filePath)),
-      name: 'upload',
-      ext: '.json',
-    })
-    log.debug('JSON_NEW_FILEPATH', jsonFilePath);
+    let jsObject // eslint-disable-next-line prefer-const
+    [err, jsObject] = try_(() => JSON.parse(jsonData), 'JSON_PARSE_ERR')
+    if (err) return undefined
 
-    [err] = await try_(
-      promiseFs.writeFile(jsonFilePath, jsonData),
-      'FILE_WRITE_ERR',
-    )
+    return jsObject
   },
 }
 
-module.exports = Parser
+module.exports = XmlParser
