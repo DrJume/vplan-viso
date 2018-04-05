@@ -2,6 +2,7 @@
   "verbose": false,
   "ignore": [
     "upload/",
-    "test/vplan-files/"
+    "test/vplan-files/",
+    "config.json"
   ]
 }

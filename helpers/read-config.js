@@ -2,7 +2,7 @@ const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified-fs')
 
 const DefaultConfig = {
-  port: 8080,
+  webserverPort: 8080,
 }
 
 module.exports = async function readConfig(path) {
@@ -17,7 +17,7 @@ module.exports = async function readConfig(path) {
   if (readErr) {
     log.info('WRITING_DEFAULT_CONFIG')
 
-    await try_(promiseFs.writeFile(
+    try_(promiseFs.writeFile(
       path,
       JSON.stringify(DefaultConfig, null, 2), // beautify JSON
     ), 'warn:DEFAULT_CONFIG_WRITE_FAILED')

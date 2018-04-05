@@ -8,9 +8,18 @@
   const readConfig = require('helpers/read-config')
 
   global.log = logger // Make the logger globally accessible
-  global.config = await readConfig('config.json') // Make parsed config.json globally accessible
+  global.Config = await readConfig('config.json') // Make parsed config.json globally accessible
   global.__basedir = __dirname // Set the project dir as global __basedir
 
+  // Catches unhandled promise errors and logs them
+  process.on('unhandledRejection', (error) => {
+    Object.assign(error, {
+      ErrorString: error.toString(),
+      ErrorStack: error.stack,
+    })
+
+    log.err('UNHANDLED_REJECTION', error)
+  })
 
   // Start test-script, process exits after it
   // require('test/test-script')

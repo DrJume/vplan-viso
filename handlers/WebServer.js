@@ -11,12 +11,11 @@ const bodyParser = require('body-parser')
 const favicon = require('serve-favicon')
 const morgan = require('morgan')
 
-const dashboard = require('routes/dashboard')
-const api = require('routes/api')
+const routes = require('routes/index')
 
-const { port } = config
+const { webserverPort } = Config
 
-function RunWebServer() {
+async function RunWebServer() {
   const app = express()
 
   // Webserver logging system
@@ -54,15 +53,8 @@ function RunWebServer() {
   app.use(bodyParser.json()) // parse application/json
   app.use(favicon('routes/static/favicon.ico'))
 
-  // Define routes
-  app.use('/dashboard', dashboard)
-  app.use('/static', express.static('routes/static'))
-  app.use('/api', api)
-
-  // Root path listener
-  app.get('/', (req, res) => {
-    res.redirect('/dashboard')
-  })
+  // Define routes in routes/index.js
+  app.use('/', routes)
 
   // Custom error handling middleware
   app.use((err, req, res, next) => {
@@ -71,8 +63,8 @@ function RunWebServer() {
   })
 
   // Listen on port specified in config.json and LAN IP-adress
-  app.listen(port, lanIP, () => {
-    log.info('APP_LISTENING', `${lanIP}:${port}`)
+  app.listen(webserverPort, lanIP, () => {
+    log.info('APP_LISTENING', `${lanIP}:${webserverPort}`)
   })
 }
 

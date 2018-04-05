@@ -1,9 +1,6 @@
-const log = require('helpers/logger')
-const path = require('path')
+const try_ = require('helpers/try-wrapper')
+const promiseFs = require('util/promisified-fs')
 
-log.info('__dirname', __dirname)
-log.info('__basedir', __basedir)
-log.info('process.cwd()', process.cwd())
-log.info('path.resolve(.)', path.resolve('.'))
+promiseFs.mkdir('upload/')
 
-process.exit()
+// process.exit()

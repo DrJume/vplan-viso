@@ -12,6 +12,6 @@
     "globals": {
         "log": true,
         "__basedir": true,
-        "config": true
+        "Config": true
     }
 }
