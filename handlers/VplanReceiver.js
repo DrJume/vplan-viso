@@ -44,7 +44,7 @@ async function RunVplanReceiver() {
       name: 'upload',
       ext: '.json',
     })
-    log.debug('JSON_NEW_FILEPATH', jsonFilePath) // semi-colon needed
+    log.debug('JSON_NEW_FILEPATH', jsonFilePath)
 
     try_(
       promiseFs.writeFile(jsonFilePath, JSON.stringify(formattedVplanData, null, 2)),
