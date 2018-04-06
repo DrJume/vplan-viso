@@ -51,7 +51,7 @@ async function RunWebServer() {
 
   app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
   app.use(bodyParser.json()) // parse application/json
-  app.use(favicon('routes/static/favicon.ico'))
+  app.use(favicon('routes/assets/favicon.ico'))
 
   // Define routes in routes/index.js
   app.use('/', routes)
