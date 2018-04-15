@@ -4,5 +4,6 @@
     "upload/",
     "test/vplan-files/",
     "config.json"
-  ]
+  ],
+  "ext": "js,json,css,html"
 }
