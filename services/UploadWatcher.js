@@ -7,10 +7,8 @@ const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified-fs')
 
 const uploadDir = 'upload'
-const currentVplanDir = 'current'
-const nextVplanDir = 'next'
-const currentVplanPath = path.join(uploadDir, currentVplanDir)
-const nextVplanPath = path.join(uploadDir, nextVplanDir)
+const currentVplanPath = path.join(uploadDir, 'current')
+const nextVplanPath = path.join(uploadDir, 'next')
 
 const XmlParser = require('services/XmlParser')
 const VplanParser = require('services/VplanParser')
@@ -21,8 +19,7 @@ module.exports = async function UploadWatcher(callback) {
     !fs.existsSync(currentVplanPath) ||
     !fs.existsSync(nextVplanPath)
   ) {
-    log.warn('UPLOAD_DIR_TREE_CORRUPT')
-    log.info('CREATING_UPLOAD_DIR')
+    log.info('RECREATING_UPLOAD_DIR_TREE')
 
     await try_(promiseFs.mkdir(uploadDir), 'warn:IGNORE_IF_EEXIST')
     await try_(promiseFs.mkdir(currentVplanPath), 'warn:IGNORE_IF_EEXIST')

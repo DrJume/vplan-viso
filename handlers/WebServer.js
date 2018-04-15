@@ -62,6 +62,15 @@ async function RunWebServer() {
     next(err)
   })
 
+  // Use the reload middleware when its installed
+  const [, reloadDevPackage] = try_(() => require.resolve('reload'), 'info:NOT_USING_DEV_RELOAD')
+  if (reloadDevPackage) {
+    log.info('USING_DEV_RELOAD')
+
+    const reload = require('reload') /* eslint-disable-line */
+    reload(app)
+  }
+
   // Listen on port specified in config.json and LAN IP-adress
   app.listen(webserverPort, lanIP, () => {
     log.info('APP_LISTENING', `${lanIP}:${webserverPort}`)
