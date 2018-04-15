@@ -21,6 +21,9 @@
     log.err('UNHANDLED_REJECTION', error)
   })
 
+  const moment = require('moment')
+  moment.locale('de')
+
   // Start test-script, process exits after it
   // require('test/test-script')
 

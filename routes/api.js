@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified-fs')
@@ -11,37 +12,28 @@ router.use((req, res, next) => {
   next()
 })
 
-router.get('/current', async (req, res) => {
-  let err, jsonData // eslint-disable-next-line prefer-const
-  [err, jsonData] = await try_(
-    promiseFs.readFile('upload/current/upload.json', { encoding: 'utf-8' }),
+async function readVplan(queueDay, vplanType) {
+  const [err, jsonData] = await try_(
+    promiseFs.readFile(path.join('upload', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
     'FILE_READ_ERR',
   )
-  if (err) {
-    res.send('No upload.json in current/')
+  return [err, jsonData]
+}
+
+
+router.get('/current|next', async (req, res) => {
+  if (!req.query.type) {
+    res.send('No ?type= specified')
     return
   }
-  res.json(JSON.parse(jsonData))
-})
-router.get('/next', async (req, res) => {
-  let err, jsonData // eslint-disable-next-line prefer-const
-  [err, jsonData] = await try_(
-    promiseFs.readFile('upload/next/upload.json', { encoding: 'utf-8' }),
-    'FILE_READ_ERR',
-  )
+  const [err, vplanData] = await readVplan(req.path, req.query.type)
+
   if (err) {
-    res.send('No upload.json in next/')
+    res.send(`No Vplan availiable for ${req.path}/${req.query.type}`)
     return
   }
-  res.json(JSON.parse(jsonData))
-})
 
-router.post('/', (req, res) => {
-  res.send('POST API')
-})
-
-router.get('/test', (req, res) => {
-  res.send('API>TEST')
+  res.json(vplanData)
 })
 
 module.exports = router

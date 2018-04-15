@@ -9,7 +9,9 @@
   "scripts": {
     "test": "echo 'Error: no test specified' && exit 1",
     "start": "node index.js",
-    "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json"
+    "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json",
+    "build": "echo 'build script not fertig'",
+    "dev": "nodemon index.js ; npm run reset"
   },
   "repository": "github:DrJume/vplan-viso",
   "author": "Julian Meinking",
@@ -21,7 +23,7 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.10.0"
+    "eslint-plugin-import": "^2.11.0"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -31,6 +33,7 @@
     "express": "^4.16.3",
     "fanci": "^0.7.0",
     "jsome": "^2.5.0",
+    "moment": "^2.22.1",
     "morgan": "^1.9.0",
     "serve-favicon": "^2.5.0",
     "xml-js": "^1.6.2"
