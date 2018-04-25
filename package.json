@@ -7,11 +7,13 @@
     "node": "8.11.x"
   },
   "scripts": {
+    "postinstall": "npm run build",
     "test": "echo 'Error: no test specified' && exit 1",
-    "start": "node index.js",
     "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json",
-    "build": "echo 'build script not fertig'",
-    "dev": "nodemon index.js ; npm run reset"
+    "build": "npx riot src/riot-tags/ routes/riot/tags.js && npx babel routes/riot/tags.js --out-file routes/riot/tags-compiled.js --source-maps",
+    "prestart": "npm run build",
+    "start": "node index.js",
+    "dev": "npx nodemon index.js ; npm run reset"
   },
   "repository": "github:DrJume/vplan-viso",
   "author": "Julian Meinking",
@@ -21,10 +23,14 @@
   },
   "homepage": "https://github.com/DrJume/vplan-viso#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
-    "reload": "^2.2.2"
+    "nodemon": "^1.17.3",
+    "reload": "^2.2.2",
+    "riot-cli": "^4.0.1"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

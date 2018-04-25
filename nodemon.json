@@ -3,7 +3,9 @@
   "ignore": [
     "upload/",
     "test/vplan-files/",
-    "config.json"
+    "config.json",
+    "routes/riot/"
   ],
-  "ext": "js,json,css,html"
+  "ext": "js,json,css,html,tag",
+  "exec": "npm start"
 }

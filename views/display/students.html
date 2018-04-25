@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vplan-ViSo</title>
+  <link rel="stylesheet" href="/assets/bulma-0.7.0/bulma.css">
+  <style type="riot"></style>
+  <script async src="/assets/axios-0.18.0/axios.js"></script>
+  <script defer src="/assets/fontawesome-5.0.10/fontawesome-all.min.js"></script>
+</head>
+
+<body>
+  <check-for-ie></check-for-ie>
+
+  <vplan-table></vplan-table>
+
+  <script src="/assets/riot-3.9.2/riot.js"></script>
+  <script src="/riot/tags.js"></script>
+  <script>
+    riot.mount('check-for-ie')
+    riot.mount('vplan-table')
+  </script>
+
+  <script src="/reload/reload.js"></script>
+</body>
+
+</html>

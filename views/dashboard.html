@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vplan-ViSo</title>
+  <link rel="stylesheet" href="/assets/bulma-0.7.0/bulma.css">
+  <style type="riot"></style>
+  <script defer src="/assets/axios-0.18.0/axios.js"></script>
+  <script defer src="/assets/fontawesome-5.0.10/fontawesome-all.min.js"></script>
 </head>
+
 <body>
-  <h1 style="color:blue">Test-content on Dashboard</h1>
+  <check-for-ie></check-for-ie>
+
+  <navbar></navbar>
+  
+  <section class="section">
+    <div class="container">
+      <router>
+        <route path="/">
+          <dashboard></dashboard>
+        </route>
+        <route path="/students">
+          <students></students>
+        </route>
+        <route path="/teachers">
+          <teachers></teachers>
+        </route>
+        <route path="/settings">
+          <settings></settings>
+        </route>
+      </router>
+    </div>
+  </section>
+
+  <script src="/assets/riot-3.9.2/riot.js"></script>
+  <script src="/assets/riot-route-3.1.3/route+tag.js"></script>
+  <script src="/riot/tags.js"></script>
+  <script>
+    route.base('/dashboard/')
+    riot.mount('check-for-ie')
+    riot.mount('navbar')
+    riot.mount('router')
+  </script>
+
+  <script src="/reload/reload.js"></script>
 </body>
+
 </html>
