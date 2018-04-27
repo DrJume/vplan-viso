@@ -11,7 +11,8 @@
     "test": "echo 'Error: no test specified' && exit 1",
     "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json",
     "build": "npx riot src/riot-tags/ routes/riot/tags.js && npx babel routes/riot/tags.js --out-file routes/riot/tags-compiled.js --source-maps",
-    "prestart": "npm run build",
+    "prestart-dev": "npm run build",
+    "start-dev": "node index.js",
     "start": "node index.js",
     "dev": "npx nodemon index.js ; npm run reset"
   },
@@ -33,16 +34,20 @@
     "riot-cli": "^4.0.1"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "boom": "^7.2.0",
-    "chalk": "^2.3.2",
+    "chalk": "^2.4.1",
     "chokidar": "^2.0.3",
     "express": "^4.16.3",
     "fanci": "^0.7.0",
     "jsome": "^2.5.0",
     "moment": "^2.22.1",
     "morgan": "^1.9.0",
+    "node-cron": "^1.2.1",
+    "semver": "^5.5.0",
     "serve-favicon": "^2.5.0",
+    "tar": "^4.4.1",
     "xml-js": "^1.6.2"
   }
 }

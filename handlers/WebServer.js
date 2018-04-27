@@ -74,7 +74,7 @@ async function RunWebServer() {
   // Listen on port specified in config.json and LAN IP-adress
   app.listen(webserverPort, lanIP, () => {
     log.info('APP_LISTENING', `${lanIP}:${webserverPort}`)
-  })
+  }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 }
 
 module.exports.run = RunWebServer
