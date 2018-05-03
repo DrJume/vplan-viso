@@ -6,8 +6,26 @@ const display = require('routes/display')
 
 const router = express.Router()
 
+router.use('/dashboard|/display', (req, res, next) => {
+  const userAgent = req.get('User-Agent')
+  // log.debug('USER_AGENT', userAgent)
+
+  const browserRegEx = RegExp('Chrome|Firefox')
+  const edgeRegEx = RegExp('Edge')
+  const isSupportedBrowser = browserRegEx.test(userAgent) && !edgeRegEx.test(userAgent)
+
+  // log.debug('SUPPORTED_BROWSER', isSupportedBrowser)
+
+  if (!isSupportedBrowser) {
+    res.send("<script>alert('Dieser Browser wird nicht unterstützt.')</script>")
+    return
+  }
+
+  next()
+})
+
 // Define routes
-router.use('/dashboard/*', dashboard)
+router.use('/dashboard', dashboard)
 router.use('/assets', express.static('routes/assets'))
 router.use('/riot', express.static('routes/riot'))
 router.use('/api', api)

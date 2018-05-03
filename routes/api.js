@@ -34,7 +34,7 @@ router.get('/current|next', async (req, res) => {
   const [err, vplanData] = await readVplan(req.path, req.query.type)
 
   if (err) {
-    res.send(`No Vplan availiable for ${req.path}?type=${req.query.type}\nUsed types: teachers, students`)
+    res.status(404).send(`No Vplan availiable for ${req.path}?type=${req.query.type}\nUsed types: teachers, students`)
     return
   }
 
