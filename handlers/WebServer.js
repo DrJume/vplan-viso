@@ -1,8 +1,6 @@
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
-const lanIP = require('util/local-ip')
-
 const fs = require('fs')
 const WritableStream = require('stream').Writable
 
@@ -13,7 +11,8 @@ const morgan = require('morgan')
 
 const routes = require('routes/index')
 
-const { webserverPort } = Config
+const { Webserver_Port } = Config
+const Lan_IP = require('util/local-ip')
 
 let server
 
@@ -74,8 +73,8 @@ async function RunWebServer() {
   }
 
   // Listen on port specified in config.json and LAN IP-adress
-  server = app.listen(webserverPort, lanIP, () => {
-    log.info('APP_LISTENING', `${lanIP}:${webserverPort}`)
+  server = app.listen(Webserver_Port, Lan_IP, () => {
+    log.info('APP_LISTENING', `${Lan_IP}:${Webserver_Port}`)
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 }
 
