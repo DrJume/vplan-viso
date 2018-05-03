@@ -6,35 +6,55 @@ function isFunction(objToCheck) {
   return objToCheck && {}.toString.call(objToCheck) === '[object Function]'
 }
 
+function filterObj(objToFilter, allowedKeys) {
+  return allowedKeys.reduce((obj, keyString) => {
+    obj[keyString] =
+      keyString.split('.')
+        .reduce((filteredObj, key) => (filteredObj ? filteredObj[key] : undefined), objToFilter)
+    return obj
+  }, {})
+}
+
+function handleError(error, logLvl, labelString, errData) {
+  const errorString = error.toString()
+
+  const [label, ...allowedKeys] = labelString.split('#')
+  if (allowedKeys.length > 0) {
+    log.debug('ALLOWED_ERR_FILTER_KEYS', allowedKeys)
+    error = filterObj(error, allowedKeys)
+  }
+
+  Object.assign(error, {
+    ErrorString: errorString,
+  })
+
+  if (errData) {
+    Object.assign(error, {
+      ErrorData: errData,
+    })
+  }
+
+  log[logLvl](label, error)
+
+  return error
+}
+
 function tryWrapper(
   executionObj,
-  logOptionsString = '', // format="(logLvl:)LOG_LABEL"
+  logOptionsString = '', // format="(logLvl:)labelString"
   { errData } = {},
 ) {
   const logOptions = logOptionsString.split(':')
   if (logOptions.length < 2) logOptions.unshift('')
 
-  let [logLvl, label] = logOptions // eslint-disable-line prefer-const
+  let [logLvl, labelString] = logOptions // eslint-disable-line prefer-const
 
   if (!logLvl || !log[logLvl]) logLvl = 'err'
 
   if (isPromise(executionObj)) {
     return executionObj
       .then(data => [null, data])
-      .catch((err) => {
-        Object.assign(err, {
-          ErrorString: err.toString(),
-        })
-
-        if (errData) {
-          Object.assign(err, {
-            _data: errData,
-          })
-        }
-
-        log[logLvl](label, err)
-        return [err, undefined]
-      })
+      .catch(err => [(handleError(err, logLvl, labelString, errData)), undefined])
   }
 
   if (isFunction(executionObj)) {
@@ -42,18 +62,7 @@ function tryWrapper(
       const data = executionObj()
       return [null, data]
     } catch (err) {
-      Object.assign(err, {
-        ErrorString: err.toString(),
-      })
-
-      if (errData) {
-        Object.assign(err, {
-          _data: errData,
-        })
-      }
-
-      log[logLvl](label, err)
-      return [err, undefined]
+      return [(handleError(err, logLvl, labelString, errData)), undefined]
     }
   }
 

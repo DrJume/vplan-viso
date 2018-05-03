@@ -1,5 +1,5 @@
 const try_ = require('helpers/try-wrapper')
-const promiseFs = require('util/promisified-fs')
+const promiseFs = require('util/promisified').fs
 
 const lanIP = require('util/local-ip')
 
@@ -15,11 +15,13 @@ const routes = require('routes/index')
 
 const { webserverPort } = Config
 
+let server
+
 async function RunWebServer() {
   const app = express()
 
   // Webserver logging system
-  if (!fs.existsSync('logs/')) { fs.mkdirSync('logs') }
+  if (!fs.existsSync('logs/')) fs.mkdirSync('logs')
   const LogFileStream = fs.createWriteStream('logs/access.log', { flags: 'a' }) // Appending file-write stream
   app.use(morgan( // log to file
     '[:date[clf]] :remote-addr (:remote-user) "HTTP/:http-version :method :url" :status (:res[content-type])',
@@ -27,7 +29,7 @@ async function RunWebServer() {
   ))
   const DebugLogStream = new WritableStream({
     write(chunk, encoding, callback) {
-      log.debug('WEBSERVER_EVENT', chunk.toString().trim(), true)
+      log.debug('WEBSERVER_EVENT', chunk.toString().trim(), true) // true disables data prettification
       callback()
     },
   })
@@ -72,9 +74,16 @@ async function RunWebServer() {
   }
 
   // Listen on port specified in config.json and LAN IP-adress
-  app.listen(webserverPort, lanIP, () => {
+  server = app.listen(webserverPort, lanIP, () => {
     log.info('APP_LISTENING', `${lanIP}:${webserverPort}`)
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 }
 
+function StopWebServer() {
+  if (!server) return
+  log.debug('WEBSERVER_STOP')
+  server.close()
+}
+
 module.exports.run = RunWebServer
+module.exports.stop = StopWebServer

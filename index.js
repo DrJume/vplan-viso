@@ -9,7 +9,6 @@
 
   global.log = logger // Make the logger globally accessible
   global.Config = await readConfig('config.json') // Make parsed config.json globally accessible
-  global.__basedir = __dirname // Set the project dir as global __basedir
 
   // Catches unhandled promise errors and logs them
   process.on('unhandledRejection', (error) => {
@@ -30,12 +29,18 @@
   // Node run location check, run node in project path
   const path = require('path')
 
-  if (path.relative(process.cwd(), __basedir) !== '') {
-    log.err('WRONG_NODE_RUN_LOCATION', `Please run 'node index.js' within: ${__basedir}`)
+  if (path.relative(process.cwd(), __dirname) !== '') {
+    log.err('WRONG_NODE_RUN_LOCATION', `Please run 'node index.js' within: ${__dirname}`)
     process.exit(1)
   }
 
-  log.info('VPLAN-VISO_INIT')
+  const pkg = require('./package.json')
+
+  log.info(`VPLAN-VISO_INIT (v${pkg.version})`)
+
+  // Running TaskScheduler
+  const TaskScheduler = require('handlers/TaskScheduler')
+  TaskScheduler.start()
 
   // Running the handlers
   const VplanReceiver = require('handlers/VplanReceiver')

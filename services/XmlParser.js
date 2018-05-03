@@ -1,7 +1,7 @@
 const xmlConvert = require('xml-js')
 
 const try_ = require('helpers/try-wrapper')
-const promiseFs = require('util/promisified-fs')
+const promiseFs = require('util/promisified').fs
 
 const XmlParser = {
   async convertToJSObject(filePath) {

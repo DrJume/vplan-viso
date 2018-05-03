@@ -2,47 +2,40 @@ const axios = require('axios')
 const semver = require('semver')
 const tar = require('tar')
 
+const os = require('os')
+
 const try_ = require('helpers/try-wrapper')
-const promiseFs = require('util/promisified-fs')
+const promiseFs = require('util/promisified').fs
+const { exec } = require('util/promisified').child_process
 
-// const packageData = require('../package.json')
-const packageData = {
-  version: '0.15.0',
-}
+const WebServer = require('handlers/WebServer')
 
-async function checkForUpdate() {
-  const [err, httpResponse] = await try_(axios.get('https://api.github.com/repos/axios/axios/releases/latest'), 'HTTP_REQUEST_ERR')
+const packageData = require('../package.json')
+
+async function getUpdate() {
+  log.info('GETTING_UPDATE')
+  const [err, httpResponse] = await try_(axios.get('https://api.github.com/repos/drjume/vplan-viso/releases/latest'), 'HTTP_REQUEST_ERR#response.data#config.url')
   if (err) return undefined
-
-  log.debug('', httpResponse.status)
 
   const latest = httpResponse.data
 
   const UpdateInfo = {
     latestVersion: semver.clean(latest.tag_name),
     packageVersion: semver.clean(packageData.version),
-    isAvailable: semver.gt(latest.tag_name, packageData.version),
+    isLatestNewer: semver.gt(latest.tag_name, packageData.version),
     isPrerelease: latest.prerelease,
     tarballUrl: latest.tarball_url,
   }
 
-  log.debug('', UpdateInfo)
-
-  log.debug('LATEST_VERSION', UpdateInfo.latestVersion)
-  log.debug('PACKAGE_VERSION', UpdateInfo.packageVersion)
-  log.debug('IS_LATEST_NEWER', UpdateInfo.isAvailable)
-
   return UpdateInfo
 }
 
-async function runUpdate() {
-  let err, update /* eslint-disable-next-line prefer-const */
-  [err, update] = await try_(checkForUpdate(), 'UPDATE_CHECK_FAILED')
-  if (err) return
+async function installUpdate(update) {
+  if (!update) return
 
-  log.debug('UPDATE_INFO', update)
+  log.info('INSTALLING_UPDATE')
 
-  let httpResponse /* eslint-disable-next-line prefer-const */
+  let err, httpResponse /* eslint-disable-next-line prefer-const */
   [err, httpResponse] = await try_(axios.get(update.tarballUrl, { responseType: 'arraybuffer' }), 'HTTP_REQUEST_ERR')
   if (err) return
 
@@ -57,12 +50,40 @@ async function runUpdate() {
     cwd: `../vplan-viso-${update.latestVersion}`,
     strip: 1,
   }), 'TAR_EXTRACT_ERR')
+
+  let updateInstall /* eslint-disable-next-line prefer-const */
+  [err, updateInstall] = await try_(exec('npm install', { cwd: `../vplan-viso-${update.latestVersion}` }), 'UPDATE_INSTALL_ERR')
+  if (err) return
+
+  log.info('UPDATE_INSTALL_STDOUT', os.EOL + updateInstall.stdout)
+  log.info('UPDATE_INSTALL_STDERR', os.EOL + updateInstall.stderr)
+
+  WebServer.stop()
+
+  log.warn('STOPPING_CURRENT_INSTANCE')
+  const exitCurrentInstance = setTimeout(async () => {
+    log.warn('CURRENT_INSTANCE_EXIT')
+
+    let instanceStop /* eslint-disable-next-line prefer-const */
+    [err, instanceStop] = await try_(exec('npm stop'), 'INSTANCE_STOP_ERR')
+    if (err) return
+
+    log.info('CURRENT_INSTANCE_EXIT_STDOUT', os.EOL + instanceStop.stdout)
+    log.info('CURRENT_INSTANCE_EXIT_STDERR', os.EOL + instanceStop.stderr)
+  }, 5000)
+
+  log.info('STARTING_UPDATE')
+
+  let updateStart /* eslint-disable-next-line prefer-const */
+  [err, updateStart] = await try_(exec('npm start', { cwd: `../vplan-viso-${update.latestVersion}` }), 'UPDATE_START_ERR')
+  if (err) {
+    clearTimeout(exitCurrentInstance)
+    return
+  }
+
+  log.info('UPDATE_START_STDOUT', os.EOL + updateStart.stdout)
+  log.info('UPDATE_START_STDERR', os.EOL + updateStart.stderr)
 }
 
-async function finishUpdate() {
-  log.info('FINISH_UPDATE')
-}
-
-module.exports.checkForUpdate = checkForUpdate
-module.exports.runUpdate = runUpdate
-module.exports.finishUpdate = finishUpdate
+module.exports.getUpdate = getUpdate
+module.exports.installUpdate = installUpdate

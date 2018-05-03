@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 
 const try_ = require('helpers/try-wrapper')
-const promiseFs = require('util/promisified-fs')
+const promiseFs = require('util/promisified').fs
 
 const router = express.Router()
 

@@ -9,12 +9,13 @@
   "scripts": {
     "postinstall": "npm run build",
     "test": "echo 'Error: no test specified' && exit 1",
-    "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json",
+    "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json ; rm Update.tar.gz",
     "build": "npx riot src/riot-tags/ routes/riot/tags.js && npx babel routes/riot/tags.js --out-file routes/riot/tags-compiled.js --source-maps",
     "prestart-dev": "npm run build",
     "start-dev": "node index.js",
-    "start": "node index.js",
-    "dev": "npx nodemon index.js ; npm run reset"
+    "dev": "npx nodemon index.js ; npm run reset",
+    "start": "npx pm2 start pm2.config.js",
+    "stop": "npx pm2 stop pm2.config.js"
   },
   "repository": "github:DrJume/vplan-viso",
   "author": "Julian Meinking",
@@ -45,9 +46,10 @@
     "moment": "^2.22.1",
     "morgan": "^1.9.0",
     "node-cron": "^1.2.1",
+    "pm2": "^2.10.3",
     "semver": "^5.5.0",
     "serve-favicon": "^2.5.0",
-    "tar": "^4.4.1",
+    "tar": "^4.4.2",
     "xml-js": "^1.6.2"
   }
 }

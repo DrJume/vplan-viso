@@ -1,16 +1,27 @@
 const cron = require('node-cron')
 
 const Updater = require('services/Updater')
-const try_ = require('helpers/try-wrapper')
 
-cron.schedule('0 2 * * *', async () => {
-  log.warn('CHECKING_FOR_UPDATES')
+function StartTaskRunner() {
+  // Update service
+  cron.schedule('0 2 * * *', async () => {
+    log.info('CHECKING_FOR_UPDATE')
 
-  let err, update /* eslint-disable-next-line prefer-const */
-  [err, update] = await try_(Updater.checkForUpdates(), 'UPDATE_CHECK_FAILED')
-  if (err) return
+    const update = await Updater.getUpdate()
+    if (!update) {
+      log.err('UPDATE_CHECK_FAILED')
+      return
+    }
 
-  if (!update.isAvailable) return
+    log.debug('UPDATE_INFO', update)
 
-  await Updater.runUpdate()
-})
+    if (!update.isLatestNewer) {
+      log.info('NO_UPDATE_NEEDED')
+      return
+    }
+
+    await Updater.installUpdate(update)
+  }, 3000)
+}
+
+module.exports.start = StartTaskRunner

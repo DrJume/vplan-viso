@@ -35,9 +35,9 @@ function generateLogPrefix(type) {
   const datePrefix = generateDatePrefix()
 
   const typeLabels = {
-    info: 'green INFO',
     error: 'red ERR',
     warning: 'yellow WARN',
+    info: 'green INFO',
     debug: 'blueBright.underline DEBUG',
   }
 
@@ -82,28 +82,28 @@ function generateLogString(prefix, args) {
 }
 
 const Logger = {
-  info(...args) {
-    const logPrefix = generateLogPrefix('info')
-
-    console.info(generateLogString(logPrefix, args))
-  },
-
   err(...args) {
     const logPrefix = generateLogPrefix('error')
 
-    console.error(generateLogString(logPrefix, args))
+    console.log(generateLogString(logPrefix, args))
   },
 
   warn(...args) {
     const logPrefix = generateLogPrefix('warning')
 
-    console.warn(generateLogString(logPrefix, args))
+    console.log(generateLogString(logPrefix, args))
+  },
+
+  info(...args) {
+    const logPrefix = generateLogPrefix('info')
+
+    console.log(generateLogString(logPrefix, args))
   },
 
   debug(...args) {
     const logPrefix = generateLogPrefix('debug')
 
-    console.info(generateLogString(logPrefix, args))
+    console.log(generateLogString(logPrefix, args))
   },
 }
 

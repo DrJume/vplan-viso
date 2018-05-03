@@ -1,6 +1,6 @@
 const try_ = require('helpers/try-wrapper')
-const promiseFs = require('util/promisified-fs')
+const promiseFs = require('util/promisified').fs
 
-promiseFs.mkdir('upload/')
+try_(() => { throw new Error('test') }, 'HELLO@hidden@test')
 
 // process.exit()
