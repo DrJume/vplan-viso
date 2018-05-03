@@ -3,6 +3,7 @@ const semver = require('semver')
 const tar = require('tar')
 
 const os = require('os')
+const path = require('path')
 
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
@@ -33,6 +34,8 @@ async function getUpdate() {
 async function installUpdate(update) {
   if (!update) return
 
+  const updatePath = path.join('..', `vplan-viso-${update.latestVersion}`)
+
   log.info('INSTALLING_UPDATE')
 
   let err, httpResponse /* eslint-disable-next-line prefer-const */
@@ -42,17 +45,22 @@ async function installUpdate(update) {
   [err] = await try_(promiseFs.writeFile('Update.tar.gz', httpResponse.data), 'FILE_WRITE_ERR')
   if (err) return
 
-  [err] = await try_(promiseFs.mkdir(`../vplan-viso-${update.latestVersion}`), 'MAKE_DIR_ERR')
+  [err] = await try_(promiseFs.mkdir(updatePath), 'MAKE_DIR_ERR')
   if (err) return
 
   [err] = await try_(tar.extract({
     file: 'Update.tar.gz',
-    cwd: `../vplan-viso-${update.latestVersion}`,
+    cwd: updatePath,
     strip: 1,
   }), 'TAR_EXTRACT_ERR')
+  if (err) return
+
+  log.info('TRANSFERING_CONFIG');
+  [err] = await try_(promiseFs.writeFile(path.join(updatePath, 'config.json'), Config), 'FILE_WRITE_ERR')
+  if (err) return
 
   let updateInstall /* eslint-disable-next-line prefer-const */
-  [err, updateInstall] = await try_(exec('npm install', { cwd: `../vplan-viso-${update.latestVersion}` }), 'UPDATE_INSTALL_ERR')
+  [err, updateInstall] = await try_(exec('npm install', { cwd: updatePath }), 'UPDATE_INSTALL_ERR')
   if (err) return
 
   log.info('UPDATE_INSTALL_STDOUT', os.EOL + updateInstall.stdout)
@@ -75,7 +83,7 @@ async function installUpdate(update) {
   log.info('STARTING_UPDATE')
 
   let updateStart /* eslint-disable-next-line prefer-const */
-  [err, updateStart] = await try_(exec('npm start', { cwd: `../vplan-viso-${update.latestVersion}` }), 'UPDATE_START_ERR')
+  [err, updateStart] = await try_(exec('npm start', { cwd: updatePath }), 'UPDATE_START_ERR')
   if (err) {
     clearTimeout(exitCurrentInstance)
     return

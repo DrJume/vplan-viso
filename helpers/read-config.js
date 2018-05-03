@@ -1,5 +1,6 @@
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
+const { deepCountKeys } = require('util/object-tools')
 
 const DefaultConfig = {
   Webserver_Port: 8000,
@@ -33,6 +34,17 @@ module.exports = async function readConfig(path) {
   [parseErr, parsedConfig] = try_(() => JSON.parse(configData), 'CONFIG_PARSE_ERR')
 
   if (parseErr) process.exit(1)
+
+  // Apply default config keys when not exist
+  if (deepCountKeys(DefaultConfig) !== deepCountKeys(parsedConfig)) {
+    log.info('PATCH_CONFIG_WITH_DEFAULTS')
+    parsedConfig = Object.assign(DefaultConfig, parsedConfig)
+
+    try_(promiseFs.writeFile(
+      path,
+      JSON.stringify(parsedConfig, null, 2), // beautify JSON
+    ), 'FILE_WRITE_ERR')
+  }
 
   return parsedConfig
 }

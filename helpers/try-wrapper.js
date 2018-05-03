@@ -1,18 +1,11 @@
+const { filterObj } = require('util/object-tools')
+
 function isPromise(objToCheck) {
   return Promise.resolve(objToCheck) === objToCheck
 }
 
 function isFunction(objToCheck) {
   return objToCheck && {}.toString.call(objToCheck) === '[object Function]'
-}
-
-function filterObj(objToFilter, allowedKeys) {
-  return allowedKeys.reduce((obj, keyString) => {
-    obj[keyString] =
-      keyString.split('.')
-        .reduce((filteredObj, key) => (filteredObj ? filteredObj[key] : undefined), objToFilter)
-    return obj
-  }, {})
 }
 
 function handleError(error, logLvl, labelString, errData) {
