@@ -23,7 +23,7 @@ async function getUpdate() {
     latestVersion: semver.clean(latest.tag_name),
     packageVersion: semver.clean(packageData.version),
     isLatestNewer: semver.gt(latest.tag_name, packageData.version),
-    isPrerelease: latest.prerelease,
+    isPreRelease: latest.prerelease,
     tarballUrl: latest.tarball_url,
   }
 

@@ -36,7 +36,7 @@
 
   const pkg = require('./package.json')
 
-  log.info(`VPLAN-VISO_INIT (v${pkg.version})`)
+  log.info(`VPLAN-VISO_INIT v${pkg.version}`)
 
   // Running TaskScheduler
   const TaskScheduler = require('handlers/TaskScheduler')

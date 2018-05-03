@@ -2,7 +2,8 @@ const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
 const DefaultConfig = {
-  webserverPort: 8080,
+  Webserver_Port: 8000,
+  Update_PreRelease: false,
 }
 
 module.exports = async function readConfig(path) {

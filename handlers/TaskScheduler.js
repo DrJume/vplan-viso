@@ -20,8 +20,13 @@ function StartTaskRunner() {
       return
     }
 
+    if (update.isPreRelease && !Config.Update_PreRelease) {
+      log.info('NO_PRE_RELEASE_UPDATE')
+      return
+    }
+
     await Updater.installUpdate(update)
-  }, 3000)
+  })
 }
 
 module.exports.start = StartTaskRunner
