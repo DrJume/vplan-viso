@@ -11,7 +11,6 @@ const morgan = require('morgan')
 
 const routes = require('routes/index')
 
-const { Webserver_Port } = Config
 const Lan_IP = require('util/local-ip')
 
 let server
@@ -73,8 +72,8 @@ async function RunWebServer() {
   }
 
   // Listen on port specified in config.json and LAN IP-adress
-  server = app.listen(Webserver_Port, Lan_IP, () => {
-    log.info('APP_LISTENING', `${Lan_IP}:${Webserver_Port}`)
+  server = app.listen(Config.webserver.port, Lan_IP, () => {
+    log.info('APP_LISTENING', `${Lan_IP}:${Config.webserver.port}`)
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 }
 

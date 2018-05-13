@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 const filterObj = (objToFilter, allowedKeys) =>
   allowedKeys.reduce((obj, keyString) => {
     obj[keyString] =
@@ -10,15 +11,22 @@ const filterObj = (objToFilter, allowedKeys) =>
 const isObject = val =>
   typeof val === 'object' && !Array.isArray(val)
 
-const deepCountKeys = obj =>
-  Object.keys(obj).reduce(
-    (count, key) =>
-      (isObject(obj[key])
-        ? count + deepCountKeys(obj[key])
-        : count + 1)
-    , 0,
-  )
+const objFromEntries = inputObj =>
+  inputObj.reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {})
+
+const recursiveObjPatch = (masterObj, patchObj) =>
+  objFromEntries(Object.entries(masterObj)
+    .map(([key, val]) =>
+      [key, (
+        patchObj[key]
+          ? (
+            isObject(patchObj[key])
+              ? recursiveObjPatch(masterObj[key], patchObj[key])
+              : patchObj[key]
+          )
+          : val),
+      ]))
 
 
 module.exports.filterObj = filterObj
-module.exports.deepCountKeys = deepCountKeys
+module.exports.recursiveObjPatch = recursiveObjPatch

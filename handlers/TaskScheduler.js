@@ -20,7 +20,7 @@ function StartTaskRunner() {
       return
     }
 
-    if (update.isPreRelease && !Config.Update_PreRelease) {
+    if (update.isPreRelease && !Config.update.pre_release) {
       log.info('NO_PRE_RELEASE_UPDATE')
       return
     }

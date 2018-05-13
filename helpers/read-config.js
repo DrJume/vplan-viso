@@ -1,10 +1,10 @@
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
-const { deepCountKeys } = require('util/object-tools')
+const { recursiveObjPatch } = require('util/object-tools')
 
 const DefaultConfig = {
-  Webserver_Port: 8000,
-  Update_PreRelease: false,
+  webserver: { port: 8000 },
+  update: { pre_release: false },
 }
 
 module.exports = async function readConfig(path) {
@@ -35,16 +35,15 @@ module.exports = async function readConfig(path) {
 
   if (parseErr) process.exit(1)
 
-  // Apply default config keys when not exist
-  if (deepCountKeys(DefaultConfig) !== deepCountKeys(parsedConfig)) {
-    log.info('PATCH_CONFIG_WITH_DEFAULTS')
-    parsedConfig = Object.assign(DefaultConfig, parsedConfig)
+  // Filling default configuration with values from the given configuration
+  log.info('PATCHING_CONFIG')
+  parsedConfig = recursiveObjPatch(DefaultConfig, parsedConfig)
 
-    try_(promiseFs.writeFile(
-      path,
-      JSON.stringify(parsedConfig, null, 2), // beautify JSON
-    ), 'FILE_WRITE_ERR')
-  }
+  try_(promiseFs.writeFile(
+    path,
+    JSON.stringify(parsedConfig, null, 2), // beautify JSON
+  ), 'FILE_WRITE_ERR')
+
 
   return parsedConfig
 }
