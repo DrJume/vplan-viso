@@ -5,29 +5,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vplan-ViSo</title>
-  <link rel="stylesheet" href="/assets/bulma-0.7.0/bulma.css">
+  <link rel="stylesheet" href="/assets/bulma-0.7.1/bulma.css">
   <style type="riot"></style>
   <script async src="/assets/axios-0.18.0/axios.js"></script>
-  <script defer src="/assets/fontawesome-5.0.10/fontawesome-all.min.js"></script>
+  <script defer src="/assets/fontawesome-5.0.13/fontawesome-all.min.js"></script>
 </head>
 
 <body>
-  <div class="columns is-gapless has-text-centered">
+  <div class="columns is-gapless is-vcentered has-text-centered is-marginless" style="height: 100vh">
     <div class="column">
-      <vplan-head queue="current"></vplan-head>
-      <vplan-table queue="current"></vplan-table>
+      <vplan-column queue="current"></vplan-column>
     </div>
     <div class="column">
-      <vplan-head queue="next"></vplan-head>
-      <vplan-table queue="next"></vplan-table>
+      <vplan-column queue="next"></vplan-column>
     </div>
   </div>
 
-  <script src="/assets/riot-3.9.2/riot.js"></script>
+  <script src="/assets/riot-3.10.0/riot.js"></script>
   <script src="/riot/tags.js"></script>
   <script>
-    riot.mount('vplan-head')
-    riot.mount('vplan-table')
+    riot.mount('vplan-column')
   </script>
 
   <script src="/reload/reload.js"></script>
