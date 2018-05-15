@@ -3,6 +3,8 @@ const path = require('path')
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
+const WebServer = require('handlers/WebServer')
+
 const UploadWatcher = require('services/UploadWatcher')
 
 async function RunVplanReceiver() {
@@ -14,6 +16,8 @@ async function RunVplanReceiver() {
       ext: '.json',
     })
     log.debug('JSON_NEW_FILEPATH', jsonFilePath)
+
+    WebServer.reloadFrontend()
 
     try_(
       promiseFs.writeFile(jsonFilePath, JSON.stringify(vplanData, null, 2)),

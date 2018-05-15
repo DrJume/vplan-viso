@@ -1,6 +1,6 @@
 {
   "name": "vplan-viso",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Vertretungsplan Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
@@ -29,7 +29,6 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
     "nodemon": "^1.17.4",
-    "reload": "^2.2.2",
     "riot-cli": "^5.0.0"
   },
   "dependencies": {
@@ -48,6 +47,7 @@
     "morgan": "^1.9.0",
     "node-cron": "^1.2.1",
     "pm2": "^2.10.3",
+    "reload": "^2.2.2",
     "semver": "^5.5.0",
     "serve-favicon": "^2.5.0",
     "tar": "^4.4.2",

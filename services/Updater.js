@@ -56,7 +56,7 @@ async function installUpdate(update) {
   if (err) return
 
   log.info('TRANSFERING_CONFIG');
-  [err] = await try_(promiseFs.writeFile(path.join(updatePath, 'config.json'), Config), 'FILE_WRITE_ERR')
+  [err] = await try_(promiseFs.writeFile(path.join(updatePath, 'config.json'), JSON.stringify(Config)), 'FILE_WRITE_ERR')
   if (err) return
 
   let updateInstall /* eslint-disable-next-line prefer-const */
@@ -78,7 +78,7 @@ async function installUpdate(update) {
 
     log.info('CURRENT_INSTANCE_EXIT_STDOUT', os.EOL + instanceStop.stdout)
     log.info('CURRENT_INSTANCE_EXIT_STDERR', os.EOL + instanceStop.stderr)
-  }, 5000)
+  }, 10 * 1000)
 
   log.info('STARTING_UPDATE')
 
@@ -86,8 +86,11 @@ async function installUpdate(update) {
   [err, updateStart] = await try_(exec('npm start', { cwd: updatePath }), 'UPDATE_START_ERR')
   if (err) {
     clearTimeout(exitCurrentInstance)
+    log.warn('CONTINUING_WITH_CURRENT_INSTANCE')
     return
   }
+
+  // TODO: transfer uploaded vplans to update
 
   log.info('UPDATE_START_STDOUT', os.EOL + updateStart.stdout)
   log.info('UPDATE_START_STDERR', os.EOL + updateStart.stderr)

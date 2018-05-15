@@ -73,25 +73,30 @@ module.exports = async function UploadWatcher(callback) {
         log.warn('VPLAN_UNKNOWN_STRING_ENCODING', vplanEncoding)
       }
 
-      // get date string from vplan title
-      const queueDateString = transformedVplanData.head.title.trim()
-      log.debug('VPLAN_QUEUEDATE_STRING', queueDateString)
-      const queueDate = moment(queueDateString, 'dddd, D. MMMM YYYY')
+      // queueday determination
 
-      // when not parseable date, determine queueday by folder name
-      if (!queueDate.isValid()) {
-        log.warn('INVALID_VPLAN_QUEUEDATE', queueDateString)
-        log.info('DETECTING_QUEUEDAY_BY_UPLOAD_PATH')
-
-        if (!['current', 'next'].includes(uploadLocation)) {
-          // Uploaded to wrong directory (not in current/ or next/)
-          log.warn('UNKNOWN_QUEUEDAY_UPLOAD_DELETED', filePath)
-
-          try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
-          return
-        }
+      // on manual upload
+      if (['current', 'next'].includes(uploadLocation)) {
+        log.info('MANUAL_UPLOAD')
+        log.info('DETECTING_QUEUEDAY_BY_UPLOAD_DIR')
 
         callback(uploadLocation, transformedVplanData, vplanType)
+        return
+      }
+
+      // normal upload
+
+      // get date string from vplan title
+      const queueDateString = transformedVplanData.head.title.trim()
+      log.debug('VPLAN_TITLE_QUEUEDATE_STRING', queueDateString)
+      const queueDate = moment(queueDateString, 'dddd, D. MMMM YYYY')
+
+      // when not parseable date, delete uploaded vplan
+      if (!queueDate.isValid()) {
+        log.err('TITLE_QUEUEDATE_PARSING_ERR', queueDateString)
+
+        log.warn('UNKNOWN_QUEUEDAY_UPLOAD_DELETED', filePath)
+        try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
         return
       }
 

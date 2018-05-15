@@ -3,7 +3,7 @@
     <h2 class="title is-2">{ vplan.head.title }</h2>
   </div>
 
-  <table ref="table" class="table is-fullwidth is-bordered is-striped" hidden>
+  <table ref="table" class="table is-fullwidth is-narrow is-striped" hidden>
     <thead>
       <th>Klasse</th>
       <th>Stunde</th>
@@ -15,11 +15,11 @@
     <tbody></tbody>
   </table>
 
-  <div ref="progress" hidden>
+  <div ref="progress" style="margin: auto 10px 15px 10px" hidden>
     <progress class="progress is-small" value="0" max="100"></progress>
   </div>
 
-  <div ref="notification" class="notification subtitle is-2 has-text-grey" style="margin: 10px; align-self: center" hidden>
+  <div ref="notification" class="notification subtitle is-2 has-text-grey" style="margin: auto 10% auto 10%" hidden>
     Der Vertretungsplan folgt demnächst
   </div>
 
@@ -97,7 +97,7 @@
       setTimeout(() => {
         table.tBodies[0].innerHTML = ''
         this.update()
-      }, 2500)
+      }, 9000)
 
       window.vplan = this.vplan
       window.table = table

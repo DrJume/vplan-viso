@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" style="overflow: hidden; cursor: none">
 
 <head>
   <meta charset="UTF-8">
@@ -7,21 +7,17 @@
   <title>Vplan-ViSo</title>
   <link rel="stylesheet" href="/assets/bulma-0.7.1/bulma.css">
   <style type="riot"></style>
-  <script async src="/assets/axios-0.18.0/axios.js"></script>
   <script defer src="/assets/fontawesome-5.0.13/fontawesome-all.min.js"></script>
 </head>
 
 <body>
-  <div class="columns is-gapless is-vcentered has-text-centered is-marginless" style="height: 100vh">
-    <div class="column">
-      <vplan-column queue="current"></vplan-column>
-    </div>
-    <div class="column">
-      <vplan-column queue="next"></vplan-column>
-    </div>
+  <div class="columns is-gapless has-text-centered is-marginless" style="height: 100vh">
+    <vplan-column queue="current" class="column" style="display: flex; flex-direction: column; border-right: 1px solid"></vplan-column>
+    <vplan-column queue="next" class="column" style="display: flex; flex-direction: column; border-left: 1px solid"></vplan-column>
   </div>
 
   <script src="/assets/riot-3.10.0/riot.js"></script>
+  <script src="/assets/axios-0.18.0/axios.js"></script>
   <script src="/riot/tags.js"></script>
   <script>
     riot.mount('vplan-column')

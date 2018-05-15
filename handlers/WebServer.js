@@ -8,12 +8,14 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const favicon = require('serve-favicon')
 const morgan = require('morgan')
+const reload = require('reload')
 
 const routes = require('routes/index')
 
 const Lan_IP = require('util/local-ip')
 
 let server
+let reloadSocket
 
 async function RunWebServer() {
   const app = express()
@@ -62,14 +64,8 @@ async function RunWebServer() {
     next(err)
   })
 
-  // Use the reload middleware when its installed
-  const [, reloadDevPackage] = try_(() => require.resolve('reload'), 'info:NOT_USING_DEV_RELOAD')
-  if (reloadDevPackage) {
-    log.info('USING_DEV_RELOAD')
-
-    const reload = require('reload') /* eslint-disable-line */
-    reload(app)
-  }
+  log.info('SETTING_AUTO_RELOAD')
+  reloadSocket = reload(app)
 
   // Listen on port specified in config.json and LAN IP-adress
   server = app.listen(Config.webserver.port, Lan_IP, () => {
@@ -83,5 +79,12 @@ function StopWebServer() {
   server.close()
 }
 
+function ReloadFrontend() {
+  if (!reloadSocket) return
+  log.debug('RELOAD_SOCKET_FIRED')
+  reloadSocket.reload()
+}
+
 module.exports.run = RunWebServer
 module.exports.stop = StopWebServer
+module.exports.reloadFrontend = ReloadFrontend

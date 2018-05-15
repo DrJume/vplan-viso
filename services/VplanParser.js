@@ -50,7 +50,7 @@ const Templates = {
   },
 }
 
-const VplanFormatter = {
+const VplanParser = {
   detectType(rawVplanJSObject) {
     return VplanType.STUDENTS
   },
@@ -66,4 +66,4 @@ const VplanFormatter = {
   },
 }
 
-module.exports = VplanFormatter
+module.exports = VplanParser
