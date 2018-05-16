@@ -1,6 +1,7 @@
 const cron = require('node-cron')
 
 const Updater = require('services/Updater')
+const VplanParser = require('services/VplanParser')
 
 const promiseFs = require('util/promisified').fs
 const try_ = require('helpers/try-wrapper')
@@ -40,7 +41,7 @@ function StartTaskRunner() {
     [err] = await try_(promiseFs.unlink('upload/current/students.json'), 'FILE_DELETE_ERR')
     if (err) return
 
-    // get next vplan and move it into current
+    // get next vplan and move it into current if its for next day
     let nextVplanData // eslint-disable-next-line prefer-const
     [err, nextVplanData] = await try_(
       promiseFs.readFile('upload/next/students.json', { encoding: 'utf-8' }),
@@ -48,7 +49,21 @@ function StartTaskRunner() {
     )
     if (err) return
 
-    // TODO: next vplan moved based on queuedate string
+    let nextVplanJSObj // eslint-disable-next-line prefer-const
+    [err, nextVplanJSObj] = try_(() => JSON.parse(nextVplanData), 'JSON_PARSE_ERR')
+    if (err) return
+
+    const queueDay = VplanParser.determineQueueDay(nextVplanJSObj)
+    if (!queueDay) {
+      log.err('UNKNOWN_QUEUEDAY', 'upload/next/students.json')
+      log.err('VPLAN_SHIFT_ERR')
+      return
+    }
+    if (queueDay !== 'current') {
+      log.info('VPLAN_STILL_FOR_NEXT')
+      log.info('NOT_SHIFTING_VPLAN')
+      return
+    }
 
     [err] = await try_(
       promiseFs.writeFile('upload/current/students.json', nextVplanData),

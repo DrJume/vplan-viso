@@ -17,7 +17,7 @@ module.exports = async function readConfig(configPath) {
   )
 
   if (readErr) {
-    log.info('WRITING_DEFAULT_CONFIG')
+    log.info('WRITING_DEFAULT_CONFIG', DefaultConfig)
 
     try_(promiseFs.writeFile(
       configPath,
@@ -34,8 +34,9 @@ module.exports = async function readConfig(configPath) {
   [parseErr, parsedConfig] = try_(() => JSON.parse(configData), 'CONFIG_PARSE_ERR')
 
   if (parseErr) {
-    log.warn('DELETING_INVALID_CONFIG')
+    log.warn('DELETING_INVALID_CONFIG', configData)
     await try_(promiseFs.unlink(configPath), 'FILE_DELETE_ERR')
+
     log.warn('PROCESS_EXIT')
     process.exit(1)
   }

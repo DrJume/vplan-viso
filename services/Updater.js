@@ -68,32 +68,31 @@ async function installUpdate(update) {
 
   WebServer.stop()
 
-  log.warn('STOPPING_CURRENT_INSTANCE')
-  const exitCurrentInstance = setTimeout(async () => {
-    log.warn('CURRENT_INSTANCE_EXIT')
-
-    let instanceStop /* eslint-disable-next-line prefer-const */
-    [err, instanceStop] = await try_(exec('npm stop'), 'INSTANCE_STOP_ERR')
-    if (err) return
-
-    log.info('CURRENT_INSTANCE_EXIT_STDOUT', os.EOL + instanceStop.stdout)
-    log.info('CURRENT_INSTANCE_EXIT_STDERR', os.EOL + instanceStop.stderr)
-  }, 10 * 1000)
-
   log.info('STARTING_UPDATE')
-
   let updateStart /* eslint-disable-next-line prefer-const */
   [err, updateStart] = await try_(exec('npm start', { cwd: updatePath }), 'UPDATE_START_ERR')
   if (err) {
-    clearTimeout(exitCurrentInstance)
-    log.warn('CONTINUING_WITH_CURRENT_INSTANCE')
+    log.warn('UPDATE_ABORT')
     return
   }
-
-  // TODO: transfer uploaded vplans to update
-
   log.info('UPDATE_START_STDOUT', os.EOL + updateStart.stdout)
   log.info('UPDATE_START_STDERR', os.EOL + updateStart.stderr)
+
+  // transfering uploaded vplans to update
+  let nextVplanData // eslint-disable-next-line prefer-const
+  [err, nextVplanData] = await try_(
+    promiseFs.readFile('upload/next/students.json', { encoding: 'utf-8' }),
+    'FILE_READ_ERR',
+  )
+  if (!err) {
+    await try_(
+      promiseFs.writeFile(path.join(updatePath, 'upload/next/students.json'), nextVplanData),
+      'FILE_WRITE_ERR',
+    )
+  }
+
+  log.warn('STOPPING_CURRENT_INSTANCE')
+  await try_(exec('npm stop'), 'INSTANCE_STOP_ERR')
 }
 
 module.exports.getUpdate = getUpdate

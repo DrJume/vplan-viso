@@ -3,7 +3,7 @@ const path = require('path')
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
-const WebServer = require('handlers/WebServer')
+const FrontendNotifier = require('services/FrontendNotifier')
 
 const UploadWatcher = require('services/UploadWatcher')
 
@@ -17,7 +17,8 @@ async function RunVplanReceiver() {
     })
     log.debug('JSON_NEW_FILEPATH', jsonFilePath)
 
-    WebServer.reloadFrontend()
+    log.debug('RELOAD_SOCKET_FIRED')
+    FrontendNotifier.reloadAll()
 
     try_(
       promiseFs.writeFile(jsonFilePath, JSON.stringify(vplanData, null, 2)),

@@ -1,10 +1,11 @@
 {
   "name": "vplan-viso",
-  "version": "0.3.0",
-  "description": "Vertretungsplan Visualisierungssoftware für den Einsatz in Schulen",
+  "version": "0.4.0",
+  "description": "Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
-    "node": "8.11.x"
+    "node": "8.11.x",
+    "npm": "6.0.x"
   },
   "scripts": {
     "postinstall": "npm run build",
@@ -47,10 +48,10 @@
     "morgan": "^1.9.0",
     "node-cron": "^1.2.1",
     "pm2": "^2.10.3",
-    "reload": "^2.2.2",
     "semver": "^5.5.0",
     "serve-favicon": "^2.5.0",
     "tar": "^4.4.2",
+    "ws": "^5.1.1",
     "xml-js": "^1.6.2"
   }
 }

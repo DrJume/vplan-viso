@@ -25,6 +25,15 @@ const XmlParser = {
 
     return jsObject
   },
+
+  checkEncoding(vplanData) {
+    const vplanEncoding = vplanData._declaration.$.encoding
+    const UTF8Regex = /utf(-?)8/gi
+
+    if (!UTF8Regex.test(vplanEncoding)) {
+      log.warn('VPLAN_UNKNOWN_STRING_ENCODING', vplanEncoding)
+    }
+  },
 }
 
 module.exports = XmlParser

@@ -1,7 +1,6 @@
 const chokidar = require('chokidar')
 const fs = require('fs')
 const path = require('path')
-const moment = require('moment')
 
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
@@ -32,7 +31,7 @@ module.exports = async function UploadWatcher(callback) {
     cwd: '.',
     awaitWriteFinish: true,
   })
-    .on('add', async (filePath) => {
+    .on('add', async (filePath) => { // TODO: add delete listener when vplan removed
       log.debug('FILE_DETECTED', filePath)
 
       // get the last folder name in the uploadPath
@@ -67,13 +66,9 @@ module.exports = async function UploadWatcher(callback) {
       }
 
       // checks if encoding is utf8
-      const vplanEncoding = vplanData._declaration.$.encoding
-      const UTF8Regex = /utf(-?)8/gi
-      if (!UTF8Regex.test(vplanEncoding)) {
-        log.warn('VPLAN_UNKNOWN_STRING_ENCODING', vplanEncoding)
-      }
+      XmlParser.checkEncoding(vplanData)
 
-      // queueday determination
+      // Queueday determination
 
       // on manual upload
       if (['current', 'next'].includes(uploadLocation)) {
@@ -86,29 +81,12 @@ module.exports = async function UploadWatcher(callback) {
 
       // normal upload
 
-      // get date string from vplan title
-      const queueDateString = transformedVplanData.head.title.trim()
-      log.debug('VPLAN_TITLE_QUEUEDATE_STRING', queueDateString)
-      const queueDate = moment(queueDateString, 'dddd, D. MMMM YYYY')
-
-      // when not parseable date, delete uploaded vplan
-      if (!queueDate.isValid()) {
-        log.err('TITLE_QUEUEDATE_PARSING_ERR', queueDateString)
-
+      const queueDay = VplanParser.determineQueueDay(transformedVplanData)
+      if (!queueDay) {
         log.warn('UNKNOWN_QUEUEDAY_UPLOAD_DELETED', filePath)
         try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
         return
       }
-
-      log.info('DETECTING_QUEUEDAY_BY_DATE_CALC')
-
-      const today = moment()
-      log.debug('QUEUEDATE', queueDate)
-      log.debug('TODAY', today)
-      log.debug('IS_AFTER_TODAY', queueDate.isAfter(today))
-
-      const queueDay = queueDate.isAfter(today) ? 'next' : 'current'
-      log.debug('QUEUEDAY', queueDay)
 
       callback(queueDay, transformedVplanData, vplanType)
     })

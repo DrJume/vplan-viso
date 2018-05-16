@@ -1,5 +1,6 @@
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
+const FrontendNotifier = require('services/FrontendNotifier')
 
 const fs = require('fs')
 const WritableStream = require('stream').Writable
@@ -8,14 +9,12 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const favicon = require('serve-favicon')
 const morgan = require('morgan')
-const reload = require('reload')
 
 const routes = require('routes/index')
 
 const Lan_IP = require('util/local-ip')
 
 let server
-let reloadSocket
 
 async function RunWebServer() {
   const app = express()
@@ -23,8 +22,12 @@ async function RunWebServer() {
   // Webserver logging system
   if (!fs.existsSync('logs/')) fs.mkdirSync('logs')
   const LogFileStream = fs.createWriteStream('logs/access.log', { flags: 'a' }) // Appending file-write stream
+  morgan.token('date', () => {
+    const d = new Date()
+    return `${d.toDateString()} ${d.toLocaleTimeString()}`
+  })
   app.use(morgan( // log to file
-    '[:date[clf]] :remote-addr (:remote-user) "HTTP/:http-version :method :url" :status (:res[content-type])',
+    '[:date] :remote-addr (:remote-user) :status :method ":url" (:res[content-type])',
     { stream: LogFileStream },
   ))
   const DebugLogStream = new WritableStream({
@@ -64,13 +67,13 @@ async function RunWebServer() {
     next(err)
   })
 
-  log.info('SETTING_AUTO_RELOAD')
-  reloadSocket = reload(app)
-
   // Listen on port specified in config.json and LAN IP-adress
   server = app.listen(Config.webserver.port, Lan_IP, () => {
     log.info('APP_LISTENING', `${Lan_IP}:${Config.webserver.port}`)
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
+
+  log.info('AUTO_RELOAD_INIT')
+  try_(() => FrontendNotifier.initialize(server), 'WEBSOCKET_SERVER_ERR')
 }
 
 function StopWebServer() {
@@ -79,12 +82,5 @@ function StopWebServer() {
   server.close()
 }
 
-function ReloadFrontend() {
-  if (!reloadSocket) return
-  log.debug('RELOAD_SOCKET_FIRED')
-  reloadSocket.reload()
-}
-
 module.exports.run = RunWebServer
 module.exports.stop = StopWebServer
-module.exports.reloadFrontend = ReloadFrontend

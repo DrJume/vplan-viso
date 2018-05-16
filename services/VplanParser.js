@@ -1,6 +1,7 @@
 const try_ = require('helpers/try-wrapper')
 
 const fanci = require('fanci')
+const moment = require('moment')
 
 const VplanType = {
   STUDENTS: 'students',
@@ -63,6 +64,32 @@ const VplanParser = {
       'VPLAN_PARSE_ERR',
     )
     return { transformedVplanData, vplanType }
+  },
+
+  determineQueueDay(transformedVplanJSObj) {
+    // get date string from vplan title
+    const queueDateString = transformedVplanJSObj.head.title.trim()
+    log.debug('VPLAN_TITLE_QUEUEDATE_STRING', queueDateString)
+    const queueDate = moment(queueDateString, 'dddd, D. MMMM YYYY')
+
+    // when not parseable date, delete uploaded vplan
+    if (!queueDate.isValid()) {
+      log.err('TITLE_QUEUEDATE_PARSING_ERR', queueDateString)
+
+      return undefined
+    }
+
+    log.info('DETECTING_QUEUEDAY_BY_DATE_CALC')
+
+    const today = moment()
+    log.debug('QUEUEDATE', queueDate)
+    log.debug('TODAY', today)
+    log.debug('IS_AFTER_TODAY', queueDate.isAfter(today))
+
+    const queueDay = queueDate.isAfter(today) ? 'next' : 'current'
+    log.debug('QUEUEDAY', queueDay)
+
+    return queueDay
   },
 }
 
