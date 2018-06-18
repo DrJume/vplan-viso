@@ -1,4 +1,4 @@
-<vplan-column>
+<vplan-students-column>
   <div ref="head" style="margin-top: 5px; margin-bottom: 10px" hidden>
     <h2 class="title is-2">{ vplan.head.title }</h2>
   </div>
@@ -113,4 +113,4 @@
 
 
   </script>
-</vplan-column>
+</vplan-students-column>

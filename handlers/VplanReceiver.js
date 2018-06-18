@@ -17,7 +17,6 @@ async function RunVplanReceiver() {
     })
     log.debug('JSON_NEW_FILEPATH', jsonFilePath)
 
-    log.debug('RELOAD_SOCKET_FIRED')
     FrontendNotifier.reloadAll()
 
     try_(

@@ -27,7 +27,7 @@ function StartTaskRunner() {
     await Updater.runUpdate(update)
   })
 
-  // Vplan day shift on week days
+  // Vplan day shift on week days // TODO: check for code quality
   cron.schedule('0 3 * * Mon-Fri', async () => {
     log.info('VPLAN_DAY_SHIFT')
 

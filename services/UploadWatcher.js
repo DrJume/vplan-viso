@@ -12,6 +12,8 @@ const nextVplanPath = path.join(uploadDir, 'next')
 const XmlParser = require('services/XmlParser')
 const VplanParser = require('services/VplanParser')
 
+const FrontendNotifier = require('services/FrontendNotifier')
+
 module.exports = async function UploadWatcher(callback) {
   if (
     !fs.existsSync(uploadDir) ||
@@ -31,7 +33,21 @@ module.exports = async function UploadWatcher(callback) {
     cwd: '.',
     awaitWriteFinish: true,
   })
-    .on('add', async (filePath) => { // TODO: add delete listener when vplan removed
+    .on('unlink', async (filePath) => {
+      log.debug('FILE_REMOVED', filePath)
+
+      // get the last folder name in the uploadPath
+      const uploadLocation = path.parse(filePath).dir.split(path.sep).pop()
+
+      if (path.extname(filePath) === '.json') {
+        if (['current', 'next'].includes(uploadLocation)) {
+          // used vplan was deleted, refresh displays
+          log.warn('VPLAN_FILE_REMOVED', filePath)
+          FrontendNotifier.reloadAll()
+        }
+      }
+    })
+    .on('add', async (filePath) => {
       log.debug('FILE_DETECTED', filePath)
 
       // get the last folder name in the uploadPath
@@ -70,7 +86,7 @@ module.exports = async function UploadWatcher(callback) {
 
       // Queueday determination
 
-      // on manual upload
+      // manual upload
       if (['current', 'next'].includes(uploadLocation)) {
         log.info('MANUAL_UPLOAD')
         log.info('DETECTING_QUEUEDAY_BY_UPLOAD_DIR')
@@ -80,7 +96,6 @@ module.exports = async function UploadWatcher(callback) {
       }
 
       // normal upload
-
       const queueDay = VplanParser.determineQueueDay(transformedVplanData)
       if (!queueDay) {
         log.warn('UNKNOWN_QUEUEDAY_UPLOAD_DELETED', filePath)

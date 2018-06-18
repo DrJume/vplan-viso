@@ -14,6 +14,7 @@ const FrontendNotifier = {
   },
 
   reloadAll() {
+    log.debug('RELOAD_ALL_SOCKET_FIRED')
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send('RELOAD_ALL')
