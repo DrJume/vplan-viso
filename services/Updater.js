@@ -14,16 +14,19 @@ const WebServer = require('handlers/WebServer')
 const packageData = require('../package.json')
 
 async function checkUpdate() {
-  const [err, httpResponse] = await try_(axios.get('https://api.github.com/repos/drjume/vplan-viso/releases/latest'), 'HTTP_REQUEST_ERR#response.data#config.url')
+  const updateURL = `https://api.github.com/repos/drjume/vplan-viso/releases${Config.update.pre_release ? '' : '/latest'}`
+
+  const [err, httpResponse] = await try_(axios.get(updateURL), 'HTTP_REQUEST_ERR#response.data#config.url')
   if (err) return undefined
 
-  const latest = httpResponse.data
+  const latest = Config.update.pre_release ? httpResponse.data[0] : httpResponse.data
+
+  if (Config.update.pre_release) log.warn('UPDATE_PRERELEASE')
 
   const UpdateInfo = {
     latestVersion: semver.clean(latest.tag_name),
     packageVersion: semver.clean(packageData.version),
     isLatestNewer: semver.gt(latest.tag_name, packageData.version),
-    isPreRelease: latest.prerelease,
     tarballUrl: latest.tarball_url,
   }
 

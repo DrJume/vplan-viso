@@ -24,11 +24,6 @@ function StartTaskRunner() {
       return
     }
 
-    if (update.isPreRelease && !Config.update.pre_release) {
-      log.info('NO_PRE_RELEASE_UPDATE')
-      return
-    }
-
     await Updater.runUpdate(update)
   })
 
