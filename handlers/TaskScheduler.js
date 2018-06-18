@@ -11,7 +11,7 @@ function StartTaskRunner() {
   cron.schedule('0 2 * * *', async () => {
     log.info('CHECKING_FOR_UPDATE')
 
-    const update = await Updater.getUpdate()
+    const update = await Updater.checkUpdate()
     if (!update) {
       log.err('UPDATE_CHECK_FAILED')
       return
@@ -29,7 +29,7 @@ function StartTaskRunner() {
       return
     }
 
-    await Updater.installUpdate(update)
+    await Updater.runUpdate(update)
   })
 
   // Vplan day shift on week days

@@ -1,6 +1,6 @@
 {
   "name": "vplan-viso",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
@@ -28,30 +28,30 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.11.0",
-    "nodemon": "^1.17.4",
+    "eslint-plugin-import": "^2.12.0",
+    "nodemon": "^1.17.5",
     "riot-cli": "^5.0.0"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "basic-ftp": "^2.12.0",
-    "body-parser": "^1.18.2",
+    "basic-ftp": "^2.13.1",
+    "body-parser": "^1.18.3",
     "boom": "^7.2.0",
     "chalk": "^2.4.1",
-    "chokidar": "^2.0.3",
+    "chokidar": "^2.0.4",
     "express": "^4.16.3",
     "fanci": "^0.7.0",
     "jsome": "^2.5.0",
-    "moment": "^2.22.1",
+    "moment": "^2.22.2",
     "morgan": "^1.9.0",
     "node-cron": "^1.2.1",
-    "pm2": "^2.10.3",
+    "pm2": "^2.10.4",
     "semver": "^5.5.0",
     "serve-favicon": "^2.5.0",
-    "tar": "^4.4.2",
-    "ws": "^5.1.1",
-    "xml-js": "^1.6.2"
+    "tar": "^4.4.4",
+    "ws": "^5.2.0",
+    "xml-js": "^1.6.4"
   }
 }

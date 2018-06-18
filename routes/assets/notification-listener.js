@@ -24,7 +24,7 @@
     ws.onmessage = (msg) => {
       console.log(`WS_MSG: "${msg.data}"`)
       if (msg.data === 'RELOAD_ALL') {
-        ws.close()
+        window.location.reload()
       }
     }
   }, 400)
