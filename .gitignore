@@ -2,6 +2,7 @@ upload/
 config.json
 routes/riot/
 Update.tar.gz
+riot.config.js
 
 # Created by https://www.gitignore.io/api/node,macos,visualstudiocode
 
