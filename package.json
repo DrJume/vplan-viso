@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com/DrJume/vplan-viso#readme",
   "devDependencies": {
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "nodemon": "^1.18.3",
     "riot-cli": "^5.1.0"
@@ -39,8 +41,6 @@
     "boom": "^7.2.0",
     "chalk": "^2.4.1",
     "chokidar": "^2.0.4",
-    "eslint": "^5.4.0",
-    "eslint-config-airbnb-base": "^13.1.0",
     "express": "^4.16.3",
     "fanci": "^0.7.0",
     "jsome": "^2.5.0",
