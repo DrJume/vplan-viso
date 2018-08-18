@@ -5,6 +5,8 @@ const FrontendNotifier = require('services/FrontendNotifier')
 const fs = require('fs')
 const WritableStream = require('stream').Writable
 
+const pkg = require('package.json')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const favicon = require('serve-favicon')
@@ -49,7 +51,10 @@ async function RunWebServer() {
       return
     }
 
-    const rendered = content.toString()
+    const rendered = content
+      .toString()
+      .replace(/{{PKG_VERSION}}/g, pkg.version)
+
     callback(null, rendered)
   })
   app.set('view engine', 'html')

@@ -34,7 +34,7 @@
     process.exit(1)
   }
 
-  const pkg = require('./package.json')
+  const pkg = require('package.json')
 
   log.info(`VPLAN-VISO_INIT v${pkg.version}`)
 

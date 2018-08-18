@@ -32,39 +32,13 @@
 
     let indexThreshold = 0
 
-    this.on('mount', () => {
+    this.render = () => {
       const head = this.refs.head
       const table = this.refs.table
       const progress = this.refs.progress
       const notification = this.refs.notification
 
-      axios(`/api/${this.opts.queue}?type=students`)
-        .then(res => {
-          this.vplan = res.data
-
-          console.log(this.vplan.body)
-
-          head.hidden = false
-          table.hidden = false
-          progress.hidden = false
-
-          this.update()
-        })
-        .catch(err => {
-          console.log(err)
-
-          if (err.response) {
-            console.log(err.response)
-            notification.hidden = false
-          }
-        })
-    })
-
-    this.on('updated', () => {
-      const head = this.refs.head
-      const table = this.refs.table
-      const progress = this.refs.progress
-      const notification = this.refs.notification
+      table.tBodies[0].innerHTML = ''
 
       const getOuterHeight = (el) =>
         el.offsetHeight + parseFloat(getComputedStyle(el)['margin-top'].match(/\d+/g)[0]) + parseFloat(getComputedStyle(el)['margin-bottom'].match(/\d+/g)[0])
@@ -85,27 +59,59 @@
               <td>${entry.info}</td>
             `
         table.tBodies[0].appendChild(entryRow)
-
       }
       if (isTableOverflowing()) table.tBodies[0].deleteRow(table.tBodies[0].rows.length - 1)
 
-      console.log(indexThreshold, table.tBodies[0].rows.length, this.vplan.body.length - 1)
+      console.log(indexThreshold, table.tBodies[0].rows.length, this.vplan.body.length)
 
       indexThreshold += table.tBodies[0].rows.length
-      if (indexThreshold >= this.vplan.body.length - 1) indexThreshold = 0
+      if (indexThreshold >= this.vplan.body.length) indexThreshold = 0
+    }
 
-      setTimeout(() => {
-        table.tBodies[0].innerHTML = ''
-        this.update()
-      }, 9000)
+    this.on('mount', () => {
+      const head = this.refs.head
+      const table = this.refs.table
+      const progress = this.refs.progress
+      const notification = this.refs.notification
 
-      window.vplan = this.vplan
-      window.table = table
-      window.head = head
-      window.progress = progress
-      window.getOuterHeight = getOuterHeight
+      axios(`/api/${this.opts.queue}?type=students`)
+        .then(res => {
+          this.vplan = res.data
+
+          // console.log(this.vplan.body)
+
+          head.hidden = false
+          table.hidden = false
+          progress.hidden = false
+
+          // prerender
+          let pagesNeeded = 1
+          let pageWrap = false
+
+          this.render()
+          while (!pageWrap) {
+            this.render()
+            pagesNeeded++
+            if (indexThreshold === 0) pageWrap = true
+          }
+          console.log(pagesNeeded)
+
+          this.update()
+        })
+        .catch(err => {
+          if (err.response) {
+            notification.hidden = false
+          }
+        })
     })
 
+    this.on('updated', () => {
+      this.render()
+
+      setTimeout(() => {
+        this.update()
+      }, 9000)
+    })
 
 
 
