@@ -29,7 +29,7 @@
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "nodemon": "^1.18.3",
+    "nodemon": "^1.18.4",
     "riot-cli": "^5.1.0"
   },
   "dependencies": {
@@ -47,7 +47,7 @@
     "moment": "^2.22.2",
     "morgan": "^1.9.0",
     "node-cron": "^1.2.1",
-    "pm2": "^3.0.3",
+    "pm2": "^3.0.4",
     "semver": "^5.5.1",
     "serve-favicon": "^2.5.0",
     "tar": "^4.4.6",
