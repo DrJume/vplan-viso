@@ -1,6 +1,9 @@
 <vplan-teachers-column>
   <div ref="head" style="margin-top: 5px; margin-bottom: 10px" hidden>
-    <h2 class="title is-2">{ vplan.head.title }</h2>
+    <h2 class="title is-2" style="margin-bottom: 0.8rem">{ vplan.head.title }</h2>
+    <p class="is-size-4 is-italic">
+      { vplan.info }
+    </p>
   </div>
 
   <table ref="table" class="table is-fullwidth is-narrow is-striped" hidden>

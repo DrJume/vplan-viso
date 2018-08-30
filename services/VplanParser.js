@@ -37,20 +37,20 @@ const Templates = {
     },
     body: [
       'vp.haupt.aktion.*',
-      entries => entries.map(entry => Object.assign(
+      aktionCollection => aktionCollection.map(aktion => Object.assign(
         {},
-        ...Object.keys(entry)
+        ...Object.keys(aktion)
           .map(key => ({
-            [KeyDictionary[key]]: entry[key]._ ? entry[key]._ : '',
+            [KeyDictionary[key]]: aktion[key]._ ? aktion[key]._ : '',
           })),
         {
-          changed: Object.keys(entry)
-            .map(key => (entry[key].$ ? KeyDictionary[key] : ''))
+          changed: Object.keys(aktion)
+            .map(key => (aktion[key].$ ? KeyDictionary[key] : ''))
             .filter(val => val), // let all solid values through
         },
       )),
     ],
-    footer: 'vp.fuss.fusszeile.fussinfo._',
+    info: 'vp.fuss.fusszeile.fussinfo._',
   },
 
   [VplanType.TEACHERS]: {
@@ -69,24 +69,29 @@ const Templates = {
     },
     body: [
       'vp.haupt.aktion.*',
-      entries => entries.map(entry => Object.assign(
+      aktionCollection => aktionCollection.map(aktion => Object.assign(
         {},
-        ...Object.keys(entry)
+        ...Object.keys(aktion)
           .map(key => ({
-            [KeyDictionary[key]]: entry[key]._ ? entry[key]._ : '',
+            [KeyDictionary[key]]: aktion[key]._ ? aktion[key]._ : '',
           })),
         {
-          changed: Object.keys(entry)
-            .map(key => (entry[key].$ ? KeyDictionary[key] : ''))
+          changed: Object.keys(aktion)
+            .map(key => (aktion[key].$ ? KeyDictionary[key] : ''))
             .filter(val => val), // let all solid values through
         },
       )),
     ],
     supervision: [
       'vp.aufsichten.aufsichtzeile.*',
-      entries => entries.map(entry => entry.aufsichtinfo._),
+      (aufsichtzeileCollection) => {
+        if (Array.isArray(aufsichtzeileCollection)) {
+          return aufsichtzeileCollection.map(aufsichtzeile => aufsichtzeile.aufsichtinfo._)
+        }
+        return aufsichtzeileCollection._
+      },
     ],
-    footer: 'vp.fuss.fusszeile.fussinfo._',
+    info: 'vp.fuss.fusszeile.fussinfo._',
   },
 }
 
