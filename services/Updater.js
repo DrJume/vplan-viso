@@ -14,14 +14,14 @@ const WebServer = require('handlers/WebServer')
 const packageData = require('../package.json')
 
 async function checkUpdate() {
-  const updateURL = `https://api.github.com/repos/drjume/vplan-viso/releases${Config.update.pre_release ? '' : '/latest'}`
+  const updateURL = `https://api.github.com/repos/drjume/vplan-viso/releases${Config.updater.pre_release ? '' : '/latest'}`
 
   const [err, httpResponse] = await try_(axios.get(updateURL), 'HTTP_REQUEST_ERR#response.data#config.url')
   if (err) return undefined
 
-  const latest = Config.update.pre_release ? httpResponse.data[0] : httpResponse.data
+  const latest = Config.updater.pre_release ? httpResponse.data[0] : httpResponse.data
 
-  if (Config.update.pre_release) log.warn('UPDATE_PRERELEASE')
+  if (Config.updater.pre_release) log.warn('UPDATE_PRERELEASE')
 
   const UpdateInfo = {
     latestVersion: semver.clean(latest.tag_name),
@@ -82,7 +82,7 @@ async function runUpdate(update) {
   log.debug('UPDATE_START_STDOUT', os.EOL + updateStart.stdout)
   log.debug('UPDATE_START_STDERR', os.EOL + updateStart.stderr)
 
-  // copying vplans to update directory with delay
+  // copying vplans to update directory after delay
   log.info('TRANSFER_DELAY')
   await delay(5000)
 
@@ -96,14 +96,12 @@ async function runUpdate(update) {
     promiseFs.writeFile(path.join(updatePath, 'upload/', queueDay, `${type}.json`), vplanData),
     'FILE_WRITE_ERR',
   )
-  const transfer = (queueDay, type) =>
-    readVplan(queueDay, type)
-      .then(([partialErr, vplanData]) => (partialErr ? undefined : vplanData))
-      .then(vplanData => writeVplan(queueDay, type, vplanData));
+  const transfer = (queueDay, type) => readVplan(queueDay, type)
+    .then(([partialErr, vplanData]) => (partialErr ? undefined : vplanData))
+    .then(vplanData => writeVplan(queueDay, type, vplanData));
 
 
   [err] = await try_(Promise.all([
-    Promise.reject(new Error('lol')),
     transfer('current', 'students'),
     transfer('current', 'teachers'),
     transfer('next', 'students'),

@@ -101,6 +101,9 @@ const Logger = {
   },
 
   debug(...args) {
+    if (!Config.dev.log_debug) {
+      return
+    }
     const logPrefix = generateLogPrefix('debug')
 
     console.log(generateLogString(logPrefix, args))

@@ -3,8 +3,9 @@ const promiseFs = require('util/promisified').fs
 const { recursiveObjPatch } = require('util/object-tools')
 
 const DefaultConfig = {
-  webserver: { port: 8000 },
-  update: { pre_release: false },
+  webserver: { port: 8000, debug: false },
+  updater: { pre_release: false },
+  dev: { log_debug: false },
 }
 
 module.exports = async function readConfig(configPath) {

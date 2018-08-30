@@ -24,6 +24,7 @@ async function RunWebServer() {
   // Webserver logging system
   if (!fs.existsSync('logs/')) fs.mkdirSync('logs')
   const LogFileStream = fs.createWriteStream('logs/access.log', { flags: 'a' }) // Appending file-write stream
+
   morgan.token('date', () => {
     const d = new Date()
     return `${d.toDateString()} ${d.toLocaleTimeString()}`
@@ -34,7 +35,9 @@ async function RunWebServer() {
   ))
   const DebugLogStream = new WritableStream({
     write(chunk, encoding, callback) {
-      log.debug('WEBSERVER_EVENT', chunk.toString().trim(), true) // true disables data prettification
+      if (Config.webserver.debug) {
+        log.debug('WEBSERVER_EVENT', chunk.toString().trim(), true) // true disables data prettification
+      }
       callback()
     },
   })

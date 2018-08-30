@@ -16,9 +16,9 @@ const FrontendNotifier = require('services/FrontendNotifier')
 
 module.exports = async function UploadWatcher(callback) {
   if (
-    !fs.existsSync(uploadDir) ||
-    !fs.existsSync(currentVplanPath) ||
-    !fs.existsSync(nextVplanPath)
+    !fs.existsSync(uploadDir)
+    || !fs.existsSync(currentVplanPath)
+    || !fs.existsSync(nextVplanPath)
   ) {
     log.info('RECREATING_UPLOAD_DIR_TREE')
 

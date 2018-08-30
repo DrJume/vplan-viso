@@ -13,7 +13,7 @@
     "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json ; rm Update.tar.gz",
     "build": "npx riot src/riot-tags/ routes/riot/tags.js && npx babel routes/riot/tags.js --out-file routes/riot/tags-compiled.js --source-maps",
     "prestart-dev": "npm run build",
-    "start-dev": "node index.js",
+    "start-dev": "node index.js --color",
     "dev": "npx nodemon index.js",
     "start": "npx pm2 start pm2.config.js",
     "stop": "npx pm2 stop pm2.config.js"
