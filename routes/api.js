@@ -13,14 +13,22 @@ router.use((req, res, next) => {
 }) */
 
 async function readVplan(queueDay, vplanType) {
-  let [err, rawJsonData] = await try_( // eslint-disable-line prefer-const
+  let [err, rawData] = await try_( // eslint-disable-line prefer-const
     promiseFs.readFile(path.join('upload', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
-    'FILE_READ_ERR',
+    'ignore:FILE_READ_ERR',
   )
-  if (err) return [err, rawJsonData]
+  if (err) {
+    if (err.code === 'ENOENT') {
+      log.warn('NO_VPLAN_AVAILABLE', `${queueDay}/${vplanType}`)
+    } else {
+      log.err('FILE_READ_ERR', err)
+    }
+
+    return [err, rawData]
+  }
 
   let jsonData // eslint-disable-next-line prefer-const
-  [err, jsonData] = await try_(() => JSON.parse(rawJsonData), 'JSON_PARSE_ERR')
+  [err, jsonData] = await try_(() => JSON.parse(rawData), 'JSON_PARSE_ERR')
 
   return [err, jsonData]
 }
