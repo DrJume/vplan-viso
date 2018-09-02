@@ -23,7 +23,7 @@ async function RunWebServer() {
 
   // Webserver logging system
   if (!fs.existsSync('logs/')) fs.mkdirSync('logs')
-  const LogFileStream = fs.createWriteStream('logs/access.log', { flags: 'a' }) // Appending file-write stream
+  const LogFileStream = fs.createWriteStream('logs/webserver.log', { flags: 'a' }) // Appending file-write stream
 
   morgan.token('date', () => {
     const d = new Date()
