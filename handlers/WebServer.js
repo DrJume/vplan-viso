@@ -21,27 +21,31 @@ let server
 async function RunWebServer() {
   const app = express()
 
-  // Webserver logging system
-  if (!fs.existsSync('logs/')) fs.mkdirSync('logs')
-  const LogFileStream = fs.createWriteStream('logs/webserver.log', { flags: 'a' }) // Appending file-write stream
+  if (Config.webserver.log_file) {
+    // Webserver logging system
+    if (!fs.existsSync('logs/')) fs.mkdirSync('logs')
+    const LogFileStream = fs.createWriteStream('logs/webserver.log', { flags: 'a' }) // appending file-write stream
 
-  morgan.token('date', () => {
-    const d = new Date()
-    return `${d.toDateString()} ${d.toLocaleTimeString()}`
-  })
-  app.use(morgan( // log to file
-    '[:date] :remote-addr (:remote-user) :status :method ":url" (:res[content-type])',
-    { stream: LogFileStream },
-  ))
-  const DebugLogStream = new WritableStream({
-    write(chunk, encoding, callback) {
-      if (Config.webserver.debug) {
-        log.debug('WEBSERVER_EVENT', chunk.toString().trim(), true) // true disables data prettification
-      }
-      callback()
-    },
-  })
-  app.use(morgan('dev', { stream: DebugLogStream })) // dev styled output to logger as stream (prefixing date, etc.)
+    morgan.token('date', () => {
+      const d = new Date()
+      return `${d.toDateString()} ${d.toLocaleTimeString()}`
+    })
+
+    app.use(morgan( // log to file
+      '[:date] :remote-addr (:remote-user) :status :method ":url" (:res[content-type])',
+      { stream: LogFileStream },
+    ))
+  }
+
+  if (Config.webserver.log_debug_tty) {
+    const DebugLogStream = new WritableStream({
+      write(chunk, encoding, callback) {
+        log.debug('WEBSERVER', chunk.toString().trim(), true) // <-- true disables data prettification
+        callback()
+      },
+    })
+    app.use(morgan('dev', { stream: DebugLogStream })) // dev styled output to logger as stream (prefixing date, etc.)
+  }
 
   app.engine('html', async (filePath, options, callback) => { // define a simple template engine
     let err, content // eslint-disable-next-line prefer-const

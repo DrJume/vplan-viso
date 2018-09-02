@@ -101,7 +101,7 @@ const Logger = {
   },
 
   debug(...args) {
-    if (!Config.dev.log_debug) {
+    if (Config.dev.silence_debug_log) {
       return
     }
     const logPrefix = generateLogPrefix('debug')
