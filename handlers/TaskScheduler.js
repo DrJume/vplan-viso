@@ -1,7 +1,7 @@
 const cron = require('node-cron')
 
 const Updater = require('services/Updater')
-const VplanParser = require('services/VplanParser')
+const VplanParser = require('lib/VplanParser')
 
 const promiseFs = require('util/promisified').fs
 const try_ = require('helpers/try-wrapper')

@@ -80,7 +80,7 @@ async function RunWebServer() {
     log.info('APP_LISTENING', `${Lan_IP}:${Config.webserver.port}`)
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 
-  log.info('AUTO_RELOAD_INIT')
+  log.info('FRONTEND_AUTO_RELOAD_INIT')
   try_(() => FrontendNotifier.initialize(server), 'WEBSOCKET_SERVER_ERR')
 }
 

@@ -14,7 +14,7 @@ module.exports = async function readConfig(configPath) {
   let readErr, configData // eslint-disable-next-line prefer-const
   [readErr, configData] = await try_(
     promiseFs.readFile(configPath, { encoding: 'utf-8' }),
-    'warn:READ_CONFIG_ERR',
+    'warn:CONFIG_READ_ERR',
   )
 
   if (readErr) {
@@ -23,7 +23,7 @@ module.exports = async function readConfig(configPath) {
     try_(promiseFs.writeFile(
       configPath,
       JSON.stringify(DefaultConfig, null, 2), // beautify JSON
-    ), 'warn:DEFAULT_CONFIG_WRITE_FAILED')
+    ), 'DEFAULT_CONFIG_WRITE_FAILED')
 
     log.info('SERVING_DEFAULT_CONFIG')
     return DefaultConfig

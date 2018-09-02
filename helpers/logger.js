@@ -108,6 +108,10 @@ const Logger = {
 
     console.log(generateLogString(logPrefix, args))
   },
+
+  ignore() {
+    // print nothing, used in try-wrapper to silence error logging
+  },
 }
 
 module.exports = Logger

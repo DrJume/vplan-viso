@@ -9,10 +9,18 @@ const uploadDir = 'upload'
 const currentVplanPath = path.join(uploadDir, 'current')
 const nextVplanPath = path.join(uploadDir, 'next')
 
-const XmlParser = require('services/XmlParser')
-const VplanParser = require('services/VplanParser')
+const XmlParser = require('lib/XmlParser')
+const VplanParser = require('lib/VplanParser')
 
 const FrontendNotifier = require('services/FrontendNotifier')
+
+async function makeDirectoryHelper(dirPath) {
+  const [err] = await try_(promiseFs.mkdir(dirPath), 'ignore:MAKE_DIR_ERR')
+
+  if (!err) return
+  if (err.code === 'EEXIST') return // ignore "directory already exists" error
+  log.err('MAKE_DIR_ERR', err)
+}
 
 module.exports = async function UploadWatcher(callback) {
   if (
@@ -22,9 +30,9 @@ module.exports = async function UploadWatcher(callback) {
   ) {
     log.info('RECREATING_UPLOAD_DIR_TREE')
 
-    await try_(promiseFs.mkdir(uploadDir), 'warn:IGNORE_IF_EEXIST')
-    await try_(promiseFs.mkdir(currentVplanPath), 'warn:IGNORE_IF_EEXIST')
-    await try_(promiseFs.mkdir(nextVplanPath), 'warn:IGNORE_IF_EEXIST')
+    await makeDirectoryHelper(uploadDir)
+    await makeDirectoryHelper(currentVplanPath)
+    await makeDirectoryHelper(nextVplanPath)
   }
 
   log.info('WATCHING_UPLOAD_DIR', path.resolve(uploadDir))
@@ -71,10 +79,11 @@ module.exports = async function UploadWatcher(callback) {
         return
       }
 
-      const vplanData = await XmlParser.convertToJSObject(filePath)
-      const { transformedVplanData, vplanType } = await VplanParser.transform(vplanData)
-
+      const vplanData = await XmlParser.convertFileToJSObject(filePath)
       try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR') // delete old xml file
+
+      // callback('current', vplanData, 'debug') // only for debug purposes!!!
+      const { transformedVplanData, vplanType } = await VplanParser.transform(vplanData)
 
       if (!transformedVplanData) {
         log.err('INVALID_VPLAN_FORMAT')

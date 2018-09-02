@@ -38,7 +38,7 @@ function tryWrapper(
   { errData } = {},
 ) {
   const logOptions = logOptionsString.split(':')
-  if (logOptions.length < 2) logOptions.unshift('')
+  if (logOptions.length < 2) logOptions.unshift('') // prepend empty logLvl, when no logLvl given
 
   let [logLvl, labelString] = logOptions // eslint-disable-line prefer-const
 
