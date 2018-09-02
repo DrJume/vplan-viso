@@ -1,9 +1,12 @@
-/* eslint-disable no-nested-ternary */
+/* eslint-disable no-nested-ternary, implicit-arrow-linebreak */
 const filterObj = (objToFilter, allowedKeys) =>
   allowedKeys.reduce((obj, keyString) => {
-    obj[keyString] =
-      keyString.split('.')
-        .reduce((filteredObj, key) => (filteredObj ? filteredObj[key] : undefined), objToFilter)
+    obj[keyString] = keyString
+      .split('.')
+      .reduce(
+        (filteredObj, key) => (filteredObj ? filteredObj[key] : undefined),
+        objToFilter,
+      )
     return obj
   }, {})
 
@@ -18,7 +21,7 @@ const recursiveObjPatch = (masterObj, patchObj) =>
   objFromEntries(Object.entries(masterObj)
     .map(([key, val]) =>
       [key, (
-        patchObj[key]
+        ((patchObj[key] != null) && patchObj[key] !== masterObj[key])
           ? (
             isObject(patchObj[key])
               ? recursiveObjPatch(masterObj[key], patchObj[key])
