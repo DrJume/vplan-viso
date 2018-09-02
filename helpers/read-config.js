@@ -52,10 +52,10 @@ module.exports = async function readConfig(configPath) {
   log.info('PATCHING_CONFIG')
   parsedConfig = recursiveObjPatch(DefaultConfig, parsedConfig)
 
-  try_(promiseFs.writeFile(
+  await try_(promiseFs.writeFile(
     configPath,
     JSON.stringify(parsedConfig, null, 2), // beautify JSON
-  ), 'FILE_WRITE_ERR')
+  ), 'CONFIG_WRITE_ERR')
 
 
   return parsedConfig
