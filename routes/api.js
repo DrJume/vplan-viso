@@ -19,7 +19,7 @@ async function readVplan(queueDay, vplanType) {
   )
   if (err) {
     if (err.code === 'ENOENT') {
-      log.warn('NO_VPLAN_AVAILABLE', `${queueDay}/${vplanType}`)
+      log.debug('NO_VPLAN_AVAILABLE', `${queueDay}/${vplanType}`)
     } else {
       log.err('FILE_READ_ERR', err)
     }

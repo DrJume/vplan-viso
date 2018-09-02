@@ -55,6 +55,11 @@ module.exports = async function UploadWatcher(callback) {
         }
       }
     })
+    .on('change', async (filePath) => {
+      if (path.extname(filePath) === '.json') {
+        log.info('VPLAN_FILE_UPDATED', filePath)
+      }
+    })
     .on('add', async (filePath) => {
       log.debug('FILE_DETECTED', filePath)
 
@@ -69,7 +74,7 @@ module.exports = async function UploadWatcher(callback) {
           return
         }
 
-        log.info('USING_JSON_FILE', filePath)
+        log.info('VPLAN_FILE_LOADED', filePath)
         return
       }
 
@@ -97,8 +102,8 @@ module.exports = async function UploadWatcher(callback) {
 
       // manual upload
       if (['current', 'next'].includes(uploadLocation)) {
-        log.info('MANUAL_UPLOAD')
-        log.info('DETECTING_QUEUEDAY_BY_UPLOAD_DIR')
+        log.info('MANUAL_SCHEDULING', `${transformedVplanData.type}: [${transformedVplanData.head.title.trim()}]`)
+        log.debug('QUEUEDAY_BY_UPLOAD_DIR')
 
         callback(uploadLocation, transformedVplanData, vplanType)
         return
