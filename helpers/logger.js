@@ -109,7 +109,7 @@ const Logger = {
     console.log(generateLogString(logPrefix, args))
   },
 
-  ignore() { // TODO: better function name: silenced?
+  silenced() {
     // print nothing, used in try-wrapper to silence error logging
   },
 }

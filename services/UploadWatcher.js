@@ -15,7 +15,7 @@ const VplanParser = require('lib/VplanParser')
 const isFileType = (filePath, typeFileExtension) => path.extname(filePath) === `.${typeFileExtension}`
 
 async function makeDirectoryHelper(dirPath) {
-  const [err] = await try_(promiseFs.mkdir(dirPath), 'ignore:MAKE_DIR_ERR')
+  const [err] = await try_(promiseFs.mkdir(dirPath), 'silenced:MAKE_DIR_ERR')
 
   if (!err) return
   if (err.code === 'EEXIST') return // ignore "directory already exists" error

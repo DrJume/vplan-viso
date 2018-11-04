@@ -17,7 +17,7 @@ router.use((req, res, next) => {
 async function readVplan(queueDay, vplanType) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
     promiseFs.readFile(path.join('upload', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
-    'ignore:FILE_READ_ERR',
+    'silenced:FILE_READ_ERR',
   )
   if (err) {
     if (err.code === 'ENOENT') {

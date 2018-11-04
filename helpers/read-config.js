@@ -14,7 +14,7 @@ module.exports = async function readConfig(configPath) {
   let readErr, configData // eslint-disable-next-line prefer-const
   [readErr, configData] = await try_(
     promiseFs.readFile(configPath, { encoding: 'utf-8' }),
-    'ignore:CONFIG_READ_ERR',
+    'silenced:CONFIG_READ_ERR',
   )
 
   if (readErr) {

@@ -12,7 +12,7 @@ async function shiftVplan(type) {
   // returns false on failure
 
   // delete current vplan
-  let [err] = await try_(promiseFs.unlink(`upload/current/${type}.json`), 'ignore:FILE_DELETE_ERR')
+  let [err] = await try_(promiseFs.unlink(`upload/current/${type}.json`), 'silenced:FILE_DELETE_ERR')
   if (err && err.code !== 'ENOENT') {
     log.err('FILE_DELETE_ERR', err)
     return false
@@ -22,7 +22,7 @@ async function shiftVplan(type) {
   let nextVplanJSON // eslint-disable-next-line prefer-const
   [err, nextVplanJSON] = await try_(
     promiseFs.readFile(`upload/next/${type}.json`, { encoding: 'utf-8' }),
-    'ignore:FILE_READ_ERR',
+    'silenced:FILE_READ_ERR',
   )
   if (err) {
     if (err.code === 'ENOENT') {
