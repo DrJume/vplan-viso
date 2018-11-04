@@ -4,6 +4,8 @@ const path = require('path')
 const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
+const TaskScheduler = require('handlers/TaskScheduler')
+
 const router = express.Router()
 
 /* // middleware that is specific to this router
@@ -47,6 +49,26 @@ router.get('/current|next', async (req, res) => {
   }
 
   res.json(vplanData)
+})
+
+router.get('/action', async (req, res) => { // TODO: Check code quality
+  switch (req.query.type) {
+    case 'update': {
+      res.redirect('/')
+      await TaskScheduler.RunUpdate()
+      break
+    }
+
+    case 'vplan-shift': {
+      res.redirect('/')
+      await TaskScheduler.RunVplanShift()
+      break
+    }
+
+    default: {
+      res.send('No ?type= specified')
+    }
+  }
 })
 
 module.exports = router

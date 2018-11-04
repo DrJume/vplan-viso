@@ -1,6 +1,6 @@
 {
   "name": "vplan-viso",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
@@ -26,32 +26,32 @@
   },
   "homepage": "https://github.com/DrJume/vplan-viso#readme",
   "devDependencies": {
-    "eslint": "^5.5.0",
+    "eslint": "^5.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "nodemon": "^1.18.4",
-    "riot-cli": "^5.1.1"
+    "nodemon": "^1.18.5",
+    "riot-cli": "^5.1.2"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "basic-ftp": "^2.13.2",
+    "basic-ftp": "^2.15.0",
     "body-parser": "^1.18.3",
-    "boom": "^7.2.0",
+    "boom": "^7.2.2",
     "chalk": "^2.4.1",
     "chokidar": "^2.0.4",
-    "express": "^4.16.3",
+    "express": "^4.16.4",
     "fanci": "^0.7.0",
     "jsome": "^2.5.0",
     "moment": "^2.22.2",
-    "morgan": "^1.9.0",
-    "node-cron": "^1.2.1",
-    "pm2": "^3.0.4",
-    "semver": "^5.5.1",
+    "morgan": "^1.9.1",
+    "node-cron": "^2.0.3",
+    "pm2": "^3.2.2",
+    "semver": "^5.6.0",
     "serve-favicon": "^2.5.0",
     "tar": "^4.4.6",
-    "ws": "^6.0.0",
-    "xml-js": "^1.6.7"
+    "ws": "^6.1.0",
+    "xml-js": "^1.6.8"
   }
 }

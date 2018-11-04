@@ -12,7 +12,7 @@ const nextVplanPath = path.join(uploadDir, 'next')
 const XmlParser = require('lib/XmlParser')
 const VplanParser = require('lib/VplanParser')
 
-const FrontendNotifier = require('services/FrontendNotifier')
+const isFileType = (filePath, typeFileExtension) => path.extname(filePath) === `.${typeFileExtension}`
 
 async function makeDirectoryHelper(dirPath) {
   const [err] = await try_(promiseFs.mkdir(dirPath), 'ignore:MAKE_DIR_ERR')
@@ -22,7 +22,7 @@ async function makeDirectoryHelper(dirPath) {
   log.err('MAKE_DIR_ERR', err)
 }
 
-module.exports = async function UploadWatcher(callback) {
+module.exports = async function UploadWatcher(handler) {
   if (
     !fs.existsSync(uploadDir)
     || !fs.existsSync(currentVplanPath)
@@ -31,8 +31,8 @@ module.exports = async function UploadWatcher(callback) {
     log.info('RECREATING_UPLOAD_DIR_TREE')
 
     await makeDirectoryHelper(uploadDir)
-    await makeDirectoryHelper(currentVplanPath)
-    await makeDirectoryHelper(nextVplanPath)
+    makeDirectoryHelper(currentVplanPath)
+    makeDirectoryHelper(nextVplanPath)
   }
 
   log.info('WATCHING_UPLOAD_DIR', path.resolve(uploadDir))
@@ -45,29 +45,30 @@ module.exports = async function UploadWatcher(callback) {
       log.debug('FILE_REMOVED', filePath)
 
       // get the last folder name in the uploadPath
-      const uploadLocation = path.parse(filePath).dir.split(path.sep).pop()
+      const fileDir = path.parse(filePath).dir.split(path.sep).pop()
 
-      if (path.extname(filePath) === '.json') {
-        if (['current', 'next'].includes(uploadLocation)) {
-          // used vplan was deleted, refresh displays
-          log.warn('VPLAN_FILE_REMOVED', filePath)
-          FrontendNotifier.reloadAll()
+      if (isFileType(filePath, 'json')) {
+        if (['current', 'next'].includes(fileDir)) {
+          handler.deleted(fileDir, filePath)
         }
       }
     })
     .on('change', async (filePath) => {
-      if (path.extname(filePath) === '.json') {
-        log.info('VPLAN_FILE_UPDATED', filePath)
+      // get the last folder name in the uploadPath
+      const fileDir = path.parse(filePath).dir.split(path.sep).pop()
+
+      if (isFileType(filePath, 'json')) {
+        handler.changed(fileDir, filePath)
       }
     })
     .on('add', async (filePath) => {
       log.debug('FILE_DETECTED', filePath)
 
       // get the last folder name in the uploadPath
-      const uploadLocation = path.parse(filePath).dir.split(path.sep).pop()
+      const fileDir = path.parse(filePath).dir.split(path.sep).pop()
 
-      if (path.extname(filePath) === '.json') {
-        if (!['current', 'next'].includes(uploadLocation)) {
+      if (isFileType(filePath, 'json')) {
+        if (!['current', 'next'].includes(fileDir)) {
           log.warn('UNKNOWN_QUEUEDAY_JSON_FILE_DELETED', filePath)
 
           try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
@@ -78,45 +79,50 @@ module.exports = async function UploadWatcher(callback) {
         return
       }
 
-      if (path.extname(filePath) !== '.xml') {
+      if (!isFileType(filePath, 'xml')) {
         log.warn('UNKNOWN_FILETYPE_UPLOAD_DELETED', filePath)
         try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
         return
       }
 
-      const vplanData = await XmlParser.convertFileToJSObject(filePath)
+      const rawVplan = await XmlParser.XMLtoRawVplan(filePath)
       try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR') // delete old xml file
 
-      // callback('current', vplanData, 'debug') // only for debug purposes!!!
-      const { transformedVplanData, vplanType } = await VplanParser.transform(vplanData)
+      if (!rawVplan) {
+        log.err('INVALID_VPLAN_FORMAT')
+        return
+      }
 
-      if (!transformedVplanData) {
+      // callback('current', vplanData, 'debug') // only for debug purposes!!!
+      const vplan = await VplanParser.parse(rawVplan)
+
+      if (!vplan) {
         log.err('INVALID_VPLAN_FORMAT')
         return
       }
 
       // checks if encoding is utf8
-      XmlParser.checkEncoding(vplanData)
+      XmlParser.testEncoding(rawVplan)
 
       // Queueday determination
 
       // manual upload
-      if (['current', 'next'].includes(uploadLocation)) {
-        log.info('MANUAL_SCHEDULING', `${transformedVplanData.type}: [${transformedVplanData.head.title.trim()}]`)
+      if (['current', 'next'].includes(fileDir)) {
+        log.info('MANUAL_SCHEDULING', `${vplan.type}: [${vplan.head.title}]`)
         log.debug('QUEUEDAY_BY_UPLOAD_DIR')
 
-        callback(uploadLocation, transformedVplanData, vplanType)
+        handler.added(fileDir, vplan)
         return
       }
 
       // normal upload
-      const queueDay = VplanParser.determineQueueDay(transformedVplanData)
+      const queueDay = VplanParser.getQueueDay(vplan)
       if (!queueDay) {
         log.warn('UNKNOWN_QUEUEDAY_UPLOAD_DELETED', filePath)
         try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
         return
       }
 
-      callback(queueDay, transformedVplanData, vplanType)
+      handler.added(queueDay, vplan)
     })
 }

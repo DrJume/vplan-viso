@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vplan-ViSo</title>
+  <link rel="stylesheet" href="/assets/bulma-0.7.1/bulma.css">
+  <script defer src="/assets/axios-0.18.0/axios.js"></script>
+  <script defer src="/assets/fontawesome-5.0.13/fontawesome-all.min.js"></script>
+  <style>
+    body {
+      padding-top: 40px;
+    }
+
+    .hide-list-icon {
+      list-style: none;
+      margin-left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="content is-large">
+      <h1 class="title is-1">Vplan-ViSo</h1>
+
+      <blockquote>
+        Willkommen in der Vertetungsplan-Visualisierungssoftware!
+        <br>
+        
+      </blockquote>
+
+      <a class="button" href="dashboard/">Zum Dashboard</a>
+      <br>
+      <br>
+      <a class="button" href="display/students">Schüleranzeige</a>
+      <a class="button" href="display/teachers">Lehreranzeige</a>
+      <br>
+      <br>
+      <h5>Manuelle Funktionen</h5>
+      <a class="button" href="api/action?type=update">Update</a>
+      <a class="button" href="api/action?type=vplan-shift">Vertretungsplanversetzung</a>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

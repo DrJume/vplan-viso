@@ -8,21 +8,31 @@ const FrontendNotifier = require('services/FrontendNotifier')
 const UploadWatcher = require('services/UploadWatcher')
 
 async function RunVplanReceiver() {
-  UploadWatcher(async (queueDay, vplanData, vplanType) => {
-    const jsonFilePath = path.format({
-      dir: path.join('upload/', queueDay),
-      // name: students / teachers
-      name: vplanType,
-      ext: '.json',
-    })
-    log.debug('JSON_NEW_FILEPATH', jsonFilePath)
+  UploadWatcher({
+    added: async (queueDay, vplan) => {
+      const vplanFilePath = path.format({
+        dir: path.join('upload/', queueDay),
+        // types: students / teachers
+        name: vplan.type,
+        ext: '.json',
+      })
 
-    FrontendNotifier.reloadAll()
+      await try_(
+        promiseFs.writeFile(vplanFilePath, JSON.stringify(vplan, null, 2)),
+        'FILE_WRITE_ERR',
+      )
+      log.info('VPLAN_FILE_ADDED', vplanFilePath)
 
-    try_(
-      promiseFs.writeFile(jsonFilePath, JSON.stringify(vplanData, null, 2)),
-      'FILE_WRITE_ERR',
-    )
+      FrontendNotifier.reloadAll()
+    },
+    changed: (queueDay, filePath) => {
+      log.info('VPLAN_FILE_UPDATED', filePath)
+      FrontendNotifier.reloadAll()
+    },
+    deleted: (queueDay, filePath) => {
+      log.warn('VPLAN_FILE_REMOVED', filePath)
+      FrontendNotifier.reloadAll()
+    },
   })
 }
 

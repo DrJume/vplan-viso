@@ -33,7 +33,7 @@ router.use('/display', display)
 
 // Root path listener
 router.get('/', (req, res) => {
-  res.redirect('/dashboard/')
+  res.render('intro')
 })
 
 module.exports = router
