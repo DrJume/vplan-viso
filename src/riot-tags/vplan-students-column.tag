@@ -113,7 +113,7 @@
 
       setTimeout(() => {
         this.update()
-      }, 9000)
+      }, 11000)
     })
 
 

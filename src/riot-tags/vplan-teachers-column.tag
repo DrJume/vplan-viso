@@ -104,7 +104,7 @@
       setTimeout(() => {
         table.tBodies[0].innerHTML = ''
         this.update()
-      }, 9000)
+      }, 11000)
 
       window.vplan = this.vplan
       window.table = table
