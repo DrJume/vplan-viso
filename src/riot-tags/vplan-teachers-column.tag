@@ -20,7 +20,9 @@
     <tbody></tbody>
   </table>
 
-  <div ref="progress" style="margin: auto 10px 15px 10px" hidden>
+  <div ref="supervisionTable" style="border-top: 1px solid; padding-top: 3px; margin-top: 10px; align-self: center;" hidden></div>
+
+  <div ref="progress" style="margin: auto 10px 15px 10px;" hidden>
     <progress class="progress is-small" value="0" max="100"></progress>
   </div>
 
@@ -35,11 +37,16 @@
       }
     }
 
+    function insertAfter(newNode, referenceNode) {
+      referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+
     let indexThreshold = 0
 
     this.on('mount', () => {
       const head = this.refs.head
       const table = this.refs.table
+      const supervisionTable = this.refs.supervisionTable
       const progress = this.refs.progress
       const notification = this.refs.notification
 
@@ -51,6 +58,7 @@
 
           head.hidden = false
           table.hidden = false
+          supervisionTable.hidden = false
           progress.hidden = false
 
           this.update()
@@ -68,6 +76,7 @@
     this.on('updated', () => {
       const head = this.refs.head
       const table = this.refs.table
+      const supervisionTable = this.refs.supervisionTable
       const progress = this.refs.progress
       const notification = this.refs.notification
 
@@ -96,20 +105,36 @@
       }
       if (isTableOverflowing()) table.tBodies[0].deleteRow(table.tBodies[0].rows.length - 1)
 
-      console.log(indexThreshold, table.tBodies[0].rows.length, this.vplan.body.length - 1)
+      console.log(indexThreshold, table.tBodies[0].rows.length, this.vplan.body.length)
+
+      const isPageOverflowing = () => ((getOuterHeight(head) + getOuterHeight(table) + getOuterHeight(supervisionTable) + getOuterHeight(progress)) > window.innerHeight)
 
       indexThreshold += table.tBodies[0].rows.length
-      if (indexThreshold >= this.vplan.body.length - 1) indexThreshold = 0
+      if (indexThreshold >= this.vplan.body.length - 1) {
+        //indexThreshold = 0
+
+        // append supervisionable after normal table
+        supervisionTable.classList.add("is-size-4", "has-text-black")
+        supervisionTable.innerHTML = `
+              <table>
+              ${this.vplan.supervision.map(entry => `<tr><td>${entry}</td></tr>`).join("").replace("-->", "<span style='font-size: 25px;'>🠊</span>")}
+              </table>
+            `
+        insertAfter(supervisionTable, table)
+        console.log(getOuterHeight(head) + getOuterHeight(table) + getOuterHeight(supervisionTable) + getOuterHeight(progress))
+        if (isPageOverflowing()) {
+          supervisionTable.innerHTML = ''
+        } else {
+          indexThreshold = 0
+        }
+      }
 
       setTimeout(() => {
         table.tBodies[0].innerHTML = ''
+        supervisionTable.innerHTML = ''
         this.update()
       }, 11000)
 
-      window.vplan = this.vplan
-      window.table = table
-      window.head = head
-      window.progress = progress
       window.getOuterHeight = getOuterHeight
     })
 

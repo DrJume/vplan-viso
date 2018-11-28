@@ -7,5 +7,5 @@
     "routes/riot/"
   ],
   "ext": "js,json,css,html,tag",
-  "exec": "npm run start-dev"
+  "exec": "npm run dev-start"
 }
