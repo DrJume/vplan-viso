@@ -117,7 +117,7 @@
         supervisionTable.classList.add("is-size-4", "has-text-black")
         supervisionTable.innerHTML = `
               <table>
-              ${this.vplan.supervision.map(entry => `<tr><td>${entry}</td></tr>`).join("").replace("-->", "<span style='font-size: 25px;'>🠊</span>")}
+              ${this.vplan.supervision.map(entry => `<tr><td>${entry}</td></tr>`).join("").replace(new RegExp("-->", 'g'),  "<span style='font-size: 25px;'>🠊</span>")}
               </table>
             `
         insertAfter(supervisionTable, table)
