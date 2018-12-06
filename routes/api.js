@@ -8,11 +8,10 @@ const TaskScheduler = require('handlers/TaskScheduler')
 
 const router = express.Router()
 
-/* // middleware that is specific to this router
 router.use((req, res, next) => {
-  // log.info('Time: ', Date.now())
+  res.header('Access-Control-Allow-Origin', '*')
   next()
-}) */
+})
 
 async function readVplan(queueDay, vplanType) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
