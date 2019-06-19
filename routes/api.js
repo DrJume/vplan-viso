@@ -13,6 +13,32 @@ router.use((req, res, next) => {
   next()
 })
 
+const auth = require('basic-auth')
+
+function check(name, pass) {
+  let valid = false
+
+  valid = name === Config.auth.user && pass === Config.auth.password
+
+  return valid
+}
+
+
+router.use('/action', (req, res, next) => {
+  const credentials = auth(req)
+
+  setTimeout(() => {
+    if (!credentials || !check(credentials.name, credentials.pass)) {
+      res.statusCode = 401
+      res.setHeader('WWW-Authenticate', 'Basic realm="Big brother is watching you."')
+      res.end('Big brother is watching you.')
+    } else {
+      next()
+    }
+  }, 1000)
+})
+
+
 async function readVplan(queueDay, vplanType) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
     promiseFs.readFile(path.join('upload', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
