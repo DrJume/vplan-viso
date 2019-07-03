@@ -37,6 +37,7 @@ function tryWrapper(
   logOptionsString = '', // format="(logLvl:)labelString"
   { errData } = {},
 ) {
+  if (typeof logOptionsString !== 'string') throw Error('logOptionsString must be type of string')
   const logOptions = logOptionsString.split(':')
   if (logOptions.length < 2) logOptions.unshift('') // prepend empty logLvl, when no logLvl given
 

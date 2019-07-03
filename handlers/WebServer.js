@@ -2,7 +2,6 @@ const promiseFs = require('util/promisified').fs
 const FrontendNotifier = require('services/FrontendNotifier')
 
 const fs = require('fs')
-const WritableStream = require('stream').Writable
 
 const pkg = require('package.json')
 
@@ -35,13 +34,7 @@ async function RunWebServer() {
   }
 
   if (Config.webserver.log_debug_tty) {
-    const DebugLogStream = new WritableStream({
-      write(chunk, encoding, callback) {
-        log.debug('WEBSERVER', chunk.toString().trim(), true) // <-- true disables data prettification
-        callback()
-      },
-    })
-    app.use(morgan('dev', { stream: DebugLogStream })) // dev styled output to logger as stream (prefixing date, etc.)
+    app.use(morgan('dev', { stream: log.createStream('debug', 'WEBSERVER') })) // dev styled output to logger as stream (prefixing date, etc.)
   }
 
   app.engine('html', async (filePath, options, callback) => { // define a simple template engine

@@ -1,0 +1,12 @@
+version: '3'
+services:
+  vplan-viso:
+    build: .
+    image: vplan-viso
+    container_name: vplan-viso
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/vplan-viso/share:/opt/vplan-viso/share
