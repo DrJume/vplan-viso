@@ -2,10 +2,9 @@ const chokidar = require('chokidar')
 const fs = require('fs')
 const path = require('path')
 
-const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
-const uploadDir = 'upload'
+const uploadDir = 'share/upload/'
 const currentVplanPath = path.join(uploadDir, 'current')
 const nextVplanPath = path.join(uploadDir, 'next')
 

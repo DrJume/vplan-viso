@@ -5,7 +5,6 @@ const tar = require('tar')
 const os = require('os')
 const path = require('path')
 
-const try_ = require('helpers/try-wrapper')
 const { fs: promiseFs, time: { delay } } = require('util/promisified')
 const { exec } = require('util/promisified').child_process
 

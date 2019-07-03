@@ -10,7 +10,6 @@ const testobj = {
   null: null,
 }
 
-const try_ = require('helpers/try-wrapper')
 
 function testSync(...arg) {
   if (arg.length === 0) {

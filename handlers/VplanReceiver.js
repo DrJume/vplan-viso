@@ -1,6 +1,5 @@
 const path = require('path')
 
-const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
 const { exec } = require('util/promisified').child_process

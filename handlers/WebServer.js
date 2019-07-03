@@ -1,4 +1,3 @@
-const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 const FrontendNotifier = require('services/FrontendNotifier')
 
@@ -14,8 +13,6 @@ const morgan = require('morgan')
 
 const routes = require('routes/index')
 
-const LAN_IP = require('util/local-ip')
-
 let server
 
 async function RunWebServer() {
@@ -23,7 +20,7 @@ async function RunWebServer() {
 
   if (Config.webserver.log_file) {
     // Webserver logging system
-    if (!fs.existsSync('logs/')) fs.mkdirSync('logs')
+    if (!fs.existsSync('share/logs/')) fs.mkdirSync('share/logs/')
     const LogFileStream = fs.createWriteStream('logs/webserver.log', { flags: 'a' }) // appending file-write stream
 
     morgan.token('date', () => {
@@ -80,8 +77,8 @@ async function RunWebServer() {
   })
 
   // Listen on port specified in config.json and LAN IP-adress
-  server = app.listen(Config.webserver.port, LAN_IP, () => {
-    log.info('APP_LISTENING', `http://${LAN_IP}:${Config.webserver.port}`)
+  server = app.listen(8080, '0.0.0.0', () => {
+    log.info('APP_LISTENING', 'http://0.0.0.0:8080')
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 
   log.info('DISPLAY_AUTO_RELOAD_INIT')

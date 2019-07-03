@@ -4,7 +4,6 @@ const Updater = require('services/Updater')
 const VplanParser = require('lib/VplanParser')
 
 const promiseFs = require('util/promisified').fs
-const try_ = require('helpers/try-wrapper')
 
 // TODO: check for code quality
 
@@ -88,12 +87,12 @@ async function RunVplanShift() {
 
 function StartTaskRunner() {
   // Update service
-  cron.schedule('0 2 * * *', async () => {
+  cron.schedule('0 23 * * *', async () => {
     await RunUpdate()
   })
 
   // Vplan day shift on week days
-  cron.schedule('0 3 * * Mon-Fri', async () => {
+  cron.schedule('0 1 * * Mon-Fri', async () => {
     await RunVplanShift()
   })
 }

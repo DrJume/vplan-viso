@@ -1,0 +1,7 @@
+node_modules/
+npm-debug.log
+.vscode/
+routes/riot/
+upload/
+config.json
+share/
