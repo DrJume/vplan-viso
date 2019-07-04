@@ -28,7 +28,7 @@ async function runUpdate() {
 
     stream.on('close', async () => {
       const [err, container] = await try_(docker.run(
-        'containrrr/watchtower', ['--run-once', 'vplan-viso'],
+        'containrrr/watchtower', ['--run-once', 'drjume/vplan-viso'],
         log.createStream('debug', 'CONTAINER_RUN'),
         { Binds: ['/var/run/docker.sock:/var/run/docker.sock'] },
       ), 'CONTAINER_RUN_ERR')
