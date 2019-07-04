@@ -40,7 +40,7 @@ router.use('/action', (req, res, next) => {
 
 async function readVplan(queueDay, vplanType) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
-    promiseFs.readFile(path.join('upload', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
+    promiseFs.readFile(path.join('share/upload/', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {

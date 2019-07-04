@@ -10,7 +10,7 @@
   "scripts": {
     "postinstall": "npm run build",
     "test": "echo 'Error: no test specified' && exit 1",
-    "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json ; rm Update.tar.gz",
+    "reset": "rm -r share/",
     "build": "npx riot src/riot-tags/ routes/riot/tags.js && npx babel routes/riot/tags.js --out-file routes/riot/tags-compiled.js --source-maps",
     "predev-start": "npm run build",
     "dev-start": "node index.js --color",

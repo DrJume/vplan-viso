@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:10-slim
 
 # Create app directory
 WORKDIR /opt/vplan-viso

@@ -11,7 +11,7 @@ async function shiftVplan(type) {
   // returns false on failure
 
   // delete current vplan
-  let [err] = await try_(promiseFs.unlink(`upload/current/${type}.json`), 'silenced:FILE_DELETE_ERR')
+  let [err] = await try_(promiseFs.unlink(`share/upload/current/${type}.json`), 'silenced:FILE_DELETE_ERR')
   if (err && err.code !== 'ENOENT') {
     log.err('FILE_DELETE_ERR', err)
     return false
@@ -20,7 +20,7 @@ async function shiftVplan(type) {
   // get next vplan and move it into current if its for current day
   let nextVplanJSON // eslint-disable-next-line prefer-const
   [err, nextVplanJSON] = await try_(
-    promiseFs.readFile(`upload/next/${type}.json`, { encoding: 'utf-8' }),
+    promiseFs.readFile(`share/upload/next/${type}.json`, { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {
@@ -38,7 +38,7 @@ async function shiftVplan(type) {
 
   const queueDay = VplanParser.getQueueDay(nextVplan)
   if (!queueDay) {
-    log.err('UNKNOWN_QUEUEDAY', `upload/next/${type}.json`)
+    log.err('UNKNOWN_QUEUEDAY', `share/upload/next/${type}.json`)
     return false
   }
   if (queueDay === 'next') {
@@ -47,13 +47,13 @@ async function shiftVplan(type) {
   }
 
   [err] = await try_(
-    promiseFs.writeFile(`upload/current/${type}.json`, nextVplanJSON),
+    promiseFs.writeFile(`share/upload/current/${type}.json`, nextVplanJSON),
     'FILE_WRITE_ERR',
   )
   if (err) return false;
 
   // delete next vplan
-  [err] = await try_(promiseFs.unlink(`upload/next/${type}.json`), 'FILE_DELETE_ERR')
+  [err] = await try_(promiseFs.unlink(`share/upload/next/${type}.json`), 'FILE_DELETE_ERR')
   if (err) return false
 
   return true

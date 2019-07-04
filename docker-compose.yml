@@ -9,4 +9,4 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /tmp/vplan-viso/share:/opt/vplan-viso/share
+      - /opt/vplan-viso/share:/opt/vplan-viso/share

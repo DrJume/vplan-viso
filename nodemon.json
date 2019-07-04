@@ -1,9 +1,8 @@
 {
   "verbose": false,
   "ignore": [
-    "upload/",
+    "share/",
     "test/vplan-files/",
-    "config.json",
     "routes/riot/"
   ],
   "ext": "js,json,css,html,tag",

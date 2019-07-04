@@ -12,7 +12,7 @@ async function RunVplanReceiver() {
   UploadWatcher({
     added: async (queueDay, vplan) => {
       const vplanFilePath = path.format({
-        dir: path.join('upload/', queueDay),
+        dir: path.join('share/upload/', queueDay),
         // types: students / teachers
         name: vplan.type,
         ext: '.json',
