@@ -24,11 +24,11 @@ async function runUpdate() {
         log.createStream('debug', 'UPDATE_CONTAINER_RUN'),
         { Binds: ['/var/run/docker.sock:/var/run/docker.sock'] },
       ), 'UPDATE_CONTAINER_RUN')
-      if (runErr) return
+      // if (runErr) return
 
       // log.debug('CONTAINER_STATUS', container.output.StatusCode)
-      await container.remove()
-      log.debug('UPDATE_CONTAINER_REMOVED')
+      // await container.remove()
+      // log.debug('UPDATE_CONTAINER_REMOVED')
     })
   })
 }
