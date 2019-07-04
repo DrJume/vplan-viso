@@ -1,13 +1,5 @@
 const axios = require('axios')
-const tar = require('tar')
 
-const os = require('os')
-const path = require('path')
-
-const { fs: promiseFs, time: { delay } } = require('util/promisified')
-const { exec } = require('util/promisified').child_process
-
-const WebServer = require('handlers/WebServer')
 const Docker = require('dockerode')
 
 async function checkUpdate() {
@@ -19,24 +11,24 @@ async function checkUpdate() {
 async function runUpdate() {
   const docker = new Docker({ socketPath: '/var/run/docker.sock' })
 
-  docker.pull('containrrr/watchtower:latest', async (err, stream) => {
-    if (err) {
-      log.err('CONTAINER_PULL_ERR', err)
+  docker.pull('containrrr/watchtower:latest', async (pullErr, stream) => {
+    if (pullErr) {
+      log.err('UPDATE_CONTAINER_PULL', pullErr)
       return
     }
-    stream.pipe(log.createStream('debug', 'CONTAINER_PULL'))
+    stream.pipe(log.createStream('debug', 'UPDATE_CONTAINER_PULL'))
 
     stream.on('close', async () => {
-      const [err, container] = await try_(docker.run(
-        'containrrr/watchtower', ['--run-once', 'drjume/vplan-viso'],
-        log.createStream('debug', 'CONTAINER_RUN'),
+      const [runErr, container] = await try_(docker.run(
+        'containrrr/watchtower', ['--run-once', 'vplan-viso'],
+        log.createStream('debug', 'UPDATE_CONTAINER_RUN'),
         { Binds: ['/var/run/docker.sock:/var/run/docker.sock'] },
-      ), 'CONTAINER_RUN_ERR')
+      ), 'UPDATE_CONTAINER_RUN')
+      if (runErr) return
 
-      log.debug('CONTAINER_STATUS', container.output.StatusCode)
+      // log.debug('CONTAINER_STATUS', container.output.StatusCode)
       await container.remove()
-
-      log.debug('', 'container removed')
+      log.debug('UPDATE_CONTAINER_REMOVED')
     })
   })
 }

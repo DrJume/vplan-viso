@@ -2,7 +2,7 @@ version: '3'
 services:
   vplan-viso:
     build: .
-    image: vplan-viso
+    image: drjume/vplan-viso
     container_name: vplan-viso
     ports:
       - "8080:8080"
