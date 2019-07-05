@@ -22,7 +22,7 @@ async function runUpdate() {
       const [runErr, container] = await try_(docker.run(
         'containrrr/watchtower', ['--run-once', 'vplan-viso'],
         log.createStream('debug', 'UPDATE_CONTAINER_RUN'),
-        { Binds: ['/var/run/docker.sock:/var/run/docker.sock'] },
+        { Binds: ['/var/run/docker.sock:/var/run/docker.sock'], Labels: { 'com.vplan-viso.upgrader': true } },
       ), 'UPDATE_CONTAINER_RUN')
       if (runErr) return
 
