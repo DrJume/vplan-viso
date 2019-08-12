@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="vplank.xsl"?>
+<vp>
+  <kopf>
+    <datei>VPlanKlasse.xml</datei>
+    <titel>Donnerstag, 4. Juli 2019 (A-Woche) </titel>
+    <schulname>Martin-Andersen-Nexö-Gymnasium Dresden</schulname>
+    <datum>05.07.2019, 07:39</datum>
+    <kopfinfo>
+      <abwesendl>Fau, Kab</abwesendl>
+    </kopfinfo>
+  </kopf>
+  <freietage>
+    <ft>180801</ft>
+    <ft>180802</ft>
+    <ft>180803</ft>
+    <ft>180806</ft>
+    <ft>180807</ft>
+    <ft>180808</ft>
+    <ft>180809</ft>
+    <ft>180810</ft>
+    <ft>180912</ft>
+    <ft>181003</ft>
+    <ft>181008</ft>
+    <ft>181009</ft>
+    <ft>181010</ft>
+    <ft>181011</ft>
+    <ft>181012</ft>
+    <ft>181015</ft>
+    <ft>181016</ft>
+    <ft>181017</ft>
+    <ft>181018</ft>
+    <ft>181019</ft>
+    <ft>181031</ft>
+    <ft>181121</ft>
+    <ft>181203</ft>
+    <ft>181224</ft>
+    <ft>181225</ft>
+    <ft>181226</ft>
+    <ft>181227</ft>
+    <ft>181228</ft>
+    <ft>181231</ft>
+    <ft>190101</ft>
+    <ft>190102</ft>
+    <ft>190103</ft>
+    <ft>190104</ft>
+    <ft>190218</ft>
+    <ft>190219</ft>
+    <ft>190220</ft>
+    <ft>190221</ft>
+    <ft>190222</ft>
+    <ft>190225</ft>
+    <ft>190226</ft>
+    <ft>190227</ft>
+    <ft>190228</ft>
+    <ft>190301</ft>
+    <ft>190419</ft>
+    <ft>190422</ft>
+    <ft>190423</ft>
+    <ft>190424</ft>
+    <ft>190425</ft>
+    <ft>190426</ft>
+    <ft>190501</ft>
+    <ft>190530</ft>
+    <ft>190531</ft>
+    <ft>190610</ft>
+    <ft>190708</ft>
+    <ft>190709</ft>
+    <ft>190710</ft>
+    <ft>190711</ft>
+    <ft>190712</ft>
+    <ft>190715</ft>
+    <ft>190716</ft>
+    <ft>190717</ft>
+    <ft>190718</ft>
+    <ft>190719</ft>
+    <ft>190722</ft>
+    <ft>190723</ft>
+    <ft>190724</ft>
+    <ft>190725</ft>
+    <ft>190726</ft>
+    <ft>190729</ft>
+    <ft>190730</ft>
+    <ft>190731</ft>
+  </freietage>
+</vp>

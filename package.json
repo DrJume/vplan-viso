@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/DrJume/vplan-viso#readme",
   "devDependencies": {
-    "eslint": "^6.0.1",
+    "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.18.2",
     "nodemon": "^1.19.1"
   },
   "dependencies": {
@@ -36,11 +36,11 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "basic-auth": "^2.0.1",
-    "basic-ftp": "^3.7.0",
+    "basic-ftp": "^3.8.0",
     "body-parser": "^1.19.0",
     "boom": "^7.3.0",
     "chalk": "^2.4.2",
-    "chokidar": "^3.0.1",
+    "chokidar": "^3.0.2",
     "dockerode": "^2.5.8",
     "express": "^4.17.1",
     "fanci": "^0.7.0",
@@ -49,10 +49,10 @@
     "morgan": "^1.9.1",
     "node-cron": "^2.0.3",
     "riot-cli": "^5.1.2",
-    "semver": "^6.2.0",
+    "semver": "^6.3.0",
     "serve-favicon": "^2.5.0",
     "tar": "^4.4.10",
-    "ws": "^7.0.1",
+    "ws": "^7.1.1",
     "xml-js": "^1.6.11"
   }
 }

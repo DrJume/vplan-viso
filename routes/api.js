@@ -29,8 +29,8 @@ router.use('/action', (req, res, next) => {
   setTimeout(() => {
     if (!credentials || !check(credentials.name, credentials.pass)) {
       res.statusCode = 401
-      res.setHeader('WWW-Authenticate', 'Basic realm="Big brother is watching you."')
-      res.end('Big brother is watching you.')
+      res.setHeader('WWW-Authenticate', 'Basic realm="Anmeldung:"')
+      res.end('')
     } else {
       next()
     }

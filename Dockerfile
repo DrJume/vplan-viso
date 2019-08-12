@@ -11,7 +11,7 @@ COPY package*.json ./
 COPY . .
 
 RUN npm ci --only=production
-
+# RUN npm config set unsafe-perm true NOT NEEDED
 RUN npm install pm2 -g
 
 EXPOSE 8080

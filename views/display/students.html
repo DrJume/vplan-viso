@@ -11,18 +11,22 @@
 </head>
 
 <body>
-  <div class="columns is-gapless has-text-centered is-marginless" style="height: 100vh">
-    <vplan-students-column queue="current" class="column" style="display: flex; flex-direction: column; border-right: 1px solid"></vplan-students-column>
-    <vplan-students-column queue="next" class="column" style="display: flex; flex-direction: column; border-left: 1px solid"></vplan-students-column>
+  <div class="columns is-gapless has-text-centered is-marginless" style="height: 95vh">
+    <vplan-students-column queue="current" class="column" style="display: flex; flex-direction: column; border-right: 1px solid; border-bottom: 2px solid"></vplan-students-column>
+    <vplan-students-column queue="next" class="column" style="display: flex; flex-direction: column; border-left: 1px solid; border-bottom: 2px solid"></vplan-students-column>
   </div>
+
+  <ticker type="students" style="width: 100vw; height: 5vh; margin: auto 0 auto 0"></ticker>
 
   <span style="position: fixed; bottom: 0px; right: 2px; font-size: 10px;">v{{PKG_VERSION}}</span>
 
   <script src="/assets/riot-3.10.2/riot.js"></script>
   <script src="/assets/axios-0.18.0/axios.js"></script>
   <script src="/riot/tags-compiled.js"></script>
+  <script src="/assets/Marquee3000-1.0.6/marquee3k.js"></script>
   <script>
     riot.mount('vplan-students-column')
+    riot.mount('ticker')
   </script>
 
   <script src="/assets/notification-listener.js"></script>

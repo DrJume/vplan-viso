@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="vplanl.xsl"?>
+<vp>
+  <kopf>
+    <datei>VPlanLehrer.xml</datei>
+    <titel>Mittwoch, 17. April 2019 (B-Woche)</titel>
+    <schulname>Martin-Andersen-Nexö-Gymnasium Dresden</schulname>
+    <datum>05.07.2019, 07:44</datum>
+    <kopfinfo>
+      <abwesendl>Bec; Fau; Got; Gru; Her; Nag (3-6); Opi; Rau; ScA (5-12); Sta; Wal (3-6)</abwesendl>
+      <abwesendk>5c (3-6)</abwesendk>
+      <aenderungl>Aur; Bec; Bon; Esc; Fir; Fro; Gol; Gos; Hal; Hei; Hfl; Hfm; Hlm; Hof; Keg; Khn; Kra; Kru; May; Mic; Mül; Neh; Opi; Ott; Pie; Pla; Qei; Sch; ScJ; Sck; Scn; ScR; ScT; Tho; Wie; Wld; Wol</aenderungl>
+      <aenderungk>10a, 10c, 5a, 5b, 5c, 6a, 6b, 6c, 7a, 7b, 7c, 8a, 8b, 8c, 9b, 9c, JG11, JG12</aenderungk>
+    </kopfinfo>
+  </kopf>
+  <freietage>
+    <ft>180801</ft>
+    <ft>180802</ft>
+    <ft>180803</ft>
+    <ft>180806</ft>
+    <ft>180807</ft>
+    <ft>180808</ft>
+    <ft>180809</ft>
+    <ft>180810</ft>
+    <ft>180912</ft>
+    <ft>181003</ft>
+    <ft>181008</ft>
+    <ft>181009</ft>
+    <ft>181010</ft>
+    <ft>181011</ft>
+    <ft>181012</ft>
+    <ft>181015</ft>
+    <ft>181016</ft>
+    <ft>181017</ft>
+    <ft>181018</ft>
+    <ft>181019</ft>
+    <ft>181031</ft>
+    <ft>181121</ft>
+    <ft>181203</ft>
+    <ft>181224</ft>
+    <ft>181225</ft>
+    <ft>181226</ft>
+    <ft>181227</ft>
+    <ft>181228</ft>
+    <ft>181231</ft>
+    <ft>190101</ft>
+    <ft>190102</ft>
+    <ft>190103</ft>
+    <ft>190104</ft>
+    <ft>190218</ft>
+    <ft>190219</ft>
+    <ft>190220</ft>
+    <ft>190221</ft>
+    <ft>190222</ft>
+    <ft>190225</ft>
+    <ft>190226</ft>
+    <ft>190227</ft>
+    <ft>190228</ft>
+    <ft>190301</ft>
+    <ft>190419</ft>
+    <ft>190422</ft>
+    <ft>190423</ft>
+    <ft>190424</ft>
+    <ft>190425</ft>
+    <ft>190426</ft>
+    <ft>190501</ft>
+    <ft>190530</ft>
+    <ft>190531</ft>
+    <ft>190610</ft>
+    <ft>190708</ft>
+    <ft>190709</ft>
+    <ft>190710</ft>
+    <ft>190711</ft>
+    <ft>190712</ft>
+    <ft>190715</ft>
+    <ft>190716</ft>
+    <ft>190717</ft>
+    <ft>190718</ft>
+    <ft>190719</ft>
+    <ft>190722</ft>
+    <ft>190723</ft>
+    <ft>190724</ft>
+    <ft>190725</ft>
+    <ft>190726</ft>
+    <ft>190729</ft>
+    <ft>190730</ft>
+    <ft>190731</ft>
+  </freietage>
+  <haupt>
+    <aktion>
+      <stunde>3-4</stunde>
+      <fach>GE</fach>
+      <lehrer>Gru</lehrer>
+      <klasse>JG11/ ge1</klasse>
+      <vfach>GE</vfach>
+      <vlehrer legeaendert="ae">---</vlehrer>
+      <vraum>220</vraum>
+      <info>selbst.</info>
+    </aktion>
+    <aktion>
+      <stunde>5</stunde>
+      <fach>BIO</fach>
+      <lehrer>ScA</lehrer>
+      <klasse>10a</klasse>
+      <vfach>BIO</vfach>
+      <vlehrer legeaendert="ae">---</vlehrer>
+      <vraum>320</vraum>
+      <info>selbst. (a)</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>TC</fach>
+      <lehrer>Nag</lehrer>
+      <klasse>5a-5c</klasse>
+      <vfach>TC</vfach>
+      <vlehrer legeaendert="ae">---</vlehrer>
+      <vraum rageaendert="ae"> </vraum>
+      <info>Gruppe zusammengelegt, bitte beschäftigen</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>BIO</fach>
+      <lehrer>Sck</lehrer>
+      <klasse>JG11/ BIO2</klasse>
+      <vfach>BIO</vfach>
+      <vlehrer legeaendert="ae">---</vlehrer>
+      <vraum rageaendert="ae"> </vraum>
+      <info>selbst., Aufgaben zu Hause</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>GEO</fach>
+      <lehrer>ScA</lehrer>
+      <klasse>6c</klasse>
+      <vfach>GEO</vfach>
+      <vlehrer legeaendert="ae">---</vlehrer>
+      <vraum>203</vraum>
+      <info>selbst., Aufgaben Die Steppe</info>
+    </aktion>
+    <aktion>
+      <stunde>1-2</stunde>
+      <fach>INF</fach>
+      <lehrer>Bec</lehrer>
+      <klasse>8a</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Bec)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>7a</klasse>
+      <vfach fageaendert="ae">PH</vfach>
+      <vlehrer legeaendert="ae">Esc</vlehrer>
+      <vraum>402</vraum>
+      <info>statt Mo (15.04.) St.1</info>
+    </aktion>
+    <aktion>
+      <stunde>2</stunde>
+      <fach>MA</fach>
+      <lehrer>Fir</lehrer>
+      <klasse>7c</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Fir)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>1-2</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Fir u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>1</stunde>
+      <fach>PH</fach>
+      <lehrer>Fir,Ott</lehrer>
+      <klasse>8b</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Fir)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>3-4</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Gol u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>3-4</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Gos u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>4</stunde>
+      <fach>DE</fach>
+      <lehrer>Got</lehrer>
+      <klasse>6b</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Got)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>KU</fach>
+      <lehrer>Got</lehrer>
+      <klasse>7a</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Got)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>1</stunde>
+      <fach>MA</fach>
+      <lehrer>Sta</lehrer>
+      <klasse>6c</klasse>
+      <vfach>MA</vfach>
+      <vlehrer legeaendert="ae">Hal</vlehrer>
+      <vraum rageaendert="ae">005</vraum>
+      <info>bitte Gruppenarbeit beaufsichtigen</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>LA</fach>
+      <lehrer>Hal</lehrer>
+      <klasse>7c</klasse>
+      <vfach>LA</vfach>
+      <vlehrer>Hal</vlehrer>
+      <vraum>005</vraum>
+      <info>verlegt nach St.2</info>
+    </aktion>
+    <aktion>
+      <stunde>5</stunde>
+      <fach>DE</fach>
+      <lehrer>Hei</lehrer>
+      <klasse>8b</klasse>
+      <vfach>DE</vfach>
+      <vlehrer>Hei</vlehrer>
+      <vraum rageaendert="ae">213</vraum>
+      <info></info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>DE</fach>
+      <lehrer>Hei</lehrer>
+      <klasse>8b</klasse>
+      <vfach>DE</vfach>
+      <vlehrer>Hei</vlehrer>
+      <vraum rageaendert="ae">213</vraum>
+      <info>verlegt nach St.4</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>SPO</fach>
+      <lehrer>Hfl</lehrer>
+      <klasse>8a</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Hfl)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Hfl u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>1</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Hfm</vlehrer>
+      <vraum>---</vraum>
+      <info>Prüfungsvorbereitung</info>
+    </aktion>
+    <aktion>
+      <stunde>2</stunde>
+      <fach>MA</fach>
+      <lehrer>Sta</lehrer>
+      <klasse>6c</klasse>
+      <vfach>MA</vfach>
+      <vlehrer legeaendert="ae">Hfm</vlehrer>
+      <vraum>108</vraum>
+      <info>bitte Gruppenarbeit beaufsichtigen</info>
+    </aktion>
+    <aktion>
+      <stunde>4</stunde>
+      <fach>EN</fach>
+      <lehrer>Hlm</lehrer>
+      <klasse>7a</klasse>
+      <vfach>EN</vfach>
+      <vlehrer>Hlm</vlehrer>
+      <vraum>116</vraum>
+      <info>verlegt nach St.2</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>TC</fach>
+      <lehrer>Bec</lehrer>
+      <klasse>5a-5c</klasse>
+      <vfach>TC</vfach>
+      <vlehrer legeaendert="ae">Hof</vlehrer>
+      <vraum rageaendert="ae">114</vraum>
+      <info>Gruppe zusammengelegt, bitte beschäftigen</info>
+    </aktion>
+    <aktion>
+      <stunde>1</stunde>
+      <fach>EN</fach>
+      <lehrer>Khn</lehrer>
+      <klasse>6b</klasse>
+      <vfach>EN</vfach>
+      <vlehrer>Khn</vlehrer>
+      <vraum>106</vraum>
+      <info>verlegt nach St.4</info>
+    </aktion>
+    <aktion>
+      <stunde>5</stunde>
+      <fach>TC</fach>
+      <lehrer>Bec</lehrer>
+      <klasse>5a-5c</klasse>
+      <vfach>TC</vfach>
+      <vlehrer legeaendert="ae">Kra</vlehrer>
+      <vraum>317</vraum>
+      <info>Gruppe zusammengelegt, bitte beschäftigen</info>
+    </aktion>
+    <aktion>
+      <stunde>1-2</stunde>
+      <fach>CH</fach>
+      <lehrer>Kru</lehrer>
+      <klasse>JG11/ CH1</klasse>
+      <vfach>CH</vfach>
+      <vlehrer>Kru</vlehrer>
+      <vraum rageaendert="ae">308</vraum>
+      <info></info>
+    </aktion>
+    <aktion>
+      <stunde>3-4</stunde>
+      <fach>CHA</fach>
+      <lehrer>Sck</lehrer>
+      <klasse>8c</klasse>
+      <vfach>CHA</vfach>
+      <vlehrer legeaendert="ae">Kru</vlehrer>
+      <vraum>308</vraum>
+      <info>lt. Absprache</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>CHA</fach>
+      <lehrer>May</lehrer>
+      <klasse>10c</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(May)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>1-6</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">May u.a.</vlehrer>
+      <vraum>---</vraum>
+      <info>Prüfung (Raum 312)</info>
+    </aktion>
+    <aktion>
+      <stunde>5</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>8a</klasse>
+      <vfach fageaendert="ae">DE</vfach>
+      <vlehrer legeaendert="ae">Mic</vlehrer>
+      <vraum>020</vraum>
+      <info>statt Do (18.04.) St.7</info>
+    </aktion>
+    <aktion>
+      <stunde>1</stunde>
+      <fach>MA</fach>
+      <lehrer>Neh</lehrer>
+      <klasse>6a</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Neh)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>1-2</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Neh u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>5</stunde>
+      <fach>MA</fach>
+      <lehrer>Opi</lehrer>
+      <klasse>JG11/ MA3</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Opi)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>KU</fach>
+      <lehrer>Wal,Pie</lehrer>
+      <klasse>9c</klasse>
+      <vfach>KU</vfach>
+      <vlehrer legeaendert="ae">Pie</vlehrer>
+      <vraum>213</vraum>
+      <info></info>
+    </aktion>
+    <aktion>
+      <stunde>2</stunde>
+      <fach>MA</fach>
+      <lehrer>Opi</lehrer>
+      <klasse>6b</klasse>
+      <vfach>MA</vfach>
+      <vlehrer legeaendert="ae">Pla</vlehrer>
+      <vraum>106</vraum>
+      <info>bitte Aufgaben beaufsichtigen</info>
+    </aktion>
+    <aktion>
+      <stunde>3-4</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Pla u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>PHA</fach>
+      <lehrer>Qei</lehrer>
+      <klasse>10c</klasse>
+      <vfach fageaendert="ae">PH</vfach>
+      <vlehrer>Qei</vlehrer>
+      <vraum>417</vraum>
+      <info>gesamte Klasse 10c</info>
+    </aktion>
+    <aktion>
+      <stunde>3-4</stunde>
+      <fach>BIA</fach>
+      <lehrer>Rau</lehrer>
+      <klasse>7b</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Rau)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>MA</fach>
+      <lehrer>ScJ</lehrer>
+      <klasse>10a</klasse>
+      <vfach>MA</vfach>
+      <vlehrer>ScJ</vlehrer>
+      <vraum rageaendert="ae">317</vraum>
+      <info></info>
+    </aktion>
+    <aktion>
+      <stunde>1-2</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">ScJ u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>3</stunde>
+      <fach>GEO</fach>
+      <lehrer>Sta</lehrer>
+      <klasse>7a</klasse>
+      <vfach>GEO</vfach>
+      <vlehrer legeaendert="ae">ScR</vlehrer>
+      <vraum>205</vraum>
+      <info>bitte beschäftigen</info>
+    </aktion>
+    <aktion>
+      <stunde>4</stunde>
+      <fach>MA</fach>
+      <lehrer>ScT</lehrer>
+      <klasse>8b</klasse>
+      <vfach>MA</vfach>
+      <vlehrer>ScT</vlehrer>
+      <vraum rageaendert="ae">404</vraum>
+      <info>verlegt nach St.3</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Sch u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+    <aktion>
+      <stunde>1-6</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Sck u.a.</vlehrer>
+      <vraum>---</vraum>
+      <info>Prüfung (Raum 312)</info>
+    </aktion>
+    <aktion>
+      <stunde>5</stunde>
+      <fach>MA</fach>
+      <lehrer>Sta</lehrer>
+      <klasse>JG11/ MA2</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Sta)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>6</stunde>
+      <fach>MA</fach>
+      <lehrer>Sta</lehrer>
+      <klasse>9b</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Sta)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>3</stunde>
+      <fach>FR</fach>
+      <lehrer>Wal</lehrer>
+      <klasse>8b</klasse>
+      <vfach>---</vfach>
+      <vlehrer>(Wal)</vlehrer>
+      <vraum>---</vraum>
+      <info>fällt aus</info>
+    </aktion>
+    <aktion>
+      <stunde>1</stunde>
+      <fach>FR</fach>
+      <lehrer>Wld</lehrer>
+      <klasse>7a</klasse>
+      <vfach>FR</vfach>
+      <vlehrer>Wld</vlehrer>
+      <vraum>116</vraum>
+      <info>verlegt nach St.5</info>
+    </aktion>
+    <aktion>
+      <stunde>2</stunde>
+      <fach>FR</fach>
+      <lehrer>Wld</lehrer>
+      <klasse>7a</klasse>
+      <vfach>FR</vfach>
+      <vlehrer>Wld</vlehrer>
+      <vraum>116</vraum>
+      <info>verlegt nach St.4</info>
+    </aktion>
+    <aktion>
+      <stunde>5-6</stunde>
+      <fach>---</fach>
+      <lehrer>---</lehrer>
+      <klasse>JG12</klasse>
+      <vfach fageaendert="ae">BIO</vfach>
+      <vlehrer legeaendert="ae">Wol u.a.</vlehrer>
+      <vraum rageaendert="ae">311</vraum>
+      <info>Prüfung</info>
+    </aktion>
+  </haupt>
+  <aufsichten>
+    <aufsichtzeile>
+      <aufsichtinfo>09:10:  Frühstück - FrühHofTH  --&gt;  Neh (für Keg)</aufsichtinfo>
+    </aufsichtzeile>
+    <aufsichtzeile>
+      <aufsichtinfo>12:05:  Mittag_I - Essen_I  --&gt;  Aur (für Opi)</aufsichtinfo>
+    </aufsichtzeile>
+    <aufsichtzeile>
+      <aufsichtinfo>12:05:  Mittag_I - MittHofTH  --&gt;  Hal (für Bec)</aufsichtinfo>
+    </aufsichtzeile>
+    <aufsichtzeile>
+      <aufsichtinfo>13:00:  Mittag_II - Essen_II  --&gt;  Tho (für Fro)</aufsichtinfo>
+    </aufsichtzeile>
+  </aufsichten>
+  <fuss>
+    <fusszeile>
+      <fussinfo>NEU: Kurs 11 ge1 Fr. Grund bitte die Änderung auf dem VPlan beachten und Aufgaben bearbeiten.</fussinfo>
+    </fusszeile>
+  </fuss>
+</vp>

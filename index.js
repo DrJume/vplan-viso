@@ -51,6 +51,10 @@
   const pkg = require('package.json')
   log.info(`VPLAN-VISO_INIT v${pkg.version}`)
 
+  // Purge old updater container
+  const Updater = require('services/Updater')
+  await try_(Updater.postUpdate(), 'POST_UPDATE_ERR')
+
   // Running TaskScheduler
   const TaskScheduler = require('handlers/TaskScheduler')
   TaskScheduler.start()

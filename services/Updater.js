@@ -8,6 +8,27 @@ async function checkUpdate() {
   }
 }
 
+async function postUpdate() {
+  const docker = new Docker({ socketPath: '/var/run/docker.sock' })
+
+  docker.listContainers({ all: true, filters: { label: ['de.drjume.vplan-viso.upgrader'] } }, async (listErr, containers) => {
+    if (listErr) {
+      log.err('POST_UPDATE_LIST_CONTAINER_ERR', listErr)
+      return
+    }
+    containers.forEach((containerData) => {
+      docker.getContainer(containerData.Id).remove((removeErr, data) => {
+        if (listErr) {
+          log.err('POST_UPDATE_REMOVE_CONTAINER_ERR', removeErr)
+          return
+        }
+        log.debug('POST_UPDATE_REMOVED_CONTAINER_DATA', data)
+        log.info('REMOVED_UPDATE_CONTAINER')
+      })
+    })
+  })
+}
+
 async function runUpdate() {
   const docker = new Docker({ socketPath: '/var/run/docker.sock' })
 
@@ -20,9 +41,9 @@ async function runUpdate() {
 
     stream.on('close', async () => {
       const [runErr, container] = await try_(docker.run(
-        'containrrr/watchtower', ['--run-once', 'vplan-viso'],
+        'containrrr/watchtower:latest', ['--cleanup', '--run-once', 'vplan-viso'],
         log.createStream('debug', 'UPDATE_CONTAINER_RUN'),
-        { Binds: ['/var/run/docker.sock:/var/run/docker.sock'], Labels: { 'com.vplan-viso.upgrader': true } },
+        { Binds: ['/var/run/docker.sock:/var/run/docker.sock'], Labels: { 'de.drjume.vplan-viso.upgrader': '1' }/* , HostConfig: { AutoRemove: true }  // Cannot be used, times out during update */ },
       ), 'UPDATE_CONTAINER_RUN')
       if (runErr) return
 
@@ -35,3 +56,4 @@ async function runUpdate() {
 
 module.exports.checkUpdate = checkUpdate
 module.exports.runUpdate = runUpdate
+module.exports.postUpdate = postUpdate
