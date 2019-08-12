@@ -2,6 +2,9 @@
 const chalk = require('chalk')
 const jsome = require('jsome')
 
+const os = require('os')
+const WritableStream = require('stream').Writable
+
 jsome.colors = {
   num: 'yellowBright', // stands for numbers
   str: 'cyan', // stands for strings
@@ -57,60 +60,64 @@ function prettyJSON(data) {
 }
 
 /**
- * @param {!string} prefix Defaults are date and log type.
+ * @param {!string} type Log type.
  * @param {?string} label Labels the log message.
  * @param {object} [data] The data to log: gets prettified.
  * @param {boolean} [printRaw] true: disables the prettification. Needs data.
  */
-function generateLogString(prefix, args) {
+function generateLogString(type, args) {
   const label = args[0]
   let data = args[1]
   const printRaw = args[2]
 
-  if (args.length <= 1) { // only label
-    return chalk`${prefix} {whiteBright.bold (${label})}`
+  let output = `${generateLogPrefix(type)}`
+
+  if (label) {
+    output += chalk` {whiteBright.bold (${label})}`
   }
 
-  if (!printRaw) {
-    data = prettyJSON(data)
+  if (args.length > 1) { // is data described?
+    if (!printRaw) {
+      data = prettyJSON(data)
+    }
+
+    output += ` ${data}`
   }
 
-  if (!label) {
-    return chalk`${prefix} ${data}`
-  }
-  return chalk`${prefix} {whiteBright.bold (${label})} ${data}`
+  return output
 }
 
 const Logger = {
   err(...args) {
-    const logPrefix = generateLogPrefix('error')
-
-    console.log(generateLogString(logPrefix, args))
+    process.stdout.write(generateLogString('error', args) + os.EOL)
   },
 
   warn(...args) {
-    const logPrefix = generateLogPrefix('warning')
-
-    console.log(generateLogString(logPrefix, args))
+    process.stdout.write(generateLogString('warning', args) + os.EOL)
   },
 
   info(...args) {
-    const logPrefix = generateLogPrefix('info')
-
-    console.log(generateLogString(logPrefix, args))
+    process.stdout.write(generateLogString('info', args) + os.EOL)
   },
 
   debug(...args) {
     if (Config.dev.silence_debug_log) {
       return
     }
-    const logPrefix = generateLogPrefix('debug')
-
-    console.log(generateLogString(logPrefix, args))
+    process.stdout.write(generateLogString('debug', args) + os.EOL)
   },
 
   silenced() {
     // print nothing, used in try-wrapper to silence error logging
+  },
+
+  createStream(type, label) {
+    return new WritableStream({
+      write(chunk, encoding, callback) {
+        Logger[type](label, chunk.toString().trim(), true) // <-- true disables data prettification
+        callback()
+      },
+    })
   },
 }
 

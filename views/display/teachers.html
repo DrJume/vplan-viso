@@ -11,16 +11,21 @@
 </head>
 
 <body style="font-size: 1.2rem;">
-  <div class="columns is-gapless has-text-centered is-marginless" style="height: 100vh">
-    <vplan-teachers-column queue="current" class="column" style="display: flex; flex-direction: column; border-right: 1px solid"></vplan-teachers-column>
-    <vplan-teachers-column queue="next" class="column" style="display: flex; flex-direction: column; border-left: 1px solid"></vplan-teachers-column>
+  
+  <div class="columns is-gapless has-text-centered is-marginless" style="height: 95vh">
+    <vplan-teachers-column queue="current" class="column" style="display: flex; flex-direction: column; border-right: 1px solid; border-bottom: 2px solid"></vplan-teachers-column>
+    <vplan-teachers-column queue="next" class="column" style="display: flex; flex-direction: column; border-left: 1px solid; border-bottom: 2px solid"></vplan-teachers-column>
   </div>
 
+  <ticker type="teachers" style="width: 100vw; height: 5vh; margin: auto 0 auto 0"></ticker> 
+  
   <script src="/assets/riot-3.10.2/riot.js"></script>
   <script src="/assets/axios-0.18.0/axios.js"></script>
+  <script src="/assets/Marquee3000-1.0.6/marquee3k.js"></script>
   <script src="/riot/tags-compiled.js"></script>
   <script>
     riot.mount('vplan-teachers-column')
+    riot.mount('ticker')
   </script>
 
   <script src="/assets/notification-listener.js"></script>

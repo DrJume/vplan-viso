@@ -1,9 +1,7 @@
-const pkg = require('./package.json')
-
 module.exports = {
   apps: [
     {
-      name: `vplan-viso-${pkg.version}`,
+      name: 'vplan-viso',
       script: './index.js',
       watch: false,
       autorestart: true,

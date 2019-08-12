@@ -1,6 +1,5 @@
 const path = require('path')
 
-const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
 const { exec } = require('util/promisified').child_process
@@ -13,7 +12,7 @@ async function RunVplanReceiver() {
   UploadWatcher({
     added: async (queueDay, vplan) => {
       const vplanFilePath = path.format({
-        dir: path.join('upload/', queueDay),
+        dir: path.join('share/upload/', queueDay),
         // types: students / teachers
         name: vplan.type,
         ext: '.json',

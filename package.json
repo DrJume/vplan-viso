@@ -1,16 +1,16 @@
 {
   "name": "vplan-viso",
-  "version": "0.5.4-pre",
+  "version": "0.6.0",
   "description": "Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
-    "node": "8.14.x",
-    "npm": "6.4.x"
+    "node": "10.16.x",
+    "npm": "6.9.x"
   },
   "scripts": {
     "postinstall": "npm run build",
     "test": "echo 'Error: no test specified' && exit 1",
-    "reset": "rm -r upload/ ; rm -r logs/ ; rm config.json ; rm Update.tar.gz",
+    "reset": "rm -r share/",
     "build": "npx riot src/riot-tags/ routes/riot/tags.js && npx babel routes/riot/tags.js --out-file routes/riot/tags-compiled.js --source-maps",
     "predev-start": "npm run build",
     "dev-start": "node index.js --color",
@@ -26,33 +26,33 @@
   },
   "homepage": "https://github.com/DrJume/vplan-viso#readme",
   "devDependencies": {
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "nodemon": "^1.18.7",
-    "riot-cli": "^5.1.2"
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
     "axios": "^0.19.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "basic-auth": "^2.0.1",
-    "basic-ftp": "^2.16.1",
-    "body-parser": "^1.18.3",
+    "basic-ftp": "^3.8.0",
+    "body-parser": "^1.19.0",
     "boom": "^7.3.0",
-    "chalk": "^2.4.1",
-    "chokidar": "^2.0.4",
-    "express": "^4.16.4",
+    "chalk": "^2.4.2",
+    "chokidar": "^3.0.2",
+    "dockerode": "^2.5.8",
+    "express": "^4.17.1",
     "fanci": "^0.7.0",
     "jsome": "^2.5.0",
-    "moment": "^2.22.2",
+    "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "node-cron": "^2.0.3",
-    "pm2": "^3.5.1",
-    "semver": "^5.6.0",
+    "riot-cli": "^5.1.2",
+    "semver": "^6.3.0",
     "serve-favicon": "^2.5.0",
-    "tar": "^4.4.8",
-    "ws": "^6.1.2",
-    "xml-js": "^1.6.8"
+    "tar": "^4.4.10",
+    "ws": "^7.1.1",
+    "xml-js": "^1.6.11"
   }
 }

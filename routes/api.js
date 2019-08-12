@@ -1,7 +1,6 @@
 const express = require('express')
 const path = require('path')
 
-const try_ = require('helpers/try-wrapper')
 const promiseFs = require('util/promisified').fs
 
 const TaskScheduler = require('handlers/TaskScheduler')
@@ -30,8 +29,8 @@ router.use('/action', (req, res, next) => {
   setTimeout(() => {
     if (!credentials || !check(credentials.name, credentials.pass)) {
       res.statusCode = 401
-      res.setHeader('WWW-Authenticate', 'Basic realm="Big brother is watching you."')
-      res.end('Big brother is watching you.')
+      res.setHeader('WWW-Authenticate', 'Basic realm="Anmeldung:"')
+      res.end('')
     } else {
       next()
     }
@@ -41,7 +40,7 @@ router.use('/action', (req, res, next) => {
 
 async function readVplan(queueDay, vplanType) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
-    promiseFs.readFile(path.join('upload', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
+    promiseFs.readFile(path.join('share/upload/', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {

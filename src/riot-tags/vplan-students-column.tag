@@ -6,7 +6,7 @@
     </p>
   </div>
 
-  <table ref="table" class="table is-fullwidth is-narrow is-striped" hidden>
+  <table ref="table" class="table is-fullwidth is-narrow is-striped" style="margin-bottom: 0;" hidden>
     <thead>
       <th>Klasse</th>
       <th>Stunde</th>
@@ -46,7 +46,7 @@
       const getOuterHeight = (el) =>
         el.offsetHeight + parseFloat(getComputedStyle(el)['margin-top'].match(/\d+/g)[0]) + parseFloat(getComputedStyle(el)['margin-bottom'].match(/\d+/g)[0])
 
-      const isTableOverflowing = () => ((getOuterHeight(head) + getOuterHeight(table) + getOuterHeight(progress)) > window.innerHeight)
+      const isTableOverflowing = () => ((getOuterHeight(head) + getOuterHeight(table) /* + getOuterHeight(progress) */ ) > window.innerHeight*0.95)
 
       for (let [index, entry] of this.vplan.body.entries()) {
         if (index < indexThreshold) continue
@@ -85,7 +85,7 @@
 
           head.hidden = false
           table.hidden = false
-          progress.hidden = false
+          // progress.hidden = false
 
           // prerender
           let pagesNeeded = 1
