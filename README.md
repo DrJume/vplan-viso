@@ -8,7 +8,7 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 
 ## Install
 
-1. Install Docker
+1. Install Docker (stable)
 
 2. Write file docker-compose.yml:
 
@@ -57,5 +57,6 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 - [ ] VueJS based frontend
 - [ ] Display page progress
 - [ ] Ticker
+- [ ] Custom parser
 - [ ] Changes highlight
-- [ ] Internal FTP Support
+- [ ] Integrated FTP Support
