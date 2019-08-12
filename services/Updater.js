@@ -32,7 +32,7 @@ async function postUpdate() {
 async function runUpdate() {
   const docker = new Docker({ socketPath: '/var/run/docker.sock' })
 
-  docker.pull('containrrr/watchtower:latest', async (pullErr, stream) => {
+  docker.pull('containrrr/watchtower:arm64v8-latest', async (pullErr, stream) => {
     if (pullErr) {
       log.err('UPDATE_CONTAINER_PULL', pullErr)
       return
@@ -41,7 +41,7 @@ async function runUpdate() {
 
     stream.on('close', async () => {
       const [runErr, container] = await try_(docker.run(
-        'containrrr/watchtower:latest', ['--cleanup', '--run-once', 'vplan-viso'],
+        'containrrr/watchtower:arm64v8-latest', ['--cleanup', '--run-once', 'vplan-viso'],
         log.createStream('debug', 'UPDATE_CONTAINER_RUN'),
         { Binds: ['/var/run/docker.sock:/var/run/docker.sock'], Labels: { 'de.drjume.vplan-viso.upgrader': '1' }/* , HostConfig: { AutoRemove: true }  // Cannot be used, times out during update */ },
       ), 'UPDATE_CONTAINER_RUN')

@@ -4,6 +4,8 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 
 ---
 
+### **Currently only supported on arm64v8**!
+
 ## Install
 
 1. Install Docker
