@@ -57,5 +57,6 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 - [ ] VueJS based frontend
 - [ ] Display page progress
 - [ ] Ticker
-- [ ] Changes highlight
 - [ ] Internal FTP Support
+- [ ] Changes highlight
+- [ ] Animate display paging
