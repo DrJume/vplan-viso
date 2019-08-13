@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-auto position-relative">
     <div
-      v-if="status !== 'READY'"
+      :class="{'hide-spinner': status === 'READY'}"
       class="w-100 h-100 bg-white position-absolute d-flex justify-content-center align-items-center"
     >
       <div class="spinner-grow" style="width: 10rem; height: 10rem;"></div>
@@ -143,4 +143,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.hide-spinner {
+  display: none !important;
+}
 </style>
