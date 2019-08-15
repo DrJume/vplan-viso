@@ -2,7 +2,7 @@ const promiseFs = require('util/promisified').fs
 const { recursiveObjPatch } = require('util/object-tools')
 
 const DefaultConfig = {
-  webserver: { log_debug_tty: false, log_file: false },
+  webserver: { log_debug_tty: false, log_file: false, port: 8080 },
   updater: { pre_release: false },
   dev: { silence_debug_log: false },
   auth: { user: '', password: '' },
