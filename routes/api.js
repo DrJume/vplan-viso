@@ -38,14 +38,14 @@ router.use('/action', (req, res, next) => {
 })
 
 
-async function readVplan(queueDay, vplanType) {
+async function readVplan(vplanType, queueDay) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
     promiseFs.readFile(path.join('share/upload/', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {
     if (err.code === 'ENOENT') {
-      log.debug('NO_VPLAN_AVAILABLE', `${queueDay}/${vplanType}`)
+      log.debug('NO_VPLAN_AVAILABLE', `${vplanType}/${queueDay}`)
     } else {
       log.err('FILE_READ_ERR', err)
     }
@@ -60,15 +60,18 @@ async function readVplan(queueDay, vplanType) {
 }
 
 
-router.get('/current|next', async (req, res) => {
-  if (!req.query.type) {
-    res.send('No ?type= specified')
+router.get('/vplan/:type(students|teachers)', async (req, res) => {
+  if (!req.query.queue) {
+    res.send('No ?queue= specified')
     return
   }
-  const [err, vplanData] = await readVplan(req.path, req.query.type)
+  const { type } = req.params
+  const { queue } = req.query
+
+  const [err, vplanData] = await readVplan(type, queue)
 
   if (err) {
-    res.status(404).send(`No Vplan availiable for ${req.path}?type=${req.query.type}\nUsed types: teachers, students`)
+    res.status(404).send(`No Vplan availiable for ${type}?queue=${queue}\nPossible values for queue: current, next`)
     return
   }
 

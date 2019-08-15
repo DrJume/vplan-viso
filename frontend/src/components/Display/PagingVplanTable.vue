@@ -1,13 +1,13 @@
 <template>
-  <div class="overflow-auto position-relative">
+  <div class="overflow-hidden position-relative">
     <div
-      :class="{'hide-spinner': status === 'READY'}"
+      :class="{'hide-spinner': status === 'DONE_RENDERING'}"
       class="w-100 h-100 bg-white position-absolute d-flex justify-content-center align-items-center"
     >
       <div class="spinner-grow" style="width: 10rem; height: 10rem;"></div>
     </div>
 
-    <table class="table table-striped table-sm">
+    <table v-if="!!intersectionObserverRoot" class="table table-striped table-sm border-bottom">
       <thead>
         <tr>
           <th scope="col">Klasse</th>
@@ -47,32 +47,35 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers'
 export default {
-  name: "PagingTable",
+  name: "PagingVplanTable",
   props: {
-    msg: String
+    queue: String
   },
   methods: {
     _sum: arr => arr.reduce((acc, val) => acc + val, 0),
 
     entryVisibilityChanged(index, isVisible) {
-      if (this.status === 'READY') return
+      if (this.status === "DONE_RENDERING") return
 
-      console.log({ id: this.vplanScreenBuffer[index].id, isVisible })
+      // console.log({ id: this.vplanScreenBuffer[index].id, isVisible })
       if (!isVisible) this.$delete(this.vplanScreenBuffer, index)
 
       this.entriesRendered++
       if (isVisible) this.entriesVisible++
 
-      console.log(this.entriesRendered)
+      // console.log(this.entriesRendered)
 
-      if (this.entriesRendered + this._sum(this.vplanPreRenderedSlices) === this.vplan.length) {
-        this.vplanPreRenderedSlices.push(this.entriesVisible)
+      if (
+        this.entriesRendered + this._sum(this.vplanPreRenderedPageLengths) ===
+        this.vplan.length
+      ) {
+        this.vplanPreRenderedPageLengths.push(this.entriesVisible)
 
-        if (this._sum(this.vplanPreRenderedSlices) >= this.vplan.length) {
+        if (this._sum(this.vplanPreRenderedPageLengths) >= this.vplan.length) {
           this.vplanScreenBuffer = []
-          this.status = "READY"
+          this.status = "DONE_RENDERING"
+          console.log('DONE')
           this.displayVplan()
           return
         }
@@ -83,60 +86,64 @@ export default {
     },
 
     displayVplan() {
+      this.$store.commit('SET_VPLAN_PAGELENGTHS', {queue: this.queue, pageLengths: this.vplanPreRenderedPageLengths})
       this.populatePage()
     },
 
     populatePage(i = 0, acc = 0) {
       const start = acc
-      const end = acc+this.vplanPreRenderedSlices[i]
+      const end = acc + this.vplanPreRenderedPageLengths[i]
       this.vplanScreenBuffer = this.vplan.slice(start, end)
+
+      this.$store.commit('SET_VPLAN_PAGE', {queue: this.queue, pageNr: i})
 
       setTimeout(() => {
         i++
-        i < this.vplanPreRenderedSlices.length ? this.populatePage(i, end) : this.populatePage()
+        i < this.vplanPreRenderedPageLengths.length
+          ? this.populatePage(i, end)
+          : this.populatePage()
       }, 5000)
     }
   },
   updated() {
-    console.log("UPDATED")
+    // console.log("UPDATED")
     if (this.status === "NEXT_PAGE") {
       this.status = "RENDERING_PAGE"
       this.entriesRendered = 0
       this.entriesVisible = 0
       this.vplanScreenBuffer = this.vplan.slice(
-        this._sum(this.vplanPreRenderedSlices)
+        this._sum(this.vplanPreRenderedPageLengths)
       )
     }
   },
-  created() {
-    let mockData = []
-    for (let i = 1; i <= 50; i++) {
-      mockData.push({
-        id: i,
-        data: {
-          class: "6a",
-          lesson: i,
-          subject: "FR",
-          teacher: "Nen",
-          room: "116",
-          info: "Für FR Sch"
-        }
-      })
-    }
-    this.vplan = mockData
+  mounted() {
+    this.intersectionObserverRoot = this.$el
+    console.log(this.intersectionObserverRoot)
 
-    this.status = 'RENDERING_PAGE'
+    this.status = "RENDERING_PAGE"
+    console.log(this.vplan)
+    if (this.vplan === undefined) {
+      this.status = "DONE_RENDERING"
+      return
+    }
     this.vplanScreenBuffer = [...this.vplan]
+  },
+  created() {
+    
   },
   data() {
     return {
-      intersectionObserverRoot: this.$el,
-      vplan: [],
+      intersectionObserverRoot: undefined,
       vplanScreenBuffer: [],
-      vplanPreRenderedSlices: [],
+      vplanPreRenderedPageLengths: [],
       entriesRendered: 0,
       entriesVisible: 0,
       status: ""
+    }
+  },
+  computed: {
+    vplan() {
+      return this.$store.state.vplan[this.queue].data.body
     }
   }
 }

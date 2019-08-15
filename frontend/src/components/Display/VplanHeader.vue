@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center py-1">
+  <div class="text-center">
     <h1 class="mb-3">Donnerstag, 1. August 2017</h1>
     <p class="lead font-italic">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. 
@@ -9,11 +9,11 @@
 
 <script>
 export default {
-  name: "TableHeader",
+  name: "VplanHeader",
   props: {
     msg: String
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
