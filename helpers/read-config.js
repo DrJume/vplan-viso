@@ -6,6 +6,13 @@ const DefaultConfig = {
   updater: { pre_release: false },
   dev: { silence_debug_log: false },
   auth: { user: '', password: '' },
+  ftp: {
+    host: '',
+    port: '21',
+    user: '',
+    password: '',
+    secure: false,
+  },
 }
 
 module.exports = async function readConfig(configPath) {
