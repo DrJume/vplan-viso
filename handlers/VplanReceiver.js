@@ -7,10 +7,8 @@ const ftp = require('basic-ftp')
 const FrontendNotifier = require('services/FrontendNotifier')
 const UploadWatcher = require('services/UploadWatcher')
 
-const client = new ftp.Client()
-// client.ftp.verbose = true
-
 async function ftpPut(filePath) {
+  const client = new ftp.Client()
   const [err] = await try_(client.access({
     ...Config.ftp,
   }), 'FTP_WEB_SYNC_CONNECTION_ERR')
@@ -22,6 +20,7 @@ async function ftpPut(filePath) {
 }
 
 async function ftpDelete(filePath) {
+  const client = new ftp.Client()
   const [err] = await try_(client.access({
     ...Config.ftp,
   }), 'FTP_WEB_SYNC_CONNECTION_ERR')
