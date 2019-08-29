@@ -8,7 +8,8 @@
         "one-var": "off",
         "no-param-reassign": "off",
         "import/no-unresolved": "off",
-        "camelcase": "off"
+        "camelcase": "off",
+        "arrow-parens": "off"
     },
     "globals": {
         "log": true,

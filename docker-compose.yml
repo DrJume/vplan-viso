@@ -4,6 +4,8 @@ services:
     build: .
     image: drjume/vplan-viso
     container_name: vplan-viso
+    environment:
+      - TZ=Europe/Berlin
     ports:
       - "8080:8080"
     restart: unless-stopped
