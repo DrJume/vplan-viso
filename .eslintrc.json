@@ -9,7 +9,8 @@
         "no-param-reassign": "off",
         "import/no-unresolved": "off",
         "camelcase": "off",
-        "arrow-parens": "off"
+        "arrow-parens": "off",
+        "no-plusplus": "off"
     },
     "globals": {
         "log": true,

@@ -1,16 +1,12 @@
-const promiseFs = require('util/promisified').fs
-const FrontendNotifier = require('services/FrontendNotifier')
+const WebSocketSync = require('services/WebSocketSync')
 
 const fs = require('fs')
 
-const pkg = require('package.json')
-
 const express = require('express')
 const bodyParser = require('body-parser')
-const favicon = require('serve-favicon')
 const morgan = require('morgan')
 
-const routes = require('routes/index')
+const backend = require('backend/index')
 
 let server
 
@@ -37,31 +33,11 @@ async function RunWebServer() {
     app.use(morgan('dev', { stream: log.createStream('debug', 'WEBSERVER') })) // dev styled output to logger as stream (prefixing date, etc.)
   }
 
-  app.engine('html', async (filePath, options, callback) => { // define a simple template engine
-    let err, content // eslint-disable-next-line prefer-const
-    [err, content] = await try_(
-      promiseFs.readFile(filePath, { encoding: 'utf-8' }),
-      'FILE_READ_ERR',
-    )
-    if (err) {
-      callback(err)
-      return
-    }
-
-    const rendered = content
-      .toString()
-      .replace(/{{PKG_VERSION}}/g, pkg.version)
-
-    callback(null, rendered)
-  })
-  app.set('view engine', 'html')
-
   app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
   app.use(bodyParser.json()) // parse application/json
-  app.use(favicon('routes/assets/favicon.ico'))
 
   // Define routes in routes/index.js
-  app.use('/', routes)
+  app.use('/', backend)
 
   // Custom error handling middleware
   app.use((err, req, res, next) => {
@@ -70,13 +46,13 @@ async function RunWebServer() {
     res.status(500).send(err.toString())
   })
 
-  // Default port is 8080, because of internal Docker container port mapping
-  server = app.listen(Config.webserver.port, '0.0.0.0', () => {
-    log.info('APP_LISTENING', `http://0.0.0.0:${Config.webserver.port}`)
+  // Default port is 8000, because of internal Docker container port mapping
+  server = app.listen(8000, '0.0.0.0', () => {
+    log.info('APP_LISTENING', 'http://0.0.0.0:8000')
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 
   log.info('DISPLAY_AUTO_RELOAD_INIT')
-  try_(() => FrontendNotifier.initialize(server), 'WEBSOCKET_SERVER_ERR')
+  try_(() => WebSocketSync.initialize(server), 'WEBSOCKET_SERVER_ERR')
 }
 
 function StopWebServer() {

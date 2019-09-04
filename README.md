@@ -38,15 +38,15 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 
 ```tree
 .
+├── backend/        # HTTP-Endpoint router modules
+├── frontend/       # VueJS frontend project
 ├── handlers/       # Independent abstracted modules running the app duties
 ├── helpers/        # Helper modules for dev environment
 ├── lib/            # Helper libraries for Vplan lifecycle
-├── routes/         # HTTP-Endpoint router modules
 ├── services/       # Main operating libraries used by handlers
-├── util/           # Small utility functions
-├── test/           # Resources for testing
-├── views/          # HTML view files
 ├── share/          # Shareable config and data files
+├── test/           # Resources for testing
+├── util/           # Small utility functions
 └── index.js        # Entry module (async)
 ```
 
@@ -54,9 +54,10 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 
 - [x] Docker support
 - [x] Auto Updater
-- [ ] VueJS based frontend
-- [ ] Display page progress
+- [x] VueJS based frontend
+- [x] Display page progress
+- [x] Internal FTP Support
 - [ ] Ticker
 - [ ] Custom parser
 - [ ] Changes highlight
-- [ ] Integrated FTP Support
+- [ ] Animate display paging

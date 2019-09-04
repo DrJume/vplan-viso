@@ -14,5 +14,5 @@ RUN npm ci --only=production
 # RUN npm config set unsafe-perm true NOT NEEDED
 RUN npm install pm2 -g
 
-EXPOSE 8080
+EXPOSE 8000
 CMD [ "pm2-runtime", "--raw", "pm2.config.js" ]

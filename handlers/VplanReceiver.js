@@ -4,7 +4,7 @@ const fs = require('fs')
 const { exec } = require('util/promisified').child_process
 const ftp = require('basic-ftp')
 
-const FrontendNotifier = require('services/FrontendNotifier')
+const WebSocketSync = require('services/WebSocketSync')
 const UploadWatcher = require('services/UploadWatcher')
 
 async function ftpPut(filePath) {
@@ -48,21 +48,21 @@ async function RunVplanReceiver() {
       )
       log.info('VPLAN_FILE_ADDED', vplanFilePath)
 
-      FrontendNotifier.reloadAll()
+      // WebSocketSync.reloadAll()
 
       log.debug('FTP_PUT', vplanFilePath)
       await ftpPut(vplanFilePath)
     },
     changed: async (queueDay, filePath) => {
       log.info('VPLAN_FILE_UPDATED', filePath)
-      FrontendNotifier.reloadAll()
+      // WebSocketSync.reloadAll()
 
       log.debug('FTP_PUT', filePath)
       await ftpPut(filePath)
     },
     deleted: async (queueDay, filePath) => {
       log.warn('VPLAN_FILE_REMOVED', filePath)
-      FrontendNotifier.reloadAll()
+      // WebSocketSync.reloadAll()
 
       log.debug('FTP_DELETE', filePath)
       await ftpDelete(filePath)

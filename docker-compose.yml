@@ -7,7 +7,7 @@ services:
     environment:
       - TZ=Europe/Berlin
     ports:
-      - "8080:8080"
+      - "8080:8000"
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
