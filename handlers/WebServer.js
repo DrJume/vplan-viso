@@ -1,9 +1,6 @@
-const promiseFs = require('util/promisified').fs
 const WebSocketSync = require('services/WebSocketSync')
 
 const fs = require('fs')
-
-const pkg = require('package.json')
 
 const express = require('express')
 const bodyParser = require('body-parser')
