@@ -27,7 +27,7 @@ router.use('/dashboard|/display', (req, res, next) => {
 router.use('/api', api)
 router.use(express.static('frontend/dist'))
 
-// Root path listener
+// Serve SPA with frontend router in history mode
 router.get('*', (req, res) => {
   res.sendFile(path.resolve(process.env.NODE_PATH, 'frontend/dist/index.html'))
 })
