@@ -1,11 +1,11 @@
 <template>
-  <div class="border-top p-1 d-flex flex-row justify-content-between">
-    <div v-if="pageLengths.length === 0" class="progress flex-fill m-1" >
+  <div class="border-top border-dark p-1 d-flex flex-row justify-content-between">
+    <div v-if="pageChunks.length === 0" class="progress flex-fill m-1" >
       <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
     </div>
 
-    <div class="progress flex-fill m-1" v-for="(pageLengths, index) in pageLengths" :key="index">
-      <div class="progress-bar paging-animation" :class="{'paging-progress': activePage === index, 'paging-done': index < activePage}"></div>
+    <div v-else class="progress flex-fill m-1" v-for="(pageChunk, index) in pageChunks" :key="index">
+      <div class="progress-bar paging-animation" :class="{'paging-progress': (pageChunks.length > 1) && (activePage === index), 'paging-done': index < activePage}"></div>
     </div>
 
   </div>
@@ -18,16 +18,16 @@ export default {
     queue: String
   },
   computed: {
-    pageLengths () {
-      return this.$store.state.vplan[this.queue].display.pageLengths
+    pageChunks () {
+      return this.$store.state.display.vplan[this.queue].paging.pageChunks
     },
     activePage() {
-      return this.$store.state.vplan[this.queue].display.activePage
+      return this.$store.state.display.vplan[this.queue].paging.activePage
     },
     vplanAvailable() {
       const isObjEmpty = obj => Object.keys(obj).length === 0
 
-      return !isObjEmpty(this.$store.state.vplan[this.queue].data)
+      return !isObjEmpty(this.$store.state.display.vplan[this.queue].data)
     }
   },
   data() {
@@ -36,7 +36,7 @@ export default {
     }
   },
   watch: {
-    pageLengths: (newVal, oldVal) => {
+    pageChunks: (newVal, oldVal) => {
 
     }
   },
@@ -54,10 +54,6 @@ export default {
 .progress-bar {
   background-color: #212529;
 }
-
-// .progress-bar-animated {
-//   animation-duration: 0.5s;
-// }
 
 .paging-animation {
   animation-duration: 5s;

@@ -18,7 +18,7 @@ export default new Router({
       component: Dashboard
     },
     {
-      path: '/display',
+      path: '/display/:target',
       component: Display
     },
   ]

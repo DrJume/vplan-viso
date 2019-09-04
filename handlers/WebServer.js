@@ -1,5 +1,5 @@
 const promiseFs = require('util/promisified').fs
-const FrontendNotifier = require('services/FrontendNotifier')
+const WebSocketSync = require('services/WebSocketSync')
 
 const fs = require('fs')
 
@@ -70,12 +70,12 @@ async function RunWebServer() {
   })
 
   // Listen on port specified in config.json and LAN IP-adress
-  server = app.listen(8080, '0.0.0.0', () => {
-    log.info('APP_LISTENING', 'http://0.0.0.0:8080')
+  server = app.listen(8088, '0.0.0.0', () => {
+    log.info('APP_LISTENING', 'http://0.0.0.0:8088')
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 
   log.info('DISPLAY_AUTO_RELOAD_INIT')
-  try_(() => FrontendNotifier.initialize(server), 'WEBSOCKET_SERVER_ERR')
+  try_(() => WebSocketSync.initialize(server), 'WEBSOCKET_SERVER_ERR')
 }
 
 function StopWebServer() {
