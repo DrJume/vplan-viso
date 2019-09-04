@@ -1,6 +1,5 @@
-routes/riot/
+frontend/dist/
 Update.tar.gz
-riot.config.js
 share/
 
 # Created by https://www.gitignore.io/api/node,macos,visualstudiocode

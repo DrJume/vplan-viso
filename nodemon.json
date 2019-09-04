@@ -3,7 +3,7 @@
   "ignore": [
     "share/",
     "test/vplan-files/",
-    "routes/riot/"
+    "frontend/dist/"
   ],
   "ext": "js,json,css,html,tag",
   "exec": "npm run dev-start"

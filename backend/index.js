@@ -1,8 +1,7 @@
 const express = require('express')
+const path = require('path')
 
-const dashboard = require('routes/dashboard')
-const api = require('routes/api')
-const display = require('routes/display')
+const api = require('backend/api')
 
 const router = express.Router()
 
@@ -14,7 +13,7 @@ router.use('/dashboard|/display', (req, res, next) => {
   const edgeRegEx = RegExp('Edge')
   const isSupportedBrowser = browserRegEx.test(userAgent) && !edgeRegEx.test(userAgent)
 
-  // log.debug('SUPPORTED_BROWSER', isSupportedBrowser)
+  log.debug('SUPPORTED_BROWSER', isSupportedBrowser)
 
   if (!isSupportedBrowser) {
     res.send("<script>alert('Dieser Browser wird nicht unterstützt.')</script>")
@@ -25,15 +24,12 @@ router.use('/dashboard|/display', (req, res, next) => {
 })
 
 // Define routes
-router.use('/dashboard', dashboard)
-router.use('/assets', express.static('routes/assets'))
-router.use('/riot', express.static('routes/riot'))
 router.use('/api', api)
-router.use('/display', display)
+router.use(express.static('frontend/dist'))
 
 // Root path listener
-router.get('/', (req, res) => {
-  res.render('intro')
+router.get('*', (req, res) => {
+  res.sendFile(path.resolve(process.env.NODE_PATH, 'frontend/dist/index.html'))
 })
 
 module.exports = router
