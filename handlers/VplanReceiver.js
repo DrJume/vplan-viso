@@ -1,12 +1,36 @@
 const path = require('path')
-
 const promiseFs = require('util/promisified').fs
-
+const fs = require('fs')
 const { exec } = require('util/promisified').child_process
+const ftp = require('basic-ftp')
 
 const WebSocketSync = require('services/WebSocketSync')
-
 const UploadWatcher = require('services/UploadWatcher')
+
+async function ftpPut(filePath) {
+  const client = new ftp.Client()
+  const [err] = await try_(client.access({
+    ...Config.ftp,
+  }), 'FTP_WEB_SYNC_CONNECTION_ERR')
+  if (err) return
+
+  await try_(client.upload(fs.createReadStream(filePath), filePath.match(/share\/(.*)/)[1]), 'FTP_WEB_SYNC_PUT_ERR')
+
+  client.close()
+}
+
+async function ftpDelete(filePath) {
+  const client = new ftp.Client()
+  const [err] = await try_(client.access({
+    ...Config.ftp,
+  }), 'FTP_WEB_SYNC_CONNECTION_ERR')
+  if (err) return
+
+  await try_(client.remove(filePath.match(/share\/(.*)/)[1]), 'FTP_WEB_SYNC_DELETE_ERR')
+
+  client.close()
+}
+
 
 async function RunVplanReceiver() {
   UploadWatcher({
@@ -26,19 +50,22 @@ async function RunVplanReceiver() {
 
       WebSocketSync.reloadAll()
 
-      try_(exec(`./ftp_put.sh ${vplanFilePath}`), 'FTP_WEB_SYNC_FAILED')
+      log.debug('FTP_PUT', vplanFilePath)
+      await ftpPut(vplanFilePath)
     },
-    changed: (queueDay, filePath) => {
+    changed: async (queueDay, filePath) => {
       log.info('VPLAN_FILE_UPDATED', filePath)
       WebSocketSync.reloadAll()
 
-      try_(exec(`./ftp_put.sh ${filePath}`), 'FTP_WEB_SYNC_FAILED')
+      log.debug('FTP_PUT', filePath)
+      await ftpPut(filePath)
     },
-    deleted: (queueDay, filePath) => {
+    deleted: async (queueDay, filePath) => {
       log.warn('VPLAN_FILE_REMOVED', filePath)
       WebSocketSync.reloadAll()
 
-      try_(exec(`./ftp_delete.sh ${filePath}`), 'FTP_WEB_SYNC_FAILED')
+      log.debug('FTP_DELETE', filePath)
+      await ftpDelete(filePath)
     },
   })
 }

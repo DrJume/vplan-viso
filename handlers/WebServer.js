@@ -42,10 +42,11 @@ async function RunWebServer() {
   // Custom error handling middleware
   app.use((err, req, res, next) => {
     log.err('WEBSERVER_ERR', err)
-    next(err)
+    // next(err)
+    res.status(500).send(err.toString())
   })
 
-  // Listen on port specified in config.json and LAN IP-adress
+  // Default port is 8000, because of internal Docker container port mapping
   server = app.listen(8000, '0.0.0.0', () => {
     log.info('APP_LISTENING', 'http://0.0.0.0:8000')
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })

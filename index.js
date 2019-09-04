@@ -34,6 +34,8 @@
     log.err('UNHANDLED_REJECTION', error)
   })
   process.on('uncaughtException', (error) => {
+    if (error.code === 'EADDRINUSE') return // non perfect fix for server listener failing error catching
+
     Object.assign(error, {
       ErrorString: error.toString(),
       ErrorStack: error.stack,
