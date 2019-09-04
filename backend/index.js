@@ -13,7 +13,7 @@ router.use('/dashboard|/display', (req, res, next) => {
   const edgeRegEx = RegExp('Edge')
   const isSupportedBrowser = browserRegEx.test(userAgent) && !edgeRegEx.test(userAgent)
 
-  log.debug('SUPPORTED_BROWSER', isSupportedBrowser)
+  // log.debug('SUPPORTED_BROWSER', isSupportedBrowser)
 
   if (!isSupportedBrowser) {
     res.send("<script>alert('Dieser Browser wird nicht unterstützt.')</script>")

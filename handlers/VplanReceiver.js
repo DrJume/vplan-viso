@@ -48,21 +48,21 @@ async function RunVplanReceiver() {
       )
       log.info('VPLAN_FILE_ADDED', vplanFilePath)
 
-      WebSocketSync.reloadAll()
+      // WebSocketSync.reloadAll()
 
       log.debug('FTP_PUT', vplanFilePath)
       await ftpPut(vplanFilePath)
     },
     changed: async (queueDay, filePath) => {
       log.info('VPLAN_FILE_UPDATED', filePath)
-      WebSocketSync.reloadAll()
+      // WebSocketSync.reloadAll()
 
       log.debug('FTP_PUT', filePath)
       await ftpPut(filePath)
     },
     deleted: async (queueDay, filePath) => {
       log.warn('VPLAN_FILE_REMOVED', filePath)
-      WebSocketSync.reloadAll()
+      // WebSocketSync.reloadAll()
 
       log.debug('FTP_DELETE', filePath)
       await ftpDelete(filePath)
