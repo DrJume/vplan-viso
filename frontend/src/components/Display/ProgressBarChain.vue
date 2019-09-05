@@ -4,29 +4,33 @@
       <div
         v-if="Status === 'RENDERING'"
         class="progress-bar progress-bar-striped progress-bar-animated w-100"
-      ></div>
+      />
     </div>
 
     <div
-      v-else
-      class="progress flex-fill m-1"
       v-for="(pageChunk, index) in PageChunks"
+      v-else
       :key="index"
+      class="progress flex-fill m-1"
     >
       <div
         class="progress-bar paging-animation"
-        :style="{'animation-duration': `${pageChunk.displayTime}ms`}"
-        :class="{'paging-progress': (PageChunks.length > 1) && (ActivePage === index), 'paging-done': index < ActivePage}"
-      ></div>
+        :style="{'animation-duration': `${pageChunk.displayTime}ms`,}"
+        :class="{'paging-progress': (PageChunks.length > 1) && (ActivePage === index),
+                 'paging-done': index < ActivePage,}"
+      />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ProgressBarChain",
+  name: 'ProgressBarChain',
   props: {
-    queue: String
+    queue: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     PageChunks() {
@@ -47,7 +51,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .progress {
   height: 10px;
 }

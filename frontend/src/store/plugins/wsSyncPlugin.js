@@ -1,5 +1,4 @@
 export default function wsSyncPlugin(store) {
-
   console.debug({ wsSyncPlugin: 'INIT' })
   // const socketUrl = `ws://${window.location.origin}`
   const socketUrl = 'ws://localhost:8000'
@@ -28,8 +27,10 @@ export default function wsSyncPlugin(store) {
     }
 
     ws.onmessage = (msg) => {
+      let wsPacket
+
       try {
-        var wsPacket = JSON.parse(msg.data)
+        wsPacket = JSON.parse(msg.data)
       } catch {
         console.error({ wsSyncPlugin: 'PACKET_MALFORMED', data: msg.data })
         return
@@ -48,15 +49,12 @@ export default function wsSyncPlugin(store) {
         }
 
 
-
         default:
           break
       }
     }
   }
   wsInit()
-
-
 
 
   // socket.on('data', data => {

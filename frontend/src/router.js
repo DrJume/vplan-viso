@@ -11,15 +11,15 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard'
+      redirect: '/dashboard',
     },
     {
       path: '/dashboard',
-      component: Dashboard
+      component: Dashboard,
     },
     {
       path: '/display/:target',
-      component: Display
+      component: Display,
     },
-  ]
+  ],
 })

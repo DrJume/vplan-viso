@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable-next-line -->
   <span v-html="getSVG()" />
 </template>
 
@@ -6,24 +7,24 @@
 import octicons from '@primer/octicons'
 
 export default {
-  name: "Octicon",
+  name: 'Octicon',
   props: {
     icon: {
       type: String,
-      required: true
+      required: true,
     },
     scale: {
       type: Number,
-      default: 1
+      default: 1,
     },
     className: {
       type: String,
-      default: ''
+      default: '',
     },
     label: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   methods: {
     getSVG() {
@@ -31,10 +32,10 @@ export default {
         width: (octicons[this.icon].width * this.scale),
         height: (octicons[this.icon].height * this.scale),
         class: this.className,
-        'aria-label': this.label
+        'aria-label': this.label,
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -18,33 +18,29 @@
 
 <script>
 // @ is an alias to /src
+// eslint-disable-next-line import/extensions
 import getDisplayStore from '@/store/display'
-import PagingVplanTable from "@/components/Display/PagingVplanTable.vue"
-import VplanHeader from "@/components/Display/VplanHeader.vue"
-import ProgressBarChain from "@/components/Display/ProgressBarChain.vue"
+import PagingVplanTable from '@/components/Display/PagingVplanTable.vue'
+import VplanHeader from '@/components/Display/VplanHeader.vue'
+import ProgressBarChain from '@/components/Display/ProgressBarChain.vue'
 import Placeholder from '@/components/Display/Placeholder.vue'
 
 export default {
-  name: "Display",
+  name: 'Display',
   store: getDisplayStore(),
   components: {
     PagingVplanTable,
     VplanHeader,
     ProgressBarChain,
-    Placeholder
+    Placeholder,
+  },
+  created() {
+    this.$store.commit('SET_DISPLAY_TARGET', this.$route.params.target)
   },
   methods: {
     getVplan(queue) {
       return this.$store.state.display.vplan[queue].data
-    }
+    },
   },
-  data() {
-    return {
-
-    }
-  },
-  created() {
-    this.$store.commit("SET_DISPLAY_TARGET", this.$route.params.target)
-  }
 }
 </script>

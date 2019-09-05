@@ -3,14 +3,14 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import axios from 'axios'
+// import axios from 'axios'
 
 export default () => new Vuex.Store({
   state: {
-    
+
   },
   mutations: {
-    
+
   },
   actions: {
     // async fetchVplan({ commit, state }, { queue }) {
@@ -29,5 +29,5 @@ export default () => new Vuex.Store({
     //   }
 
     // }
-  }
+  },
 })

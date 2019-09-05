@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
-
-import axios from 'axios'
+// import axios from 'axios'
 
 import wsSyncPlugin from './plugins/wsSyncPlugin'
+
+Vue.use(Vuex)
 
 export default () => new Vuex.Store({
   plugins: [wsSyncPlugin],
@@ -17,21 +17,21 @@ export default () => new Vuex.Store({
           data: {},
           paging: {
             activePage: 0,
-            pageChunks: []
+            pageChunks: [],
           },
-          status: ""
+          status: '',
         },
         next: {
           data: {},
           paging: {
             activePage: 0,
-            pageChunks: []
+            pageChunks: [],
           },
-          status: ""
-        }
+          status: '',
+        },
       },
-      ticker: ''
-    }
+      ticker: '',
+    },
   },
   mutations: {
     SET_DISPLAY_TARGET(state, target) {
@@ -51,7 +51,7 @@ export default () => new Vuex.Store({
     },
     SET_TICKER(state, tickerTxt) {
       state.display.ticker = tickerTxt
-    }
+    },
   },
   actions: {
     // async fetchVplan({ commit, state }, { queue }) {
@@ -70,5 +70,5 @@ export default () => new Vuex.Store({
     //   }
 
     // }
-  }
+  },
 })

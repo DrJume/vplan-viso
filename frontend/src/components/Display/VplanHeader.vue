@@ -7,10 +7,10 @@
 
 <script>
 export default {
-  name: "VplanHeader",
+  name: 'VplanHeader',
   props: {
-    msg: String
-  }
+
+  },
 }
 </script>
 

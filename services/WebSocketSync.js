@@ -61,7 +61,9 @@ const WebSocketSync = {
             ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } }))
 
             // setTimeout(() => {
-            //   ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } }))
+            //   ws.send(JSON.stringify(
+            //     { type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } },
+            //   ))
             // }, 7000)
             break
           }
