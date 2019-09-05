@@ -8,7 +8,7 @@ import App from './App.vue'
 import router from './router'
 
 Vue.use(VueObserveVisibility)
-Vue.component('octicon', Octicon)
+Vue.component('Octicon', Octicon)
 
 Vue.config.productionTip = false
 

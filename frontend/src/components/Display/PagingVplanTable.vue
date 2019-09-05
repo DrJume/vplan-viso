@@ -14,8 +14,8 @@
         v-if="Status === 'ERR_VIEWPORT_OVERFLOW'"
         class="h-50 d-flex flex-column align-items-center justify-content-around"
       >
-        <octicon icon="alert" :scale="5" />
-        <octicon icon="screen-normal" :scale="3" />
+        <Octicon icon="alert" :scale="5" />
+        <Octicon icon="screen-normal" :scale="3" />
       </div>
     </div>
 
