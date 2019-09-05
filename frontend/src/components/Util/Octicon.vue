@@ -1,12 +1,12 @@
 <template>
-  <span v-html="getSVG()"></span>
+  <span v-html="getSVG()" />
 </template>
 
 <script>
 import octicons from '@primer/octicons'
 
 export default {
-  name: "octicon",
+  name: "Octicon",
   props: {
     icon: {
       type: String,

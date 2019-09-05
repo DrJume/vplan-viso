@@ -53,16 +53,16 @@ const WebSocketSync = {
         const [err, wsPacket] = try_(() => JSON.parse(msg), 'WEBSOCKET_PACKET_MALFORMED', { msg, clientIP })
         if (err) return
 
-        log.debug('WEBSOCKET_PACKET', { data: wsPacket, clientIP })
+        log.debug('WEBSOCKET_PACKET', { packet: wsPacket, clientIP })
 
         switch (wsPacket.type) {
           case 'JOIN': {
             ws.send(JSON.stringify({ type: 'TICKER', payload: 'Lorem ipsum dolor sit amet.' }))
-            ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVplan(10), queue: 'current' } }))
+            ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } }))
 
-            setTimeout(() => {
-              ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } }))
-            }, 7000)
+            // setTimeout(() => {
+            //   ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } }))
+            // }, 7000)
             break
           }
 

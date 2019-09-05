@@ -3,8 +3,8 @@
   "ignore": [
     "share/",
     "test/vplan-files/",
-    "frontend/dist/"
+    "frontend/"
   ],
-  "ext": "js,json,css,html,tag",
+  "ext": "js,json",
   "exec": "npm run dev-start"
 }

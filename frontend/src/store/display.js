@@ -18,14 +18,16 @@ export default () => new Vuex.Store({
           paging: {
             activePage: 0,
             pageChunks: []
-          }
+          },
+          status: ""
         },
         next: {
           data: {},
           paging: {
             activePage: 0,
             pageChunks: []
-          }
+          },
+          status: ""
         }
       },
       ticker: ''
@@ -34,6 +36,9 @@ export default () => new Vuex.Store({
   mutations: {
     SET_DISPLAY_TARGET(state, target) {
       state.display.target = target
+    },
+    SET_STATUS(state, { queue, status }) {
+      state.display.vplan[queue].status = status
     },
     SET_VPLAN(state, { queue, vplan }) {
       state.display.vplan[queue].data = vplan

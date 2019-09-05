@@ -12,7 +12,6 @@
     "test": "echo 'Error: no test specified' && exit 1",
     "reset": "rm -r share/",
     "build": "cd frontend/ && npm run build",
-    "predev-start": "npm run build",
     "dev-start": "node index.js --color",
     "dev": "npx nodemon index.js",
     "start": "npx pm2 start pm2.config.js",
