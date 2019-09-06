@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'VplanHeader',
+  name: 'VPlanHeader',
   props: {
 
   },

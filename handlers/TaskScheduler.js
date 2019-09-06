@@ -1,13 +1,13 @@
 const cron = require('node-cron')
 
 const Updater = require('services/Updater')
-const VplanParser = require('lib/VplanParser')
+const VPlanParser = require('lib/VPlanParser')
 
 const promiseFs = require('util/promisified').fs
 
 // TODO: check for code quality
 
-async function shiftVplan(type) {
+async function shiftVPlan(type) {
   // returns false on failure
 
   // delete current vplan
@@ -18,8 +18,8 @@ async function shiftVplan(type) {
   }
 
   // get next vplan and move it into current if its for current day
-  let nextVplanJSON // eslint-disable-next-line prefer-const
-  [err, nextVplanJSON] = await try_(
+  let nextVPlanJSON // eslint-disable-next-line prefer-const
+  [err, nextVPlanJSON] = await try_(
     promiseFs.readFile(`share/upload/next/${type}.json`, { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
   )
@@ -32,11 +32,11 @@ async function shiftVplan(type) {
     return false
   }
 
-  let nextVplan // eslint-disable-next-line prefer-const
-  [err, nextVplan] = try_(() => JSON.parse(nextVplanJSON), 'JSON_PARSE_ERR')
+  let nextVPlan // eslint-disable-next-line prefer-const
+  [err, nextVPlan] = try_(() => JSON.parse(nextVPlanJSON), 'JSON_PARSE_ERR')
   if (err) return false
 
-  const queueDay = VplanParser.getQueueDay(nextVplan)
+  const queueDay = VPlanParser.getQueueDay(nextVPlan)
   if (!queueDay) {
     log.err('UNKNOWN_QUEUEDAY', `share/upload/next/${type}.json`)
     return false
@@ -47,7 +47,7 @@ async function shiftVplan(type) {
   }
 
   [err] = await try_(
-    promiseFs.writeFile(`share/upload/current/${type}.json`, nextVplanJSON),
+    promiseFs.writeFile(`share/upload/current/${type}.json`, nextVPlanJSON),
     'FILE_WRITE_ERR',
   )
   if (err) return false;
@@ -78,11 +78,11 @@ async function RunUpdate() {
   await Updater.runUpdate(update)
 }
 
-async function RunVplanShift() {
+async function RunVPlanShift() {
   log.info('VPLAN_SHIFT')
 
-  if (!(await shiftVplan('students'))) log.err('STUDENT_VPLANSHIFT_FAILED')
-  if (!(await shiftVplan('teachers'))) log.err('TEACHER_VPLANSHIFT_FAILED')
+  if (!(await shiftVPlan('students'))) log.err('STUDENT_VPLANSHIFT_FAILED')
+  if (!(await shiftVPlan('teachers'))) log.err('TEACHER_VPLANSHIFT_FAILED')
 }
 
 function StartTaskRunner() {
@@ -91,13 +91,13 @@ function StartTaskRunner() {
     await RunUpdate()
   })
 
-  // Vplan day shift on week days
+  // VPlan day shift on week days
   cron.schedule('0 1 * * Mon-Fri', async () => {
-    await RunVplanShift()
+    await RunVPlanShift()
   })
 }
 
 
 module.exports.start = StartTaskRunner
 module.exports.RunUpdate = RunUpdate
-module.exports.RunVplanShift = RunVplanShift
+module.exports.RunVPlanShift = RunVPlanShift

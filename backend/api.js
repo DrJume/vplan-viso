@@ -38,7 +38,7 @@ router.use('/action', (req, res, next) => {
 })
 
 
-async function readVplan(vplanType, queueDay) {
+async function readVPlan(vplanType, queueDay) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
     promiseFs.readFile(path.join('share/upload/', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
@@ -68,10 +68,10 @@ router.get('/vplan/:type(students|teachers)', async (req, res) => {
   const { type } = req.params
   const { queue } = req.query
 
-  const [err, vplanData] = await readVplan(type, queue)
+  const [err, vplanData] = await readVPlan(type, queue)
 
   if (err) {
-    res.status(404).send(`No Vplan availiable for ${type}?queue=${queue}\nPossible values for queue: current, next`)
+    res.status(404).send(`No VPlan availiable for ${type}?queue=${queue}\nPossible values for queue: current, next`)
     return
   }
 
@@ -88,7 +88,7 @@ router.get('/action', async (req, res) => { // TODO: Check code quality
 
     case 'vplan-shift': {
       res.redirect('/')
-      await TaskScheduler.RunVplanShift()
+      await TaskScheduler.RunVPlanShift()
       break
     }
 

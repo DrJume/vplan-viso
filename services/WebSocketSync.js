@@ -18,7 +18,7 @@ const WebSocketSync = {
     log.debug('WEBSOCKET_SERVER_START')
     wsServer = new WebSocket.Server({ server: httpServer })
 
-    const getMockVplan = (length = 20, subject = 'FR') => {
+    const getMockVPlan = (length = 20, subject = 'FR') => {
       const mockData = {
         type: 'students',
         head: [],
@@ -58,11 +58,11 @@ const WebSocketSync = {
         switch (wsPacket.type) {
           case 'JOIN': {
             ws.send(JSON.stringify({ type: 'TICKER', payload: 'Lorem ipsum dolor sit amet.' }))
-            ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } }))
+            ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVPlan(25, 'CH'), queue: 'current' } }))
 
             // setTimeout(() => {
             //   ws.send(JSON.stringify(
-            //     { type: 'VPLAN', payload: { vplan: getMockVplan(25, 'CH'), queue: 'current' } },
+            //     { type: 'VPLAN', payload: { vplan: getMockVPlan(25, 'CH'), queue: 'current' } },
             //   ))
             // }, 7000)
             break

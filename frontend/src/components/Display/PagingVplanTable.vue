@@ -59,7 +59,7 @@
 
 <script>
 export default {
-  name: 'PagingVplanTable',
+  name: 'PagingVPlanTable',
   props: {
     queue: {
       type: String,
@@ -80,7 +80,7 @@ export default {
   },
 
   computed: {
-    Vplan() {
+    VPlan() {
       return this.$store.state.display.vplan[this.queue].data.body
     },
     Status: {
@@ -95,7 +95,7 @@ export default {
 
   watch: {
     Status(newVal) {
-      console.debug({ PagingVplanTable: newVal, queue: this.queue })
+      console.debug({ PagingVPlanTable: newVal, queue: this.queue })
     },
   },
 
@@ -103,18 +103,18 @@ export default {
     this.tableViewport = this.$el
     console.debug({ tableViewport: this.tableViewport })
 
-    this.renderVplan()
+    this.renderVPlan()
 
     this.$store.subscribe((mutation) => {
-      console.debug({ PagingVplanTable: 'STORE_MUTATION', ...mutation })
+      console.debug({ PagingVPlanTable: 'STORE_MUTATION', ...mutation })
       if (mutation.type === 'SET_VPLAN') {
-        this.renderVplan()
+        this.renderVPlan()
       }
     })
   },
 
   updated() {
-    // console.debug({ PagingVplanTable: "UPDATE_HOOK" })
+    // console.debug({ PagingVPlanTable: "UPDATE_HOOK" })
   },
 
   created() {
@@ -123,14 +123,14 @@ export default {
     }
 
     const debouncedRerender = _debounce(() => {
-      console.debug({ PagingVplanTable: 'RERENDER_ON_WINDOW_RESIZE' })
-      this.renderVplan()
+      console.debug({ PagingVPlanTable: 'RERENDER_ON_WINDOW_RESIZE' })
+      this.renderVPlan()
     }, 1500)
     window.addEventListener('resize', debouncedRerender)
   },
 
   methods: {
-    renderVplan() {
+    renderVPlan() {
       // Reset data
       this.Status = 'RENDERING'
 
@@ -143,15 +143,15 @@ export default {
       this.entriesVisibleCount = 0
       this.renderTimestamp = Date.now()
 
-      console.debug({ PagingVplanTable: 'TIMEOUT_CLEARED', id: this.populateTableCycleID })
+      console.debug({ PagingVPlanTable: 'TIMEOUT_CLEARED', id: this.populateTableCycleID })
       clearTimeout(this.populateTableCycleID)
 
-      console.debug({ vplan: this.Vplan })
-      if (this.Vplan === undefined) {
+      console.debug({ vplan: this.VPlan })
+      if (this.VPlan === undefined) {
         this.Status = 'READY'
         return
       }
-      this.vplanScreenBuffer = [...this.Vplan]
+      this.vplanScreenBuffer = [...this.VPlan]
     },
 
     vplanEntryVisibilityListener(index, isVisible) {
@@ -168,11 +168,11 @@ export default {
 
       if (
         getPageChunksSum() + this.entriesRenderedCount
-        !== this.Vplan.length // page not fully rendered
+        !== this.VPlan.length // page not fully rendered
       ) return
 
       if (this.entriesVisibleCount === 0) {
-        console.error({ PagingVplanTable: 'UNABLE_TO_RENDER_ENTRIES' })
+        console.error({ PagingVPlanTable: 'UNABLE_TO_RENDER_ENTRIES' })
         this.Status = 'ERR_VIEWPORT_OVERFLOW'
         return
       }
@@ -186,15 +186,15 @@ export default {
           - this.$refs.tableHead.clientHeight
 
         const tableFillRatio = tableContentHeight / tableContentViewportHeight
-        console.debug({ PagingVplanTable: 'TABLE_FILL_RATIO', tableFillRatio })
+        console.debug({ PagingVPlanTable: 'TABLE_FILL_RATIO', tableFillRatio })
 
         this.vplanPageChunks.push({
-          head: this.Vplan.length - this.entriesRenderedCount,
+          head: this.VPlan.length - this.entriesRenderedCount,
           length: this.entriesVisibleCount,
           displayTime: tableFillRatio <= 0.4 ? 5000 : 11000,
         })
 
-        if (getPageChunksSum() === this.Vplan.length) { // finished rendering all entries
+        if (getPageChunksSum() === this.VPlan.length) { // finished rendering all entries
           setTimeout(() => {
             this.$store.commit('SET_VPLAN_PAGECHUNKS', {
               queue: this.queue,
@@ -219,7 +219,7 @@ export default {
         this.entriesVisibleCount = 0
 
         // Push remaining entries
-        this.vplanScreenBuffer = this.Vplan.slice(
+        this.vplanScreenBuffer = this.VPlan.slice(
           getPageChunksSum(),
         )
       })
@@ -227,9 +227,9 @@ export default {
 
     populateTable(pageNr = 0) {
       const { head, length, displayTime } = this.vplanPageChunks[pageNr]
-      this.vplanScreenBuffer = this.Vplan.slice(head, head + length)
+      this.vplanScreenBuffer = this.VPlan.slice(head, head + length)
       console.debug({
-        PagingVplanTable: 'PAGE_CHUNKS', head, end: head + length, length, displayTime,
+        PagingVPlanTable: 'PAGE_CHUNKS', head, end: head + length, length, displayTime,
       })
 
       this.$store.commit('SET_VPLAN_PAGE', { queue: this.queue, pageNr })
@@ -242,7 +242,7 @@ export default {
           this.populateTable(0)
         }
       }, displayTime)
-      console.debug({ PagingVplanTable: 'TIMEOUT_SET', id: this.populateTableCycleID })
+      console.debug({ PagingVPlanTable: 'TIMEOUT_SET', id: this.populateTableCycleID })
     },
   },
 }

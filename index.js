@@ -62,9 +62,9 @@
   TaskScheduler.start()
 
   // Running the handlers
-  const VplanReceiver = require('handlers/VplanReceiver')
+  const VPlanReceiver = require('handlers/VPlanReceiver')
   const WebServer = require('handlers/WebServer')
 
-  VplanReceiver.run()
+  VPlanReceiver.run()
   WebServer.run()
 }())

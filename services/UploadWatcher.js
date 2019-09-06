@@ -5,11 +5,11 @@ const path = require('path')
 const promiseFs = require('util/promisified').fs
 
 const uploadDir = 'share/upload/'
-const currentVplanPath = path.join(uploadDir, 'current')
-const nextVplanPath = path.join(uploadDir, 'next')
+const currentVPlanPath = path.join(uploadDir, 'current')
+const nextVPlanPath = path.join(uploadDir, 'next')
 
 const XmlParser = require('lib/XmlParser')
-const VplanParser = require('lib/VplanParser')
+const VPlanParser = require('lib/VPlanParser')
 
 const isFileType = (filePath, typeFileExtension) => path.extname(filePath) === `.${typeFileExtension}`
 
@@ -24,14 +24,14 @@ async function makeDirectoryHelper(dirPath) {
 module.exports = async function UploadWatcher(handler) {
   if (
     !fs.existsSync(uploadDir)
-    || !fs.existsSync(currentVplanPath)
-    || !fs.existsSync(nextVplanPath)
+    || !fs.existsSync(currentVPlanPath)
+    || !fs.existsSync(nextVPlanPath)
   ) {
     log.info('RECREATING_UPLOAD_DIR_TREE')
 
     await makeDirectoryHelper(uploadDir)
-    makeDirectoryHelper(currentVplanPath)
-    makeDirectoryHelper(nextVplanPath)
+    makeDirectoryHelper(currentVPlanPath)
+    makeDirectoryHelper(nextVPlanPath)
   }
 
   log.info('WATCHING_UPLOAD_DIR', path.resolve(uploadDir))
@@ -84,16 +84,16 @@ module.exports = async function UploadWatcher(handler) {
         return
       }
 
-      const rawVplan = await XmlParser.XMLtoRawVplan(filePath)
+      const rawVPlan = await XmlParser.XMLtoRawVPlan(filePath)
       try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR') // delete old xml file
 
-      if (!rawVplan) {
+      if (!rawVPlan) {
         log.err('INVALID_VPLAN_FORMAT')
         return
       }
 
       // callback('current', vplanData, 'debug') // only for debug purposes!!!
-      const vplan = await VplanParser.parse(rawVplan)
+      const vplan = await VPlanParser.parse(rawVPlan)
 
       if (!vplan) {
         log.err('INVALID_VPLAN_FORMAT')
@@ -101,7 +101,7 @@ module.exports = async function UploadWatcher(handler) {
       }
 
       // checks if encoding is utf8
-      XmlParser.testEncoding(rawVplan)
+      XmlParser.testEncoding(rawVPlan)
 
       // Queueday determination
 
@@ -115,7 +115,7 @@ module.exports = async function UploadWatcher(handler) {
       }
 
       // normal upload
-      const queueDay = VplanParser.getQueueDay(vplan)
+      const queueDay = VPlanParser.getQueueDay(vplan)
       if (!queueDay) {
         log.warn('UNKNOWN_QUEUEDAY_UPLOAD_DELETED', filePath)
         try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')

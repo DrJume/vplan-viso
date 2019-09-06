@@ -32,7 +32,7 @@ async function ftpDelete(filePath) {
 }
 
 
-async function RunVplanReceiver() {
+async function RunVPlanReceiver() {
   UploadWatcher({
     added: async (queueDay, vplan) => {
       const vplanFilePath = path.format({
@@ -70,4 +70,4 @@ async function RunVplanReceiver() {
   })
 }
 
-module.exports.run = RunVplanReceiver
+module.exports.run = RunVPlanReceiver

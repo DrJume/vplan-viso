@@ -42,7 +42,7 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 ├── frontend/       # VueJS frontend project
 ├── handlers/       # Independent abstracted modules running the app duties
 ├── helpers/        # Helper modules for dev environment
-├── lib/            # Helper libraries for Vplan lifecycle
+├── lib/            # Helper libraries for VPlan lifecycle
 ├── services/       # Main operating libraries used by handlers
 ├── share/          # Shareable config and data files
 ├── test/           # Resources for testing

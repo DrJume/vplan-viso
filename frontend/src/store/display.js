@@ -54,7 +54,7 @@ export default () => new Vuex.Store({
     },
   },
   actions: {
-    // async fetchVplan({ commit, state }, { queue }) {
+    // async fetchVPlan({ commit, state }, { queue }) {
     //   const res = await axios.get(`/api/vplan/${state.display.type}/${queue}`)
 
     //   if (res.status === '200') {
