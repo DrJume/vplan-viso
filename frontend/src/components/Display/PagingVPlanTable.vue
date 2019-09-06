@@ -122,11 +122,16 @@ export default {
       clearTimeout(interval, interval = setTimeout(() => callback(...args), time))
     }
 
-    const debouncedRerender = _debounce(() => {
+    this._debouncedRerender = _debounce(() => {
       console.debug({ PagingVPlanTable: 'RERENDER_ON_WINDOW_RESIZE' })
       this.renderVPlan()
     }, 1500)
-    window.addEventListener('resize', debouncedRerender)
+
+    window.addEventListener('resize', this._debouncedRerender)
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this._debouncedRerender)
   },
 
   methods: {
