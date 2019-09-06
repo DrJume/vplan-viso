@@ -38,7 +38,7 @@ async function RunVPlanReceiver() {
       const vplanFilePath = path.format({
         dir: path.join('share/upload/', queueDay),
         // types: students / teachers
-        name: vplan.type,
+        name: vplan._type,
         ext: '.json',
       })
 

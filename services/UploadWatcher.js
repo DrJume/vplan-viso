@@ -107,7 +107,7 @@ module.exports = async function UploadWatcher(handler) {
 
       // manual upload
       if (['current', 'next'].includes(fileDir)) {
-        log.info('MANUAL_SCHEDULING', `${vplan.type}: [${vplan.head.title}]`)
+        log.info('MANUAL_SCHEDULING', `${vplan._type}: [${vplan.head.title}]`)
         log.debug('QUEUEDAY_BY_UPLOAD_DIR')
 
         handler.added(fileDir, vplan)
