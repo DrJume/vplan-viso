@@ -15,7 +15,6 @@ async function RunWebServer() {
 
   if (Config.webserver.log_file) {
     // Webserver logging system
-    if (!fs.existsSync('share/logs/')) fs.mkdirSync('share/logs/')
     const LogFileStream = fs.createWriteStream('logs/webserver.log', { flags: 'a' }) // appending file-write stream
 
     morgan.token('date', () => {

@@ -1,17 +1,16 @@
 const cron = require('node-cron')
 
 const Updater = require('services/Updater')
+const FileManager = require('services/FileManager')
 const VPlanParser = require('lib/VPlanParser')
-
-const promiseFs = require('util/promisified').fs
 
 // TODO: check for code quality
 
-async function shiftVPlan(type) {
+async function shiftVPlan(vplanType) {
   // returns false on failure
 
   // delete current vplan
-  let [err] = await try_(promiseFs.unlink(`share/upload/current/${type}.json`), 'silenced:FILE_DELETE_ERR')
+  let [err] = await try_(FileManager.delete(FileManager.Paths.vplan({ type: vplanType, queue: 'current' })), 'silenced:FILE_DELETE_ERR')
   if (err && err.code !== 'ENOENT') {
     log.err('FILE_DELETE_ERR', err)
     return false
@@ -20,12 +19,12 @@ async function shiftVPlan(type) {
   // get next vplan and move it into current if its for current day
   let nextVPlanJSON // eslint-disable-next-line prefer-const
   [err, nextVPlanJSON] = await try_(
-    promiseFs.readFile(`share/upload/next/${type}.json`, { encoding: 'utf-8' }),
+    FileManager.read(FileManager.Paths.vplan({ type: vplanType, queue: 'next' }), { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {
     if (err.code === 'ENOENT') {
-      log.info('NO_NEXT_VPLAN', `${type}`)
+      log.info('NO_NEXT_VPLAN', `${vplanType}`)
       return true
     }
     log.err('FILE_READ_ERR', err)
@@ -38,7 +37,7 @@ async function shiftVPlan(type) {
 
   const queueDay = VPlanParser.getQueueDay(nextVPlan)
   if (!queueDay) {
-    log.err('UNKNOWN_QUEUEDAY', `share/upload/next/${type}.json`)
+    log.err('UNKNOWN_QUEUEDAY', FileManager.Paths.vplan({ type: vplanType, queue: 'next' }))
     return false
   }
   if (queueDay === 'next') {
@@ -47,13 +46,13 @@ async function shiftVPlan(type) {
   }
 
   [err] = await try_(
-    promiseFs.writeFile(`share/upload/current/${type}.json`, nextVPlanJSON),
+    FileManager.write(FileManager.Paths.vplan({ type: vplanType, queue: 'current' }), nextVPlanJSON),
     'FILE_WRITE_ERR',
   )
   if (err) return false;
 
   // delete next vplan
-  [err] = await try_(promiseFs.unlink(`share/upload/next/${type}.json`), 'FILE_DELETE_ERR')
+  [err] = await try_(FileManager.delete(FileManager.Paths.vplan({ type: vplanType, queue: 'next' })), 'FILE_DELETE_ERR')
   if (err) return false
 
   return true

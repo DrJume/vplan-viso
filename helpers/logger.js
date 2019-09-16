@@ -101,7 +101,7 @@ const Logger = {
   },
 
   debug(...args) {
-    if (Config.dev.silence_debug_log) {
+    if (global.Config && Config.dev.silence_debug_log) {
       return
     }
     process.stdout.write(generateLogString('debug', args) + os.EOL)

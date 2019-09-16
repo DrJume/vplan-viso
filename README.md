@@ -58,6 +58,5 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 - [x] Display page progress
 - [x] Internal FTP Support
 - [ ] Ticker
-- [ ] Custom parser
 - [ ] Changes highlight
 - [ ] Animate display paging

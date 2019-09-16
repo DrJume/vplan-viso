@@ -1,9 +1,8 @@
 const express = require('express')
-const path = require('path')
-
-const promiseFs = require('util/promisified').fs
 
 const TaskScheduler = require('handlers/TaskScheduler')
+
+const FileManager = require('services/FileManager')
 
 const router = express.Router()
 
@@ -40,7 +39,7 @@ router.use('/action', (req, res, next) => {
 
 async function readVPlan(vplanType, queueDay) {
   let [err, rawData] = await try_( // eslint-disable-line prefer-const
-    promiseFs.readFile(path.join('share/upload/', queueDay, `${vplanType}.json`), { encoding: 'utf-8' }),
+    FileManager.read(FileManager.Paths.vplan({ type: vplanType, queue: queueDay }), { encoding: 'utf-8' }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {

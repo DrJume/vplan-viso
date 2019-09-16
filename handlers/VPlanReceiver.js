@@ -1,11 +1,10 @@
-const path = require('path')
-const promiseFs = require('util/promisified').fs
 const fs = require('fs')
 const { exec } = require('util/promisified').child_process
 const ftp = require('basic-ftp')
 
 const WebSocketSync = require('services/WebSocketSync')
 const UploadWatcher = require('services/UploadWatcher')
+const FileManager = require('services/FileManager')
 
 async function ftpPut(filePath) {
   const client = new ftp.Client()
@@ -33,17 +32,12 @@ async function ftpDelete(filePath) {
 
 
 async function RunVPlanReceiver() {
-  UploadWatcher({
+  UploadWatcher(FileManager.Paths.uploadDir, {
     added: async (queueDay, vplan) => {
-      const vplanFilePath = path.format({
-        dir: path.join('share/upload/', queueDay),
-        // types: students / teachers
-        name: vplan._type,
-        ext: '.json',
-      })
+      const vplanFilePath = FileManager.Paths.vplan({ type: vplan._type, queue: queueDay })
 
       await try_(
-        promiseFs.writeFile(vplanFilePath, JSON.stringify(vplan, null, 2)),
+        FileManager.write(vplanFilePath, JSON.stringify(vplan, null, 2)),
         'FILE_WRITE_ERR',
       )
       log.info('VPLAN_FILE_ADDED', vplanFilePath)

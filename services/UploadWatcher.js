@@ -1,39 +1,14 @@
 const chokidar = require('chokidar')
-const fs = require('fs')
 const path = require('path')
 
 const promiseFs = require('util/promisified').fs
-
-const uploadDir = 'share/upload/'
-const currentVPlanPath = path.join(uploadDir, 'current')
-const nextVPlanPath = path.join(uploadDir, 'next')
 
 const XmlParser = require('lib/XmlParser')
 const VPlanParser = require('lib/VPlanParser')
 
 const isFileType = (filePath, typeFileExtension) => path.extname(filePath) === `.${typeFileExtension}`
 
-async function makeDirectoryHelper(dirPath) {
-  const [err] = await try_(promiseFs.mkdir(dirPath), 'silenced:MAKE_DIR_ERR')
-
-  if (!err) return
-  if (err.code === 'EEXIST') return // ignore "directory already exists" error
-  log.err('MAKE_DIR_ERR', err)
-}
-
-module.exports = async function UploadWatcher(handler) {
-  if (
-    !fs.existsSync(uploadDir)
-    || !fs.existsSync(currentVPlanPath)
-    || !fs.existsSync(nextVPlanPath)
-  ) {
-    log.info('RECREATING_UPLOAD_DIR_TREE')
-
-    await makeDirectoryHelper(uploadDir)
-    makeDirectoryHelper(currentVPlanPath)
-    makeDirectoryHelper(nextVPlanPath)
-  }
-
+module.exports = async function UploadWatcher(uploadDir, handler) {
   log.info('WATCHING_UPLOAD_DIR', path.resolve(uploadDir))
 
   chokidar.watch(uploadDir, {
