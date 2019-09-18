@@ -3,7 +3,7 @@ const Docker = require('dockerode')
 
 async function checkUpdate() {
   return {
-    isLatestNewer: true,
+    isLatestNewer: false,
   }
 }
 

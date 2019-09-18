@@ -2,7 +2,7 @@ const express = require('express')
 
 const TaskScheduler = require('handlers/TaskScheduler')
 
-const FileManager = require('services/FileManager')
+const DataManager = require('services/DataManager')
 
 const router = express.Router()
 
@@ -38,8 +38,8 @@ router.use('/action', (req, res, next) => {
 
 
 async function readVPlan(vplanType, queueDay) {
-  let [err, rawData] = await try_( // eslint-disable-line prefer-const
-    FileManager.read(FileManager.Paths.vplan({ type: vplanType, queue: queueDay }), { encoding: 'utf-8' }),
+  let [err, vplanJSON] = await try_( // eslint-disable-line prefer-const
+    DataManager.readVPlan({ type: vplanType, queue: queueDay }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {
@@ -49,13 +49,13 @@ async function readVPlan(vplanType, queueDay) {
       log.err('FILE_READ_ERR', err)
     }
 
-    return [err, rawData]
+    return [err, vplanJSON]
   }
 
-  let jsonData // eslint-disable-next-line prefer-const
-  [err, jsonData] = await try_(() => JSON.parse(rawData), 'JSON_PARSE_ERR')
+  let vplanData // eslint-disable-next-line prefer-const
+  [err, vplanData] = await try_(() => JSON.parse(vplanJSON), 'JSON_PARSE_ERR')
 
-  return [err, jsonData]
+  return [err, vplanData]
 }
 
 
@@ -67,14 +67,14 @@ router.get('/vplan/:type(students|teachers)', async (req, res) => {
   const { type } = req.params
   const { queue } = req.query
 
-  const [err, vplanData] = await readVPlan(type, queue)
+  const [err, vplan] = await readVPlan(type, queue)
 
   if (err) {
     res.status(404).send(`No VPlan availiable for ${type}?queue=${queue}\nPossible values for queue: current, next`)
     return
   }
 
-  res.json(vplanData)
+  res.json(vplan)
 })
 
 router.get('/action', async (req, res) => { // TODO: Check code quality

@@ -1,7 +1,7 @@
 const cron = require('node-cron')
 
 const Updater = require('services/Updater')
-const FileManager = require('services/FileManager')
+const DataManager = require('services/DataManager')
 const VPlanParser = require('lib/VPlanParser')
 
 // TODO: check for code quality
@@ -10,7 +10,7 @@ async function shiftVPlan(vplanType) {
   // returns false on failure
 
   // delete current vplan
-  let [err] = await try_(FileManager.delete(FileManager.Paths.vplan({ type: vplanType, queue: 'current' })), 'silenced:FILE_DELETE_ERR')
+  let [err] = await try_(DataManager.deleteVPlan({ type: vplanType, queue: 'current' }), 'silenced:FILE_DELETE_ERR')
   if (err && err.code !== 'ENOENT') {
     log.err('FILE_DELETE_ERR', err)
     return false
@@ -19,7 +19,7 @@ async function shiftVPlan(vplanType) {
   // get next vplan and move it into current if its for current day
   let nextVPlanJSON // eslint-disable-next-line prefer-const
   [err, nextVPlanJSON] = await try_(
-    FileManager.read(FileManager.Paths.vplan({ type: vplanType, queue: 'next' }), { encoding: 'utf-8' }),
+    DataManager.readVPlan({ type: vplanType, queue: 'next' }),
     'silenced:FILE_READ_ERR',
   )
   if (err) {
@@ -37,7 +37,7 @@ async function shiftVPlan(vplanType) {
 
   const queueDay = VPlanParser.getQueueDay(nextVPlan)
   if (!queueDay) {
-    log.err('UNKNOWN_QUEUEDAY', FileManager.Paths.vplan({ type: vplanType, queue: 'next' }))
+    log.err('UNKNOWN_QUEUEDAY', DataManager.Paths.vplan({ type: vplanType, queue: 'next' }))
     return false
   }
   if (queueDay === 'next') {
@@ -46,13 +46,13 @@ async function shiftVPlan(vplanType) {
   }
 
   [err] = await try_(
-    FileManager.write(FileManager.Paths.vplan({ type: vplanType, queue: 'current' }), nextVPlanJSON),
+    DataManager.writeVPlan({ type: vplanType, queue: 'current' }, nextVPlanJSON),
     'FILE_WRITE_ERR',
   )
   if (err) return false;
 
   // delete next vplan
-  [err] = await try_(FileManager.delete(FileManager.Paths.vplan({ type: vplanType, queue: 'next' })), 'FILE_DELETE_ERR')
+  [err] = await try_(DataManager.deleteVPlan({ type: vplanType, queue: 'next' }), 'FILE_DELETE_ERR')
   if (err) return false
 
   return true

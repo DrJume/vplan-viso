@@ -8,6 +8,8 @@ const morgan = require('morgan')
 
 const backend = require('backend/index')
 
+const exitHandler = require('util/exit-handler')
+
 let server
 
 async function RunWebServer() {
@@ -46,11 +48,11 @@ async function RunWebServer() {
   })
 
   // Default port is 8000, because of internal Docker container port mapping
-  server = app.listen(8000, '0.0.0.0', () => {
-    log.info('APP_LISTENING', 'http://0.0.0.0:8000')
+  server = app.listen(Config.webserver.port, '0.0.0.0', () => {
+    log.info('APP_LISTENING', `http://0.0.0.0:${Config.webserver.port}`)
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 
-  log.info('DISPLAY_AUTO_RELOAD_INIT')
+  log.info('WEBSOCKET_SYNC_INIT')
   try_(() => WebSocketSync.initialize(server), 'WEBSOCKET_SERVER_ERR')
 }
 
@@ -62,3 +64,5 @@ function StopWebServer() {
 
 module.exports.run = RunWebServer
 module.exports.stop = StopWebServer
+
+exitHandler.addHandler(StopWebServer)

@@ -9,17 +9,10 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    {
-      path: '/',
-      redirect: '/dashboard',
-    },
-    {
-      path: '/dashboard',
-      component: Dashboard,
-    },
-    {
-      path: '/display/:target',
-      component: Display,
-    },
+    { path: '/', redirect: '/dashboard' },
+    { path: '/dashboard', component: Dashboard },
+    { path: '/display/:target', component: Display },
+    { path: '/api/*' },
+    { path: '*', redirect: '/' },
   ],
 })

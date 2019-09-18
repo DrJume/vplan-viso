@@ -27,7 +27,6 @@ import Placeholder from '@/components/Display/Placeholder.vue'
 
 export default {
   name: 'Display',
-  store: getDisplayStore(),
   components: {
     PagingVPlanTable,
     VPlanHeader,
@@ -35,6 +34,7 @@ export default {
     Placeholder,
   },
   created() {
+    this.$store = getDisplayStore()
     this.$store.commit('SET_DISPLAY_TARGET', this.$route.params.target)
   },
   methods: {

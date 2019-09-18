@@ -33,7 +33,7 @@
       <tbody ref="tableBody" class="text-break">
         <tr
           v-for="(entry, index) in vplanScreenBuffer"
-          :key="`${entry.id}_${renderTimestamp}`"
+          :key="`${entry._id}_${renderTimestamp}`"
           v-observe-visibility="{
             callback: (isVisible, entry) => {
               vplanEntryVisibilityListener(index, isVisible)
@@ -45,12 +45,12 @@
             },
           }"
         >
-          <td scope="row">{{ entry.data.class }}</td>
-          <td>{{ entry.data.lesson }}</td>
-          <td>{{ entry.data.subject }}</td>
-          <td>{{ entry.data.teacher }}</td>
-          <td>{{ entry.data.room }}</td>
-          <td>{{ entry.data.info }}</td>
+          <td scope="row">{{ entry.class }}</td>
+          <td>{{ entry.lesson }}</td>
+          <td>{{ entry.subject }}</td>
+          <td>{{ entry.teacher }}</td>
+          <td>{{ entry.room }}</td>
+          <td>{{ entry.info }}</td>
         </tr>
       </tbody>
     </table>
@@ -164,7 +164,7 @@ export default {
 
       const getPageChunksSum = () => this.vplanPageChunks.reduce((acc, val) => acc + val.length, 0)
 
-      console.debug({ vplanEntryVisibilityListener: 'VISIBILITY_CHANGED', id: this.vplanScreenBuffer[index].id, isVisible })
+      console.debug({ vplanEntryVisibilityListener: 'VISIBILITY_CHANGED', id: this.vplanScreenBuffer[index]._id, isVisible })
 
       this.entriesRenderedCount++
       if (isVisible) this.entriesVisibleCount++
@@ -244,7 +244,7 @@ export default {
         if (pageNr < this.vplanPageChunks.length) {
           this.populateTable(pageNr)
         } else {
-          this.populateTable(0)
+          this.populateTable(0) // TODO: modulo cycling formula
         }
       }, displayTime)
       console.debug({ PagingVPlanTable: 'TIMEOUT_SET', id: this.populateTableCycleID })

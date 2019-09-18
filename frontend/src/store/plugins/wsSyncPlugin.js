@@ -44,7 +44,10 @@ export default function wsSyncPlugin(store) {
           break
         }
         case 'VPLAN': {
-          store.commit('SET_VPLAN', wsPacket.payload)
+          store.commit('SET_VPLAN', {
+            vplan: JSON.parse(wsPacket.payload.vplan),
+            queue: wsPacket.payload.queue,
+          })
           break
         }
 

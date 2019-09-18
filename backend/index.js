@@ -24,8 +24,8 @@ router.use('/dashboard|/display', (req, res, next) => {
 })
 
 // Define routes
-router.use('/api', api)
 router.use(express.static('frontend/dist'))
+router.use('/api', api)
 
 // Serve SPA with frontend router in history mode
 router.get('*', (req, res) => {

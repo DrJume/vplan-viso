@@ -30,6 +30,18 @@ const recursiveObjPatch = (masterObj, patchObj) =>
           : val),
       ]))
 
+const deepObjectVal = {
+  set({ obj, keys, val }) {
+    const lastKey = keys.pop()
+    const ref = keys.reduce((acc, key) => acc[key], obj)
+    ref[lastKey] = val
+  },
+  get({ obj, keys }) {
+    return keys.reduce((acc, key) => acc[key], obj)
+  },
+}
 
+module.exports.isObject = isObject
 module.exports.filterObj = filterObj
 module.exports.recursiveObjPatch = recursiveObjPatch
+module.exports.deepObjectVal = deepObjectVal

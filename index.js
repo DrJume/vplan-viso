@@ -37,12 +37,12 @@
   global.log = logger // Make the logger globally accessible
   global.try_ = try_
 
-  const FileManager = require('services/FileManager')
-  FileManager.initDirectoryTree()
+  const DataManager = require('services/DataManager')
+  await DataManager.init()
 
   const readConfig = require('helpers/config-controller')
   // Make parsed config.json globally accessible
-  global.Config = await readConfig(FileManager.Paths.config)
+  global.Config = await readConfig('share/config.json')
 
   const moment = require('moment')
   moment.locale('de')
@@ -62,9 +62,9 @@
   TaskScheduler.start()
 
   // Running the handlers
-  const VPlanReceiver = require('handlers/VPlanReceiver')
+  const DataReceiver = require('handlers/DataReceiver')
   const WebServer = require('handlers/WebServer')
 
-  VPlanReceiver.run()
+  DataReceiver.run()
   WebServer.run()
 }())
