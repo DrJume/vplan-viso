@@ -60,7 +60,7 @@ class FTPClient {
     const client = await this.getClient()
     if (!client) return
 
-    const combinedPath = pathTools.join(Config.ftp.baseDir, filePath)
+    const combinedPath = pathTools.join('/', Config.ftp.baseDir, filePath)
 
     const [err] = await try_(client.ensureDir(pathTools.dirname(combinedPath)), 'FTP_DIR_ERR')
     if (err) {

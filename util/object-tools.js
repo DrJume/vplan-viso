@@ -12,7 +12,7 @@ const filterObj = (objToFilter, allowedKeys) =>
 
 
 const isObject = val =>
-  typeof val === 'object' && !Array.isArray(val)
+  val !== null && typeof val === 'object' && !Array.isArray(val)
 
 const objFromEntries = inputObj =>
   inputObj.reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {})

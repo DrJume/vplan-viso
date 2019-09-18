@@ -36,29 +36,6 @@ router.use('/action', (req, res, next) => {
   }, 1000)
 })
 
-
-async function readVPlan(vplanType, queueDay) {
-  let [err, vplanJSON] = await try_( // eslint-disable-line prefer-const
-    DataManager.readVPlan({ type: vplanType, queue: queueDay }),
-    'silenced:FILE_READ_ERR',
-  )
-  if (err) {
-    if (err.code === 'ENOENT') {
-      log.debug('NO_VPLAN_AVAILABLE', `${vplanType}/${queueDay}`)
-    } else {
-      log.err('FILE_READ_ERR', err)
-    }
-
-    return [err, vplanJSON]
-  }
-
-  let vplanData // eslint-disable-next-line prefer-const
-  [err, vplanData] = await try_(() => JSON.parse(vplanJSON), 'JSON_PARSE_ERR')
-
-  return [err, vplanData]
-}
-
-
 router.get('/vplan/:type(students|teachers)', async (req, res) => {
   if (!req.query.queue) {
     res.send('No ?queue= specified')
@@ -67,14 +44,15 @@ router.get('/vplan/:type(students|teachers)', async (req, res) => {
   const { type } = req.params
   const { queue } = req.query
 
-  const [err, vplan] = await readVPlan(type, queue)
+  const vplan = DataManager.getVPlan({ type, queue })
 
-  if (err) {
+  if (!vplan) {
     res.status(404).send(`No VPlan availiable for ${type}?queue=${queue}\nPossible values for queue: current, next`)
     return
   }
 
-  res.json(vplan)
+  res.set('Content-Type', 'application/json')
+  res.send(vplan)
 })
 
 router.get('/action', async (req, res) => { // TODO: Check code quality

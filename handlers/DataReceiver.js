@@ -12,42 +12,38 @@ const legacy = {
 
 async function RunDataReceiver() {
   FileWatcher({
-    vplanUploaded: async ({ queueDay, vplan }) => {
-      log.info('VPLAN_ADDED', `${vplan._type} (${queueDay}): [${vplan.head.title}]`)
+    vplanUploaded: async ({ queue, vplanObj }) => {
+      log.info('VPLAN_UPLOADED', `${vplanObj._type} (${queue}): [${vplanObj.head.title}]`)
 
-      await try_(DataManager.writeVPlan(
-        { type: vplan._type, queue: queueDay },
-        JSON.stringify(vplan, null, 2),
+      await try_(DataManager.writeVPlanFile(
+        { type: vplanObj._type, queue },
+        JSON.stringify(vplanObj, null, 2),
       ), 'WRITE_VPLAN_ERR')
     },
 
     vplanRegistered: async ({ type, queue }) => {
-      const [err, vplanJSON] = await try_(DataManager.readVPlan({ type, queue }), 'READ_VPLAN_ERR')
+      log.info('VPLAN_REGISTERED', `${type} (${queue})`)
+
+      const [err, vplanJSON] = await try_(DataManager.readVPlanFile({ type, queue }), 'READ_VPLAN_ERR')
       if (err) return
 
+      DataManager.setVPlan({ type, queue }, vplanJSON)
       WebSocketSync.syncVplan({
         displayTarget: type,
         vplanJSON,
         queue,
       })
-    },
-    vplanChanged: async ({ type, queue }) => {
-      const [err, vplanJSON] = await try_(DataManager.readVPlan({ type, queue }), 'READ_VPLAN_ERR')
-      if (err) return
-
-      WebSocketSync.syncVplan({
-        displayTarget: type,
-        vplanJSON,
+      await FTP_Transfer.upload(legacy.uploadPath({
+        type,
         queue,
-      })
-
-      log.warn('LEGACY_FTP_PATH', legacy.uploadPath({ type, queue }))
-      await FTP_Transfer.upload(legacy.uploadPath({ type, queue }), vplanJSON)
+      }), vplanJSON)
     },
+
     vplanRemoved: async ({ type, queue }) => {
-      WebSocketSync.syncVplan({ displayTarget: type, vplanJSON: '{}', queue })
+      log.warn('VPLAN_REMOVED', `${type} (${queue})`)
 
-      log.warn('LEGACY_FTP_PATH', legacy.uploadPath({ type, queue }))
+      DataManager.unsetVPlan({ type, queue })
+      WebSocketSync.syncVplan({ displayTarget: type, vplanJSON: JSON.stringify({}), queue })
       await FTP_Transfer.delete(legacy.uploadPath({ type, queue }))
     },
   })

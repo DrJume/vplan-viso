@@ -1,46 +1,10 @@
 const WebSocket = require('ws')
 
-// const { debounce } = require('util/reactive-tools')
 const DataManager = require('services/DataManager')
 
 let wsServer // WebSocketServer
 
-// const debouncedReloadAll = debounce(() => {
-//   log.debug('DISPLAYS_REFRESHED')
-//   wsServer.clients.forEach((client) => {
-//     if (client.readyState === WebSocket.OPEN) {
-//       client.send('RELOAD_ALL')
-//     }
-//   })
-// }, 3000)
-
-/* const getMockVPlan = (length = 20, subject = 'FR') => {
-  const mockData = {
-    type: 'students',
-    head: [],
-    body: [],
-    info: [],
-  }
-
-  for (let i = 1; i <= length; i++) {
-    mockData.body.push({
-      id: i,
-      data: {
-        class: '6a',
-        lesson: i,
-        subject,
-        teacher: 'Nen',
-        room: '116',
-        info: `Für FR Sch ${i === 20 ? 'jdhlgkajdfhlgkjhdfldsldkfjghsldkfjghl' : ''}`,
-      },
-    })
-  }
-
-  return mockData
-} */
-
 /* ws.send(JSON.stringify({ type: 'TICKER', payload: 'Lorem ipsum dolor sit amet.' }))
-ws.send(JSON.stringify({ type: 'VPLAN', payload: { vplan: getMockVPlan(25, 'CH'), queue: 'current' } }))
  */
 
 let connectedClients = []
@@ -82,8 +46,8 @@ const WebSocketSync = {
             Object.entries(DataManager.getAvailableVPlans())
               .find(([target]) => target === wsPacket.payload.target)[1]
               .forEach(async queue => {
-                const [readErr, vplanJSON] = await try_(DataManager.readVPlan({ type: wsPacket.payload.target, queue }), 'READ_VPLAN_ERR')
-                if (readErr) return
+                const vplanJSON = DataManager.getVPlan({ type: wsPacket.payload.target, queue })
+                if (!vplanJSON) return
 
                 ws.send(JSON.stringify({
                   type: 'VPLAN',

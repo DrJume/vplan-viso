@@ -10,25 +10,17 @@ async function shiftVPlan(vplanType) {
   // returns false on failure
 
   // delete current vplan
-  let [err] = await try_(DataManager.deleteVPlan({ type: vplanType, queue: 'current' }), 'silenced:FILE_DELETE_ERR')
+  let [err] = await try_(DataManager.deleteVPlanFile({ type: vplanType, queue: 'current' }), 'silenced:FILE_DELETE_ERR')
   if (err && err.code !== 'ENOENT') {
     log.err('FILE_DELETE_ERR', err)
     return false
   }
 
   // get next vplan and move it into current if its for current day
-  let nextVPlanJSON // eslint-disable-next-line prefer-const
-  [err, nextVPlanJSON] = await try_(
-    DataManager.readVPlan({ type: vplanType, queue: 'next' }),
-    'silenced:FILE_READ_ERR',
-  )
-  if (err) {
-    if (err.code === 'ENOENT') {
-      log.info('NO_NEXT_VPLAN', `${vplanType}`)
-      return true
-    }
-    log.err('FILE_READ_ERR', err)
-    return false
+  const nextVPlanJSON = DataManager.getVPlan({ type: vplanType, queue: 'next' })
+  if (!nextVPlanJSON) {
+    log.info('NO_NEXT_VPLAN', `${vplanType}`)
+    return true
   }
 
   let nextVPlan // eslint-disable-next-line prefer-const
@@ -46,13 +38,13 @@ async function shiftVPlan(vplanType) {
   }
 
   [err] = await try_(
-    DataManager.writeVPlan({ type: vplanType, queue: 'current' }, nextVPlanJSON),
+    DataManager.writeVPlanFile({ type: vplanType, queue: 'current' }, nextVPlanJSON),
     'FILE_WRITE_ERR',
   )
   if (err) return false;
 
   // delete next vplan
-  [err] = await try_(DataManager.deleteVPlan({ type: vplanType, queue: 'next' }), 'FILE_DELETE_ERR')
+  [err] = await try_(DataManager.deleteVPlanFile({ type: vplanType, queue: 'next' }), 'FILE_DELETE_ERR')
   if (err) return false
 
   return true

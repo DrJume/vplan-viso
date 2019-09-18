@@ -86,31 +86,34 @@ async function init() {
   initDirectoryTree()
 }
 
-async function readVPlan({ type, queue }) {
-  const storedVal = DataFileStructure[Paths.base].display[type].vplan[queue]
-  if (storedVal) return storedVal
-
-  const vplan = await promiseFs.readFile(Paths.vplan({ type, queue }), { encoding: 'utf-8' })
-  DataFileStructure[Paths.base].display[type].vplan[queue] = vplan
-
-  return vplan
+function getVPlan({ type, queue }) {
+  return DataFileStructure[Paths.base].display[type].vplan[queue]
 }
-
-async function writeVPlan({ type, queue }, data) {
-  DataFileStructure[Paths.base].display[type].vplan[queue] = data
-
-  return promiseFs.writeFile(Paths.vplan({ type, queue }), data)
+function setVPlan({ type, queue }, vplanJSON) {
+  DataFileStructure[Paths.base].display[type].vplan[queue] = vplanJSON
 }
-
-async function deleteVPlan({ type, queue }) {
+function unsetVPlan({ type, queue }) {
   DataFileStructure[Paths.base].display[type].vplan[queue] = ''
+}
 
+async function readVPlanFile({ type, queue }) {
+  return promiseFs.readFile(Paths.vplan({ type, queue }), { encoding: 'utf-8' })
+}
+async function writeVPlanFile({ type, queue }, vplanJSON) {
+  return promiseFs.writeFile(Paths.vplan({ type, queue }), vplanJSON)
+}
+async function deleteVPlanFile({ type, queue }) {
   return promiseFs.unlink(Paths.vplan({ type, queue }))
 }
 
 module.exports.Paths = Paths
 module.exports.init = init
 module.exports.getAvailableVPlans = getAvailableVPlans
-module.exports.readVPlan = readVPlan
-module.exports.writeVPlan = writeVPlan
-module.exports.deleteVPlan = deleteVPlan
+
+module.exports.getVPlan = getVPlan
+module.exports.setVPlan = setVPlan
+module.exports.unsetVPlan = unsetVPlan
+
+module.exports.readVPlanFile = readVPlanFile
+module.exports.writeVPlanFile = writeVPlanFile
+module.exports.deleteVPlanFile = deleteVPlanFile

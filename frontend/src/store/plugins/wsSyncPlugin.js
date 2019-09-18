@@ -1,6 +1,6 @@
 export default function wsSyncPlugin(store) {
   console.debug({ wsSyncPlugin: 'INIT' })
-  // const socketUrl = `ws://${window.location.origin}`
+  // const socketUrl = `ws://${window.location.host}`
   const socketUrl = 'ws://localhost:8000'
   let connectionDisrupted = false
 

@@ -34,9 +34,9 @@ module.exports = async function FileWatcher(handler) {
         return
       }
 
-      const vplan = await VPlanParser.parse(rawVPlan)
+      const vplanObj = await VPlanParser.parse(rawVPlan)
 
-      if (!vplan) {
+      if (!vplanObj) {
         log.err('INVALID_VPLAN_FORMAT')
         return
       }
@@ -45,14 +45,14 @@ module.exports = async function FileWatcher(handler) {
       XmlParser.testEncoding(rawVPlan)
 
       // Queueday determination
-      const queueDay = VPlanParser.getQueueDay(vplan)
+      const queueDay = VPlanParser.getQueueDay(vplanObj)
       if (!queueDay) {
         log.warn('QUEUEDAY_DETERMINATION_FAILED', filePath)
         try_(promiseFs.unlink(filePath), 'FILE_DELETE_ERR')
         return
       }
 
-      handler.vplanUploaded({ queueDay, vplan })
+      handler.vplanUploaded({ queue: queueDay, vplanObj })
     })
 
   // Watch dataDir
@@ -75,7 +75,7 @@ module.exports = async function FileWatcher(handler) {
       log.debug('FILE_CHANGED', filePath)
 
       const { type, queue } = DataManager.Paths.parseVplanPath(filePath)
-      handler.vplanChanged({ type, queue })
+      handler.vplanRegistered({ type, queue })
     })
     .on('unlink', async (filePath) => {
       log.debug('FILE_REMOVED', filePath)
