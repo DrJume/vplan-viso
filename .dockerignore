@@ -2,4 +2,5 @@ node_modules/
 npm-debug.log
 .vscode/
 frontend/dist/
+frontend/node_modules/
 share/
