@@ -94,53 +94,23 @@ export default {
   },
 
   watch: {
-    Status(newVal) {
-      console.debug({ PagingVPlanTable: newVal, queue: this.queue })
+    Status(status) {
+      if (status === 'RENDER_TABLE') {
+        this.renderVPlanTable()
+      }
     },
   },
-
   mounted() {
     this.tableViewport = this.$el
     console.debug({ tableViewport: this.tableViewport })
-
-    this.renderVPlan()
-
-    this.$store.subscribe((mutation) => {
-      console.debug({ PagingVPlanTable: 'STORE_MUTATION', ...mutation })
-      if (mutation.type === 'SET_VPLAN') {
-        this.renderVPlan()
-      }
-    })
-  },
-
-  updated() {
-    // console.debug({ PagingVPlanTable: "UPDATE_HOOK" })
-  },
-
-  created() {
-    const _debounce = (callback, time = 250, interval) => (...args) => {
-      clearTimeout(interval, interval = setTimeout(() => callback(...args), time))
-    }
-
-    this._debouncedRerender = _debounce(() => {
-      console.debug({ PagingVPlanTable: 'RERENDER_ON_WINDOW_RESIZE' })
-      this.renderVPlan()
-    }, 1500)
-
-    window.addEventListener('resize', this._debouncedRerender)
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this._debouncedRerender)
   },
 
   methods: {
-    renderVPlan() {
+    renderVPlanTable() {
       // Reset data
       this.Status = 'RENDERING'
 
       this.$store.commit('SET_VPLAN_PAGECHUNKS', { queue: this.queue, pageChunks: [] })
-      this.$store.commit('SET_VPLAN_PAGE', { queue: this.queue, pageNr: 0 })
 
       this.vplanScreenBuffer = []
       this.vplanPageChunks = []
@@ -237,7 +207,7 @@ export default {
         PagingVPlanTable: 'PAGE_CHUNKS', head, end: head + length, length, displayTime,
       })
 
-      this.$store.commit('SET_VPLAN_PAGE', { queue: this.queue, pageNr })
+      this.$emit('step-page', pageNr)
 
       this.populateTableCycleID = setTimeout(() => {
         pageNr++

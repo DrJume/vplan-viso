@@ -16,8 +16,8 @@
       <div
         class="progress-bar paging-animation"
         :style="{'animation-duration': `${pageChunk.displayTime}ms`,}"
-        :class="{'paging-progress': (PageChunks.length > 1) && (ActivePage === index),
-                 'paging-done': index < ActivePage,}"
+        :class="{'paging-progress': (PageChunks.length > 1) && (activePage === index),
+                 'paging-done': index < activePage,}"
       />
     </div>
   </div>
@@ -31,22 +31,18 @@ export default {
       type: String,
       default: '',
     },
+    activePage: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
     PageChunks() {
-      return this.$store.state.display.vplan[this.queue].paging.pageChunks
-    },
-    ActivePage() {
-      return this.$store.state.display.vplan[this.queue].paging.activePage
+      return this.$store.state.display.vplan[this.queue].pageChunks
     },
     Status() {
       return this.$store.state.display.vplan[this.queue].status
     },
-    // vplanAvailable() {
-    //   const isObjEmpty = obj => Object.keys(obj).length === 0
-
-    //   return !isObjEmpty(this.$store.state.display.vplan[this.queue].data)
-    // }
   },
 }
 </script>

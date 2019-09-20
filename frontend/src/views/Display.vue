@@ -1,17 +1,11 @@
 <template>
   <div class="d-flex flex-row vw-100 vh-100">
-    <div class="d-flex flex-column w-50 border-right border-dark">
-      <VPlanHeader v-if="getVPlan('current').head" queue="current" class="py-1" />
-      <PagingVPlanTable v-if="getVPlan('current').body" queue="current" class="flex-fill" />
-      <Placeholder v-else class="flex-fill" />
-      <ProgressBarChain queue="current" class="mt-auto" />
+    <div class="w-50 border-right border-dark">
+      <VPlanColumn queue="current" />
     </div>
 
-    <div class="d-flex flex-column w-50 border-left border-dark">
-      <VPlanHeader v-if="getVPlan('next').head" queue="next" class="py-1" />
-      <PagingVPlanTable v-if="getVPlan('next').body" queue="next" class="flex-fill" />
-      <Placeholder v-else class="flex-fill" />
-      <ProgressBarChain queue="next" class="mt-auto" />
+    <div class="w-50 border-left border-dark">
+      <VPlanColumn queue="next" />
     </div>
   </div>
 </template>
@@ -20,27 +14,22 @@
 // @ is an alias to /src
 // eslint-disable-next-line import/extensions
 import getDisplayStore from '@/store/display'
-import PagingVPlanTable from '@/components/Display/PagingVPlanTable.vue'
-import VPlanHeader from '@/components/Display/VPlanHeader.vue'
-import ProgressBarChain from '@/components/Display/ProgressBarChain.vue'
-import Placeholder from '@/components/Display/Placeholder.vue'
+import VPlanColumn from '@/components/Display/VPlanColumn.vue'
 
 export default {
   name: 'Display',
   components: {
-    PagingVPlanTable,
-    VPlanHeader,
-    ProgressBarChain,
-    Placeholder,
+    VPlanColumn,
   },
   created() {
     this.$store = getDisplayStore()
-    this.$store.commit('SET_DISPLAY_TARGET', this.$route.params.target)
+
+    this.$store.subscribe((mutation) => {
+      console.debug({ Display: 'STORE_MUTATION', ...mutation })
+    })
   },
-  methods: {
-    getVPlan(queue) {
-      return this.$store.state.display.vplan[queue].data
-    },
+  mounted() {
+    this.$store.dispatch('wsConnect', this.$route.params.target)
   },
 }
 </script>
