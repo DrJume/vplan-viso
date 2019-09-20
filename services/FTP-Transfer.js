@@ -10,6 +10,23 @@ class FTPClient {
   constructor() {
     this._client = undefined
     this.close = () => undefined
+    this.tasks = []
+    // eslint-disable-next-line consistent-return
+    this.debouncedClient = debounce(async (callback) => {
+      if (!this._client) {
+        this._client = new ftp.Client()
+
+        const success = await this._connect()
+        callback(success ? this._client : undefined)
+        return
+      }
+      if (this._client.closed) {
+        const success = await this._connect()
+        callback(success ? this._client : undefined)
+        return
+      }
+      callback(this._client)
+    }, 1000)
   }
 
   async _connect() {
@@ -28,21 +45,6 @@ class FTPClient {
     return true
   }
 
-  async getClient() {
-    if (!this._client) {
-      this._client = new ftp.Client()
-
-      const success = await this._connect()
-      return success ? this._client : undefined
-    }
-    if (this._client.closed) {
-      const success = await this._connect()
-      return success ? this._client : undefined
-    }
-
-    return this._client
-  }
-
   /* eslint-disable-next-line class-methods-use-this */
   _dataToReadableStream(data) {
     return new Readable({
@@ -56,25 +58,32 @@ class FTPClient {
     })
   }
 
-  async _prepare({ path: filePath, callback }) {
-    const client = await this.getClient()
-    if (!client) return
+  runTasks() {
+    this.debouncedClient(async client => {
+      if (!client) {
+        log.err('FTP_NO_CLIENT')
+        return
+      }
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const [index, task] of Object.entries(this.tasks)) {
+        const combinedPath = pathTools.join('/', Config.ftp.baseDir, task.path)
 
-    const combinedPath = pathTools.join('/', Config.ftp.baseDir, filePath)
+        const [err] = await try_(client.ensureDir(pathTools.dirname(combinedPath)), 'FTP_DIR_ERR')
+        if (err) {
+          this.close()
+          return
+        }
 
-    const [err] = await try_(client.ensureDir(pathTools.dirname(combinedPath)), 'FTP_DIR_ERR')
-    if (err) {
-      this.close()
-      return
-    }
+        await task.callback({ client, combinedPath })
 
-    await callback({ client, combinedPath })
-
-    this.close()
+        this.tasks.splice(index)
+        this.close()
+      }
+    })
   }
 
   async upload(path, data) {
-    await this._prepare({
+    this.tasks.push({
       path,
       callback: async ({ client, combinedPath }) => {
         log.debug('FTP_UPLOAD', combinedPath)
@@ -85,10 +94,12 @@ class FTPClient {
         ), 'FTP_WEB_SYNC_UPLOAD_ERR')
       },
     })
+
+    this.runTasks()
   }
 
   async delete(path) {
-    await this._prepare({
+    this.tasks.push({
       path,
       callback: async ({ client, combinedPath }) => {
         log.debug('FTP_DELETE', combinedPath)
@@ -98,6 +109,8 @@ class FTPClient {
         ), 'FTP_WEB_SYNC_DELETE_ERR')
       },
     })
+
+    this.runTasks()
   }
 }
 

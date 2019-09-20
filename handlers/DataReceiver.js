@@ -33,7 +33,7 @@ async function RunDataReceiver() {
         vplanJSON,
         queue,
       })
-      await FTP_Transfer.upload(legacy.uploadPath({
+      FTP_Transfer.upload(legacy.uploadPath({
         type,
         queue,
       }), vplanJSON)
@@ -44,7 +44,7 @@ async function RunDataReceiver() {
 
       DataManager.unsetVPlan({ type, queue })
       WebSocketSync.syncVplan({ displayTarget: type, vplanJSON: JSON.stringify({}), queue })
-      await FTP_Transfer.delete(legacy.uploadPath({ type, queue }))
+      FTP_Transfer.delete(legacy.uploadPath({ type, queue }))
     },
   })
 }

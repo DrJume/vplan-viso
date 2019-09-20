@@ -204,7 +204,7 @@ export default {
 
         if (getPageChunksSum() === this.VPlan.length) { // finished rendering all entries
           setTimeout(() => {
-            if (!this.isSupervisionTableVisible) {
+            if (this.VPlanType === 'teachers' && !this.isSupervisionTableVisible) {
               this.vplanPageChunks.push({
                 head: this.VPlan.length,
                 length: 0,
