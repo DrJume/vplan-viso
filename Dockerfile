@@ -12,6 +12,7 @@ COPY . .
 
 RUN npm ci --only=production
 # RUN npm config set unsafe-perm true NOT NEEDED
+RUN cd frontend/ && npm ci --only=production && npm run build
 RUN npm install pm2 -g
 
 EXPOSE 8000
