@@ -54,12 +54,31 @@
         </tr>
       </tbody>
     </table>
+    <TeacherSupervision
+      v-if="VPlanType === 'teachers' && isSupervisionTableVisible && Status === 'READY'"
+      v-observe-visibility="{
+        callback: (isVisible, element) => {
+          vplanSupervisionVisibilityListener(isVisible, element)
+        },
+        once: true,
+        intersection: {
+          root: tableViewport,
+          threshold: 1.0,
+        },
+      }"
+      :queue="queue"
+    />
   </div>
 </template>
 
 <script>
+import TeacherSupervision from '@/components/Display/VPlanColumn/TeacherSupervision.vue'
+
 export default {
   name: 'PagingVPlanTable',
+  components: {
+    TeacherSupervision,
+  },
   props: {
     queue: {
       type: String,
@@ -76,12 +95,16 @@ export default {
       entriesVisibleCount: 0,
       populateTableCycleID: undefined,
       renderTimestamp: undefined,
+      isSupervisionTableVisible: false,
     }
   },
 
   computed: {
     VPlan() {
       return this.$store.state.display.vplan[this.queue].data.body
+    },
+    VPlanType() {
+      return this.$store.state.display.vplan[this.queue].data._type
     },
     Status: {
       get() {
@@ -129,8 +152,18 @@ export default {
       this.vplanScreenBuffer = [...this.VPlan]
     },
 
+    vplanSupervisionVisibilityListener(isVisible) {
+      if (this.vplanScreenBuffer.length === 0 && !isVisible) {
+        console.error({ PagingVPlanTable: 'UNABLE_TO_DISPLAY_SUPERVISION' })
+        this.isSupervisionTableVisible = true
+        return
+      }
+
+      this.isSupervisionTableVisible = isVisible
+    },
+
     vplanEntryVisibilityListener(index, isVisible) {
-      if (this.Status === 'READY') return
+      if (this.Status !== 'RENDERING') return
 
       const getPageChunksSum = () => this.vplanPageChunks.reduce((acc, val) => acc + val.length, 0)
 
@@ -171,6 +204,14 @@ export default {
 
         if (getPageChunksSum() === this.VPlan.length) { // finished rendering all entries
           setTimeout(() => {
+            if (!this.isSupervisionTableVisible) {
+              this.vplanPageChunks.push({
+                head: this.VPlan.length,
+                length: 0,
+                displayTime: 6000,
+              })
+            }
+
             this.$store.commit('SET_VPLAN_PAGECHUNKS', {
               queue: this.queue,
               pageChunks: this.vplanPageChunks,
@@ -208,6 +249,7 @@ export default {
       })
 
       this.$emit('step-page', pageNr)
+      this.isSupervisionTableVisible = true
 
       this.populateTableCycleID = setTimeout(() => {
         pageNr++
