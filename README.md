@@ -4,35 +4,19 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 
 ---
 
-### **Currently only supported on arm64v8**!
-
 ## Install
 
-1. Install Docker (stable)
+1. Install [Docker](https://get.docker.com/) (stable)
 
-2. Write file docker-compose.yml:
+2. Download [docker-compose.yml](https://github.com/DrJume/vplan-viso/blob/master/docker-compose.yml)
 
-    ```yaml
-    version: '3'
-    services:
-      vplan-viso:
-        image: drjume/vplan-viso
-        container_name: vplan-viso
-        ports:
-          - "8080:8080"
-        restart: unless-stopped
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-          - /opt/vplan-viso/share:/opt/vplan-viso/share
-    ```
-
-3. Run command
+3. Run commands:
 
     ```bash
-    docker-compose up -d
+    docker-compose up --build -d
     ```
 
-4. The application is accessible under http://localhost:8080
+4. The application is accessible under [http://localhost:8080]
 
 ## Project structure
 
@@ -42,9 +26,9 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 ├── frontend/       # VueJS frontend project
 ├── handlers/       # Independent abstracted modules running the app duties
 ├── helpers/        # Helper modules for dev environment
-├── lib/            # Helper libraries for VPlan lifecycle
-├── services/       # Main operating libraries used by handlers
-├── share/          # Shareable config and data files
+├── lib/            # Helper libraries
+├── services/       # Main operating libraries
+├── share/          # Shareable data files and config
 ├── test/           # Resources for testing
 ├── util/           # Small utility functions
 └── index.js        # Entry module (async)
