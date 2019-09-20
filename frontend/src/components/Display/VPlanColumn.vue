@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import PagingVPlanTable from '@/components/Display/PagingVPlanTable.vue'
-import VPlanHeader from '@/components/Display/VPlanHeader.vue'
-import ProgressBarChain from '@/components/Display/ProgressBarChain.vue'
-import Placeholder from '@/components/Display/Placeholder.vue'
+import PagingVPlanTable from '@/components/Display/VPlanColumn/PagingVPlanTable.vue'
+import VPlanHeader from '@/components/Display/VPlanColumn/VPlanHeader.vue'
+import ProgressBarChain from '@/components/Display/VPlanColumn/ProgressBarChain.vue'
+import Placeholder from '@/components/Display/VPlanColumn/Placeholder.vue'
 
 export default {
   name: 'VPlanColumn',
