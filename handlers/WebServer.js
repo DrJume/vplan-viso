@@ -47,9 +47,9 @@ async function RunWebServer() {
     res.status(500).send(err.toString())
   })
 
-  // Default port is 8000, because of internal Docker container port mapping
-  server = app.listen(Config.webserver.port, '0.0.0.0', () => {
-    log.info('APP_LISTENING', `http://0.0.0.0:${Config.webserver.port}`)
+  // Default port is 3000, because of internal Docker container port mapping
+  server = app.listen(Config.dev.internal_port, '0.0.0.0', () => {
+    log.info('APP_LISTENING', `http://0.0.0.0:${Config.dev.internal_port}`)
   }).on('error', (err) => { log.err('NETWORK_ERR', err) })
 
   log.info('WEBSOCKET_SYNC_INIT')
