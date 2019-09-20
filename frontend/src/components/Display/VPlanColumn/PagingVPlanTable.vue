@@ -21,12 +21,22 @@
 
     <table v-if="!!tableViewport" class="table table-striped table-sm border-bottom">
       <thead ref="tableHead">
-        <tr>
+        <tr v-if="VPlanType === 'students'">
           <th scope="col" class="border-top-0">Klasse</th>
           <th scope="col" class="border-top-0">Stunde</th>
           <th scope="col" class="border-top-0">Fach</th>
           <th scope="col" class="border-top-0">Lehrer</th>
           <th scope="col" class="border-top-0">Raum</th>
+          <th scope="col" class="border-top-0">Info</th>
+        </tr>
+        <tr v-else-if="VPlanType === 'teachers'">
+          <th scope="col" class="border-top-0">Lehrer</th>
+          <th scope="col" class="border-top-0">Stunde</th>
+          <th scope="col" class="border-top-0">Klasse/Kurs</th>
+          <th scope="col" class="border-top-0">Fach neu</th>
+          <th scope="col" class="border-top-0">Raum neu</th>
+          <th scope="col" class="border-top-0">für Fach</th>
+          <th scope="col" class="border-top-0">für Lehrer</th>
           <th scope="col" class="border-top-0">Info</th>
         </tr>
       </thead>
@@ -45,22 +55,33 @@
             },
           }"
         >
-          <td scope="row">{{ entry.class }}</td>
-          <td>{{ entry.lesson }}</td>
-          <td>{{ entry.subject }}</td>
-          <td>{{ entry.teacher }}</td>
-          <td>{{ entry.room }}</td>
-          <td>{{ entry.info }}</td>
+          <slot v-if="VPlanType === 'students'">
+            <td scope="row">{{ entry.class }}</td>
+            <td>{{ entry.lesson }}</td>
+            <td>{{ entry.subject }}</td>
+            <td>{{ entry.teacher }}</td>
+            <td>{{ entry.room }}</td>
+            <td>{{ entry.info }}</td>
+          </slot>
+          <slot v-else-if="VPlanType === 'teachers'">
+            <td scope="row">{{ entry.new_teacher }}</td>
+            <td>{{ entry.lesson }}</td>
+            <td>{{ entry.class }}</td>
+            <td>{{ entry.new_subject }}</td>
+            <td>{{ entry.new_room }}</td>
+            <td>{{ entry.subject }}</td>
+            <td>{{ entry.teacher }}</td>
+            <td>{{ entry.info }}</td>
+          </slot>
         </tr>
       </tbody>
     </table>
     <TeacherSupervision
-      v-if="VPlanType === 'teachers' && isSupervisionTableVisible && Status === 'READY'"
+      v-if="VPlanType === 'teachers' && isSupervisionTableVisible"
       v-observe-visibility="{
         callback: (isVisible, element) => {
           vplanSupervisionVisibilityListener(isVisible, element)
         },
-        once: true,
         intersection: {
           root: tableViewport,
           threshold: 1.0,
@@ -186,6 +207,7 @@ export default {
       }
 
       this.vplanScreenBuffer.splice(this.entriesVisibleCount)
+      this.isSupervisionTableVisible = true
 
       this.$nextTick(() => {
         // Calculate displayTime from table fill ratio
