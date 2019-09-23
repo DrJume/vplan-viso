@@ -11,7 +11,8 @@ export default new Router({
   routes: [
     { path: '/', redirect: '/dashboard' },
     { path: '/dashboard', component: Dashboard },
-    { path: '/display/:target', component: Display },
+    { path: '/display/students', component: Display, props: { target: 'students' } },
+    { path: '/display/teachers', component: Display, props: { target: 'teachers' } },
     { path: '/api/*' },
     { path: '*', redirect: '/' },
   ],

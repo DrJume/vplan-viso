@@ -1,6 +1,6 @@
 {
   "name": "vplan-viso",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen",
   "main": "index.js",
   "engines": {
@@ -34,7 +34,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "basic-auth": "^2.0.1",
-    "basic-ftp": "^3.8.7",
+    "basic-ftp": "^4.0.1",
     "body-parser": "^1.19.0",
     "boom": "^7.3.0",
     "chalk": "^2.4.2",

@@ -221,7 +221,7 @@ export default {
         this.vplanPageChunks.push({
           head: this.VPlan.length - this.entriesRenderedCount,
           length: this.entriesVisibleCount,
-          displayTime: tableFillRatio <= 0.4 ? 5000 : 11000,
+          displayTime: tableFillRatio <= 0.4 ? 8000 : 11000,
         })
 
         if (getPageChunksSum() === this.VPlan.length) { // finished rendering all entries
@@ -230,7 +230,7 @@ export default {
               this.vplanPageChunks.push({
                 head: this.VPlan.length,
                 length: 0,
-                displayTime: 6000,
+                displayTime: 7000,
               })
             }
 

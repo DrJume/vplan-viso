@@ -2,7 +2,7 @@ version: '3'
 services:
   vplan-viso:
     build: .
-    image: drjume/vplan-viso:0.6.0
+    image: drjume/vplan-viso:0.6.1
     container_name: vplan-viso
     environment:
       - TZ=Europe/Berlin
