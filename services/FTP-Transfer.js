@@ -1,85 +1,71 @@
 const pathTools = require('path')
-const { Readable } = require('stream')
 
-const ftp = require('basic-ftp')
+const PromiseFTP = require('promise-ftp')
 
 const { debounce } = require('util/reactive-tools')
 const exitHandler = require('util/exit-handler')
 
 class FTPClient {
   constructor() {
-    this._client = undefined
-    this.close = () => undefined
-    this.tasks = []
-    // eslint-disable-next-line consistent-return
-    this.debouncedClient = debounce(async (callback) => {
-      if (!this._client) {
-        this._client = new ftp.Client()
+    this.client = new PromiseFTP()
 
-        const success = await this._connect()
-        callback(success ? this._client : undefined)
-        return
-      }
-      if (this._client.closed) {
-        const success = await this._connect()
-        callback(success ? this._client : undefined)
-        return
-      }
-      callback(this._client)
-    }, 1000)
+    this.tasks = []
+    this.debouncedRunTasks = debounce(() => this._runTasks(), 1000)
   }
 
   async _connect() {
     if (Config.ftp.host === '') return false
 
-    const [err] = await try_(this._client.access({
-      ...Config.ftp,
-    }), 'FTP_WEB_SYNC_CONNECTION_ERR')
-    if (err) return false
+    log.debug('FTP_STATUS', this.client.getConnectionStatus())
 
-    this.close = debounce(() => {
-      log.debug('FTP_DEBOUNCED_CONNECTION_CLOSED')
-      this._client.close()
-    }, 30 * 1000)
+    switch (this.client.getConnectionStatus()) {
+      case PromiseFTP.STATUSES.NOT_YET_CONNECTED: {
+        const [err] = await try_(this.client.connect({
+          ...Config.ftp,
+          autoReconnect: true,
+        }), 'FTP_CONNECT_ERR')
 
-    return true
+        return !!err
+      }
+
+      case PromiseFTP.STATUSES.DISCONNECTED: {
+        const [err] = await try_(this.client.reconnect(), 'FTP_RECONNECT_ERR')
+
+        return !!err
+      }
+
+      default: {
+        log.err('FTP_CONNECTION_DANGLING')
+
+        return false
+      }
+    }
   }
 
-  /* eslint-disable-next-line class-methods-use-this */
-  _dataToReadableStream(data) {
-    return new Readable({
-      objectMode: true,
-      encoding: 'utf8',
-      autoDestroy: true,
-      read() {
-        this.push(data)
-        this.push(null)
-      },
-    })
-  }
+  async _runTasks() {
+    if (this.client.getConnectionStatus() === PromiseFTP.STATUSES.CONNECTED) return
 
-  runTasks() {
-    this.debouncedClient(async client => {
-      if (!client) {
-        log.err('FTP_NO_CLIENT')
+    await this._connect()
+
+    log.debug('FTP_TASKS', this.tasks.map(task => task.path))
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const [index, task] of Object.entries(this.tasks)) {
+      const combinedPath = pathTools.join('/', Config.ftp.baseDir, task.path)
+
+      let err
+      [err] = await try_(this.client.mkdir(pathTools.dirname(combinedPath), true), 'FTP_MKDIR_ERR');
+      [err] = await try_(this.client.cwd(pathTools.dirname(combinedPath)), 'FTP_CHDIR_ERR')
+      if (err) {
+        await try_(this.client.end(), 'FTP_END_ERR')
         return
       }
-      // eslint-disable-next-line no-restricted-syntax
-      for await (const [index, task] of Object.entries(this.tasks)) {
-        const combinedPath = pathTools.join('/', Config.ftp.baseDir, task.path)
 
-        const [err] = await try_(client.ensureDir(pathTools.dirname(combinedPath)), 'FTP_DIR_ERR')
-        if (err) {
-          this.close()
-          return
-        }
+      await task.callback({ client: this.client, combinedPath })
+      this.tasks.splice(index)
+    }
 
-        await task.callback({ client, combinedPath })
-
-        this.tasks.splice(index)
-        this.close()
-      }
-    })
+    await try_(this.client.end(), 'FTP_END_ERR')
+    if (Object.entries(this.tasks).length > 0) this.runTasks()
   }
 
   async upload(path, data) {
@@ -88,14 +74,14 @@ class FTPClient {
       callback: async ({ client, combinedPath }) => {
         log.debug('FTP_UPLOAD', combinedPath)
 
-        await try_(client.upload(
-          this._dataToReadableStream(data),
+        await try_(client.put(
+          data,
           pathTools.basename(path),
-        ), 'FTP_WEB_SYNC_UPLOAD_ERR')
+        ), 'FTP_PUT_ERR')
       },
     })
 
-    this.runTasks()
+    this.debouncedRunTasks()
   }
 
   async delete(path) {
@@ -104,13 +90,13 @@ class FTPClient {
       callback: async ({ client, combinedPath }) => {
         log.debug('FTP_DELETE', combinedPath)
 
-        await try_(client.remove(
+        await try_(client.delete(
           pathTools.basename(path),
         ), 'FTP_WEB_SYNC_DELETE_ERR')
       },
     })
 
-    this.runTasks()
+    this.debouncedRunTasks()
   }
 }
 
@@ -118,6 +104,6 @@ const FTPClientInstance = new FTPClient()
 module.exports = FTPClientInstance
 
 exitHandler.addHandler(() => {
-  log.debug('FTP_CONNECTION_CLOSE_ON_EXIT')
-  try_(() => FTPClientInstance._client.close(), 'silenced:FTPClientUnnecessaryClose')
+  log.debug('FTP_DESTROY_CONNECTION_ON_EXIT')
+  try_(() => FTPClientInstance.client.destroy(), 'FTP_DESTROY_ERR')
 })

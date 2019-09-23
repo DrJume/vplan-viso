@@ -1,7 +1,7 @@
 const { filterObj } = require('util/object-tools')
 
 function isPromise(objToCheck) {
-  return Promise.resolve(objToCheck) === objToCheck
+  return Boolean(objToCheck && typeof objToCheck.then === 'function')
 }
 
 function isFunction(objToCheck) {
