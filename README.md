@@ -16,7 +16,11 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
     docker-compose up --build -d
     ```
 
-4. The application is accessible under [http://localhost:8080]
+4. The application is accessible under [http://localhost:8080](http://localhost:8080)
+
+## Documentation
+
+[**`Go to Wiki`**](https://github.com/DrJume/vplan-viso/wiki)
 
 ## Project structure
 
@@ -37,10 +41,10 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
 ## Roadmap
 
 - [x] Docker support
-- [x] Auto Updater
 - [x] VueJS based frontend
 - [x] Display page progress
 - [x] Internal FTP Support
+- [ ] Secure Updater
 - [ ] Ticker
 - [ ] Changes highlight
 - [ ] Animate display paging

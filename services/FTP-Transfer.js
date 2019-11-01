@@ -34,18 +34,33 @@ class FTPClient {
         return !!err
       }
 
-      default: {
-        log.err('FTP_CONNECTION_DANGLING')
+      case PromiseFTP.STATUSES.CONNECTED: {
+        log.debug('FTP_ALREADY_CONNECTED')
 
+        return false
+      }
+
+      case PromiseFTP.STATUSES.CONNECTING:
+      case PromiseFTP.STATUSES.RECONNECTING: {
+        log.err('FTP_CONNECTION_DANGLING', this.client.getConnectionStatus())
+        return false
+      }
+
+      case PromiseFTP.STATUSES.DISCONNECTING:
+      case PromiseFTP.STATUSES.LOGGING_OUT: {
+        log.err('FTP_CONNECTION_CLOSING', this.client.getConnectionStatus())
+        return false
+      }
+
+      default: {
+        log.err('FTP_UNKNOWN_STATUS', this.client.getConnectionStatus())
         return false
       }
     }
   }
 
   async _runTasks() {
-    if (this.client.getConnectionStatus() === PromiseFTP.STATUSES.CONNECTED) return
-
-    await this._connect()
+    if (!await this._connect()) return
 
     log.debug('FTP_TASKS', this.tasks.map(task => task.path))
     // eslint-disable-next-line no-restricted-syntax

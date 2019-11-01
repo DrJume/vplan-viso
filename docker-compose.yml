@@ -10,5 +10,4 @@ services:
       - "8080:3000"
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - /opt/vplan-viso/share:/app/share
