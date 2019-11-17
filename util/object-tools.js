@@ -14,8 +14,8 @@ const filterObj = (objToFilter, allowedKeys) =>
 const isObject = val =>
   val !== null && typeof val === 'object' && !Array.isArray(val)
 
-const objFromEntries = inputObj =>
-  inputObj.reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {})
+const objFromEntries = objEntriesArray =>
+  objEntriesArray.reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {})
 
 const recursiveObjPatch = (masterObj, patchObj) =>
   objFromEntries(Object.entries(masterObj)
@@ -30,7 +30,7 @@ const recursiveObjPatch = (masterObj, patchObj) =>
           : val),
       ]))
 
-const deepObjectVal = {
+const deepObjectVal = { // manipulate nested object value
   set({ obj, keys, val }) {
     const lastKey = keys.pop()
     const ref = keys.reduce((acc, key) => acc[key], obj)
