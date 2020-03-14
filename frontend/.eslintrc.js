@@ -11,7 +11,7 @@ module.exports = {
     'no-console': 'off',
     'no-debugger': 'off',
     semi: ['error', 'never'],
-    'vue/comma-dangle': ['error', 'always'],
+    'vue/comma-dangle': ['error', 'always-multiline'],
     'vue/eqeqeq': 'error',
     'vue/max-attributes-per-line': [
       'error',
