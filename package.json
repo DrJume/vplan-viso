@@ -1,7 +1,7 @@
 {
   "name": "vplan-viso",
-  "version": "0.6.1",
-  "description": "Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen",
+  "version": "0.7.0",
+  "description": "Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monitoren in Schulen",
   "main": "index.js",
   "engines": {
     "node": "^12.16.2",

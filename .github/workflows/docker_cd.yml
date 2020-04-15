@@ -1,0 +1,224 @@
+name: Docker CD
+
+on:
+  push:
+    branches:
+      - master
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  REPOSITORY: drjume/vplan-viso
+
+jobs:
+  test:
+    # Skip on '[ci skip]' directive.
+    if: ${{ !contains(github.event.head_commit.message, '[ci skip]') }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        docker_arch: [amd64, arm32v7, arm64v8]
+
+    env:
+      DOCKER_ARCH: ${{ matrix.docker_arch }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup multiarch/qemu-user-static
+        # Don't install qemu when running on amd64 (no emulation needed)
+        if: matrix.docker_arch != 'amd64'
+        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+      - name: Run tests
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          if [ -f docker-compose.test.yml ]; then
+            docker-compose --file docker-compose.test.yml build
+            docker-compose --file docker-compose.test.yml run sut
+          else
+            docker build . --file Dockerfile --build-arg ARCH=$DOCKER_ARCH --cache-from $REPOSITORY:master_$DOCKER_ARCH
+          fi
+
+  publish:
+    # Run only after a git push.
+    if: github.event_name == 'push'
+
+    # Ensure test job passes before pushing image.
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      tag: ${{ steps.prepare_labels.outputs.tag }}
+      is_version_release: ${{ steps.prepare_labels.outputs.is_version_release }}
+      publish_latest: ${{ steps.prepare_labels.outputs.publish_latest }}
+
+    strategy:
+      matrix:
+        docker_arch: [amd64, arm32v7, arm64v8]
+
+    env:
+      DOCKER_ARCH: ${{ matrix.docker_arch }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare labels
+        id: prepare_labels
+        run: |
+          # Strip git ref prefix from tag
+          TAG=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && TAG=$(echo $TAG | sed -e 's/^v//')
+
+          # Determine if tag describes a version release
+          IS_VERSION_RELEASE=$([[ "$TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]] && echo 'true' || echo 'false')
+
+          # Should a `latest` release be published?
+          PUBLISH_LATEST=$([[ "$TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && echo 'true' || echo 'false')
+
+          echo REPOSITORY=$REPOSITORY
+          echo TAG=$TAG
+          echo IS_VERSION_RELEASE=$IS_VERSION_RELEASE
+          echo PUBLISH_LATEST=$PUBLISH_LATEST
+
+          # Set environment variables
+          echo "::set-env name=TAG::$TAG"
+          echo "::set-env name=IS_VERSION_RELEASE::$IS_VERSION_RELEASE"
+          echo "::set-env name=PUBLISH_LATEST::$PUBLISH_LATEST"
+
+          # Set job outputs
+          echo "::set-output name=tag::$TAG"
+          echo "::set-output name=is_version_release::$IS_VERSION_RELEASE"
+          echo "::set-output name=publish_latest::$PUBLISH_LATEST"
+
+      - name: Setup multiarch/qemu-user-static
+        # Don't install qemu when running on amd64 (no emulation needed)
+        if: matrix.docker_arch != 'amd64'
+        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+      - name: Build image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: docker build . --file Dockerfile --tag image --build-arg ARCH=$DOCKER_ARCH --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $REPOSITORY:master_$DOCKER_ARCH
+
+      - name: Generate Docker image tarball
+        if: env.IS_VERSION_RELEASE == 'true'
+        run: |
+          IMAGE_ID=$REPOSITORY:${TAG}_${DOCKER_ARCH}
+
+          docker tag image $IMAGE_ID
+          docker save $IMAGE_ID | xz -z9 -C sha256 -v > vplan-viso-${TAG}_${DOCKER_ARCH}.tar.xz.image
+
+      - name: Upload artifact
+        if: env.IS_VERSION_RELEASE == 'true'
+        uses: actions/upload-artifact@v2
+        with:
+          name: vplan-viso-${{env.TAG}}_${{env.DOCKER_ARCH}}.tar.xz.image
+          path: ./vplan-viso-${{env.TAG}}_${{env.DOCKER_ARCH}}.tar.xz.image
+
+      - name: Log into registry
+        #run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u drjume --password-stdin
+
+      - name: Push image `${{ env.TAG }}`
+        run: |
+          IMAGE_ID=$REPOSITORY:${TAG}_${DOCKER_ARCH}
+
+          docker tag image $IMAGE_ID
+          docker push $IMAGE_ID
+
+      - name: Publish `latest`
+        if: env.PUBLISH_LATEST == 'true'
+        run: |
+          IMAGE_ID=$REPOSITORY:latest_${DOCKER_ARCH}
+
+          docker tag image $IMAGE_ID
+          docker push $IMAGE_ID
+
+  release:
+    needs: publish
+
+    runs-on: ubuntu-latest
+
+    env:
+      TAG: ${{ needs.publish.outputs.tag }}
+      IS_VERSION_RELEASE: ${{ needs.publish.outputs.is_version_release }}
+      PUBLISH_LATEST: ${{ needs.publish.outputs.publish_latest }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Make release docker-compose.yml
+        if: env.IS_VERSION_RELEASE == 'true'
+        run: sed "s/{{VERSION}}/$TAG/g" .github/assets/docker-compose-release.yml > docker-compose.yml
+
+      - name: Download artifacts
+        if: env.IS_VERSION_RELEASE == 'true'
+        uses: actions/download-artifact@v2
+        with:
+          path: .
+
+      - name: Create GitHub release
+        if: env.IS_VERSION_RELEASE == 'true'
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.TAG }}
+          draft: true
+          files: |
+            docker-compose.yml
+            vplan-viso-*.tar.xz.image/*
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u drjume --password-stdin
+
+      - name: Download manifest-tool
+        run: |
+          wget https://github.com/estesp/manifest-tool/releases/download/v1.0.2/manifest-tool-linux-amd64
+
+          mv manifest-tool-linux-amd64 manifest-tool
+          chmod +x manifest-tool
+
+      - name: Generate Docker manifest list
+        run: |
+          # Function for writing the manifest-tool config yaml to file
+          createManifestConf () {
+          cat <<EOF > manifest-tool-conf.yml
+          image: $REPOSITORY:$1
+          manifests:
+            - image: $REPOSITORY:${1}_amd64
+              platform:
+                architecture: amd64
+                os: linux
+            - image: $REPOSITORY:${1}_arm32v7
+              platform:
+                architecture: arm
+                variant: v7
+                os: linux
+            - image: $REPOSITORY:${1}_arm64v8
+              platform:
+                architecture: arm64
+                variant: v8
+                os: linux
+          EOF
+          }
+
+          createManifestConf $TAG
+          ./manifest-tool push from-spec manifest-tool-conf.yml
+
+          if [ "$PUBLISH_LATEST" == "true" ]; then 
+            createManifestConf "latest"
+            ./manifest-tool push from-spec manifest-tool-conf.yml
+          fi

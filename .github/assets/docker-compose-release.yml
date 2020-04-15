@@ -1,9 +1,8 @@
 version: '3'
 services:
   vplan-viso:
-    build: .
-    image: drjume/vplan-viso:master
-    container_name: vplan-viso
+    image: drjume/vplan-viso:{{VERSION}}
+    container_name: vplan-viso-{{VERSION}}
     environment:
       - TZ=Europe/Berlin
     ports:

@@ -1,6 +1,6 @@
 # vplan-viso
 
-Vertretungsplan-Visualisierungssoftware für den Einsatz in Schulen
+Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monitoren in Schulen
 
 ---
 
