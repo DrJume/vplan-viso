@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-hidden position-relative">
     <div
-      :class="{ 'hide-curtain': Status === 'READY', }"
+      :class="{ 'hide-curtain': Status === 'READY' }"
       class="w-100 h-100 bg-white position-absolute
         d-flex justify-content-center align-items-center"
     >

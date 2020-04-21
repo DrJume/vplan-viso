@@ -1,9 +1,9 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
   },
-  'extends': [
+  extends: [
     '@vue/eslint-config-airbnb',
     'plugin:vue/recommended',
   ],
@@ -19,22 +19,22 @@ module.exports = {
         singleline: 3,
         multiline: {
           max: 1,
-          allowFirstLine: false
-        }
-      }
+          allowFirstLine: false,
+        },
+      },
     ],
-    'vue/brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
+    'vue/brace-style': ['error', '1tbs', { allowSingleLine: true }],
     'vue/singleline-html-element-content-newline': 'off',
     'no-underscore-dangle': 'off',
     'one-var-declaration-per-line': 'off',
     'one-var': 'off',
     'no-param-reassign': 'off',
     'import/no-unresolved': 'off',
-    'camelcase': 'off',
+    camelcase: 'off',
     'arrow-parens': 'off',
-    'no-plusplus': 'off'
+    'no-plusplus': 'off',
   },
   parserOptions: {
-    parser: 'babel-eslint'
-  }
+    parser: 'babel-eslint',
+  },
 }

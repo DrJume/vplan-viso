@@ -15,9 +15,9 @@
     >
       <div
         class="progress-bar paging-animation"
-        :style="{'animation-duration': `${pageChunk.displayTime}ms`,}"
+        :style="{'animation-duration': `${pageChunk.displayTime}ms`}"
         :class="{'paging-progress': (PageChunks.length > 1) && (activePage === index),
-                 'paging-done': index < activePage,}"
+                 'paging-done': index < activePage}"
       />
     </div>
   </div>

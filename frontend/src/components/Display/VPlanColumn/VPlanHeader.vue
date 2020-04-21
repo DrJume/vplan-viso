@@ -6,7 +6,7 @@
     <p
       v-if="!!VPlanInfo"
       class="my-1 mx-3 lead rounded-sm bg-light py-2"
-      :class="{'large': largeInfoBox,}"
+      :class="{'large': largeInfoBox}"
       v-html="VPlanInfo"
     />
   </div>
