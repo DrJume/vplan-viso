@@ -6,7 +6,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
-const backend = require('backend/index')
+const endpoints = require('endpoints/index')
 
 const exitHandler = require('util/exit-handler')
 
@@ -37,8 +37,8 @@ async function RunWebServer() {
   app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
   app.use(bodyParser.json()) // parse application/json
 
-  // Defined routes of backend/
-  app.use('/', backend)
+  // Defined routes of endpoints/
+  app.use('/', endpoints)
 
   // Custom error handling middleware
   app.use((err, req, res, next) => {
