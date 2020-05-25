@@ -17,7 +17,7 @@
 
 <script>
 // @ is an alias to /src
-import pkg from '@/../../package.json'
+import pkg from '@/../package.json'
 
 // eslint-disable-next-line import/extensions
 import getDisplayStore from '@/store/display'
