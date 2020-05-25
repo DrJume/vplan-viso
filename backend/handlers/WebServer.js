@@ -42,7 +42,7 @@ async function RunWebServer() {
 
   // Custom error handling middleware
   app.use((err, req, res, next) => {
-    log.err('WEBSERVER_ERR', err)
+    log.err('WEBSERVER_ERR', err.toString())
     // next(err)
     res.status(500).send(err.toString())
   })
