@@ -1,16 +1,14 @@
-.git
+.git/
 .gitignore
 .github/
 
 .vscode/
 
-node_modules/
-npm-debug.log
+**/node_modules/
+
+backend/share/
 
 frontend/dist/
-frontend/node_modules/
-
-share/
 
 README.md
 TODO.md

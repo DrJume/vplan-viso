@@ -2,6 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'vplan-viso',
+      cwd: 'backend/',
       script: './index.js',
       watch: false,
       autorestart: true,
