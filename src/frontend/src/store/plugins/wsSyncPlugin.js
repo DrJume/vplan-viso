@@ -58,7 +58,6 @@ export default {
             break
           }
 
-
           default:
             break
         }

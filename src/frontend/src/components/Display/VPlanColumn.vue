@@ -1,4 +1,3 @@
-
 <template>
   <div class="d-flex flex-column h-100">
     <VPlanHeader v-if="VPlan.head" :queue="queue" class="py-1" />
