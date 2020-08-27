@@ -10,10 +10,8 @@ export default {
 
     wsConnect = (target) => {
       console.debug({ wsSyncPlugin: 'CONNECT', target })
-      const socketUrl = window.location.hostname === 'localhost'
-        ? 'ws://localhost:8000'
-        : `ws://${window.location.host}`
 
+      const socketUrl = `ws://${window.location.host}`
       const ws = new WebSocket(socketUrl)
 
       ws.onopen = () => {
