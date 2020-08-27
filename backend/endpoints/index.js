@@ -5,7 +5,7 @@ const api = require('endpoints/api')
 
 const router = express.Router()
 
-router.use('/dashboard|/display', (req, res, next) => {
+/* router.use('/dashboard|/display', (req, res, next) => {
   const userAgent = req.get('User-Agent')
   // log.debug('USER_AGENT', userAgent)
 
@@ -21,7 +21,7 @@ router.use('/dashboard|/display', (req, res, next) => {
   }
 
   next()
-})
+}) */
 
 // Define routes
 router.use(express.static('../frontend/dist'))
