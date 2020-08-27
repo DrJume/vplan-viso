@@ -57,12 +57,6 @@ router.get('/vplan/:type(students|teachers)', async (req, res) => {
 
 router.get('/action', async (req, res) => { // TODO: Check code quality
   switch (req.query.type) {
-    case 'update': {
-      res.redirect('/')
-      await TaskScheduler.RunUpdate()
-      break
-    }
-
     case 'vplan-shift': {
       res.redirect('/')
       await TaskScheduler.RunVPlanShift()

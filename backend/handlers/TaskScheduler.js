@@ -1,6 +1,5 @@
 const cron = require('node-cron')
 
-const Updater = require('services/Updater')
 const DataManager = require('services/DataManager')
 const VPlanParser = require('lib/VPlanParser')
 
@@ -50,25 +49,6 @@ async function shiftVPlan(vplanType) {
   return true
 }
 
-async function RunUpdate() {
-  log.info('CHECKING_FOR_UPDATE')
-
-  const update = await Updater.checkUpdate()
-  if (!update) {
-    log.err('UPDATE_CHECK_FAILED')
-    return
-  }
-
-  log.debug('UPDATE_INFO', update)
-
-  if (!update.isLatestNewer) {
-    log.info('NO_UPDATE_NEEDED')
-    return
-  }
-
-  await Updater.runUpdate(update)
-}
-
 async function RunVPlanShift() {
   log.info('VPLAN_SHIFT')
 
@@ -77,11 +57,6 @@ async function RunVPlanShift() {
 }
 
 function StartTaskRunner() {
-  // Update service
-  cron.schedule('0 23 * * *', async () => {
-    await RunUpdate()
-  })
-
   // VPlan day shift on week days
   cron.schedule('0 1 * * Mon-Fri', async () => {
     await RunVPlanShift()
@@ -90,5 +65,4 @@ function StartTaskRunner() {
 
 
 module.exports.start = StartTaskRunner
-module.exports.RunUpdate = RunUpdate
 module.exports.RunVPlanShift = RunVPlanShift
