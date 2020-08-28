@@ -115,7 +115,7 @@ jobs:
       - name: Generate Docker image tarball
         if: env.IS_VERSION_RELEASE == 'true'
         run: |
-          IMAGE_ID=$REPOSITORY:${TAG}_${DOCKER_ARCH}
+          IMAGE_ID=$REPOSITORY:${TAG}
 
           docker tag image $IMAGE_ID
           docker save $IMAGE_ID | xz -z9 -C sha256 -v > vplan-viso-${TAG}_${DOCKER_ARCH}.tar.xz.image
