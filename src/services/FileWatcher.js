@@ -11,7 +11,7 @@ const DataManager = require('services/DataManager')
 const isFileType = (filePath, typeFileExtension) => path.extname(filePath) === `.${typeFileExtension}`
 
 module.exports = async function FileWatcher(handler) {
-  log.info('WATCHING_UPLOAD_DIR', path.normalize(DataManager.Paths.uploadDir))
+  log.info('WATCHING_UPLOAD_DIR', path.resolve(DataManager.Paths.uploadDir))
 
   // Watch uploadDir
   chokidar.watch(DataManager.Paths.uploadDir, {
