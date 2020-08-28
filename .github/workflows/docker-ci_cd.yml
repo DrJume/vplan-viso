@@ -161,7 +161,7 @@ jobs:
 
       - name: Make release docker-compose.yml
         if: env.IS_VERSION_RELEASE == 'true'
-        run: sed "s/{{VERSION}}/$TAG/g" .github/assets/docker-compose-release.yml > docker-compose.yml
+        run: sed "s/{{VERSION}}/$TAG/g" .github/assets/docker-compose-release.yml > docker-compose.vplan-viso.yml
 
       - name: Download artifacts
         if: env.IS_VERSION_RELEASE == 'true'
@@ -178,7 +178,7 @@ jobs:
           tag_name: v${{ env.TAG }}
           draft: true
           files: |
-            docker-compose.yml
+            docker-compose.vplan-viso.yml
             vplan-viso-*.tar.xz.image/*
 
       - name: Log into registry
@@ -218,7 +218,7 @@ jobs:
           createManifestConf $TAG
           ./manifest-tool push from-spec manifest-tool-conf.yml
 
-          if [ "$PUBLISH_LATEST" == "true" ]; then 
+          if [ "$PUBLISH_LATEST" == "true" ]; then
             createManifestConf "latest"
             ./manifest-tool push from-spec manifest-tool-conf.yml
           fi
