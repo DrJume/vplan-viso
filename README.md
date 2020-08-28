@@ -26,17 +26,17 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
 
 ```tree
 .
-├── backend         # NodeJS backend
+├── src             # NodeJS source (backend)
 │   ├── endpoints/      # HTTP-Endpoint router modules
+│   ├── frontend/       # VueJS frontend
 │   ├── handlers/       # Independent abstracted modules for main duties
 │   ├── helpers/        # Helper modules for dev environment
 │   ├── lib/            # Own stateless libraries
 │   ├── services/       # Common used modules
-│  (├── share/          # Data files and config during operation)
-│   ├── test/           # Resources for testing
 │   ├── util/           # Small utility functions
 │   └── index.js        # Entry module (async)
-└── frontend/       # VueJS frontend
+├── test/           # Resources for testing
+└── share/          # Data files and config during operation
 ```
 
 ## Roadmap

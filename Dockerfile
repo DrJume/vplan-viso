@@ -2,17 +2,17 @@
 ARG ARCH=amd64
 
 
-##### FRONTEND
+##### FRONTEND BUILD STEP
 FROM ${ARCH}/node:12-slim as frontend
 
-WORKDIR /frontend
+WORKDIR /build
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY frontend/package*.json ./
+COPY src/frontend/package*.json ./
 RUN npm ci
 
-COPY frontend/ ./
+COPY src/frontend/ ./
 RUN npm run build
 
 
@@ -21,14 +21,16 @@ FROM ${ARCH}/node:12-slim
 
 WORKDIR /app
 
-COPY backend/package*.json ./
+COPY src/package*.json ./
 RUN npm ci --only=production
 
-COPY backend/ backend/
+COPY src/ src/
 
-COPY --from=frontend /frontend/dist/ frontend/dist/
+COPY --from=frontend /build/dist/ src/frontend/dist/
 
 # Expose internal port defined in Config.dev.internal_port
 EXPOSE 3000
 
-CMD [ "npx", "pm2-runtime", "--raw", "backend/pm2.config.js" ]
+VOLUME /app/share/
+
+CMD [ "npx", "pm2-runtime", "--raw", "src/pm2.config.js" ]

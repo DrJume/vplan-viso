@@ -1,8 +1,6 @@
 {
   "verbose": false,
   "ignore": [
-    "share/",
-    "test/vplan-files/",
     "frontend/"
   ],
   "ext": "js,json",

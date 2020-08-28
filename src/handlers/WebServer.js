@@ -10,6 +10,8 @@ const endpoints = require('endpoints/index')
 
 const exitHandler = require('util/exit-handler')
 
+const DataManager = require('services/DataManager')
+
 let server
 
 async function RunWebServer() {
@@ -17,7 +19,7 @@ async function RunWebServer() {
 
   if (Config.webserver.log_file) {
     // Webserver logging system
-    const LogFileStream = fs.createWriteStream('logs/webserver.log', { flags: 'a' }) // appending file-write stream
+    const LogFileStream = fs.createWriteStream(`${DataManager.Paths.logsDir}/webserver.log`, { flags: 'a' }) // appending file-write stream
 
     morgan.token('date', () => {
       const d = new Date()

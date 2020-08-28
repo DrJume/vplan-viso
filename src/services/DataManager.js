@@ -13,6 +13,9 @@ const Paths = {
   get dataDir() {
     return `${this.base}/display`
   },
+  get logsDir() {
+    return `${this.base}/logs`
+  },
   vplan({ type, queue }) {
     return `${this.dataDir}/${type}/vplan${queue ? `/${queue}.json` : ''}`
   },

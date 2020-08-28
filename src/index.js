@@ -1,16 +1,13 @@
 /* eslint-disable global-require */
 (async function main() {
-  // Node run location check, run node in project path
-  const path = require('path')
-
-  if (path.relative(process.cwd(), __dirname) !== '') {
-    log.err('WRONG_NODE_RUN_LOCATION', `Please run 'node index.js' within: ${__dirname}`)
-    process.exit(1)
-  }
-
   // Make the project path easier accessible for use in the require() function
   process.env.NODE_PATH = __dirname
   require('module')._initPaths() // Might break in the future
+
+  const logger = require('helpers/logger')
+  const try_ = require('helpers/try-wrapper')
+  global.log = logger // Make the logger globally accessible
+  global.try_ = try_
 
   // Catches unhandled promise errors and uncought exceptions and logs them
   process.on('unhandledRejection', (error) => {
@@ -32,10 +29,13 @@
     log.err('UNCAUGHT_EXCEPTION', error)
   })
 
-  const logger = require('helpers/logger')
-  const try_ = require('helpers/try-wrapper')
-  global.log = logger // Make the logger globally accessible
-  global.try_ = try_
+  // Node run location check, run node in project path
+  const path = require('path')
+
+  if (path.relative(process.cwd(), `${__dirname}/..`) !== '') {
+    log.err('WRONG_NODE_RUN_LOCATION', `Please run 'node index.js' within: ${path.normalize(`${__dirname}/..`)}`)
+    process.exit(1)
+  }
 
   const DataManager = require('services/DataManager')
   await DataManager.init()
@@ -46,9 +46,6 @@
 
   const moment = require('moment')
   moment.locale('de')
-
-  // Start test-script, process exits after it
-  // require('test/test-script')
 
   const pkg = require('package.json')
   log.info(`VPLAN-VISO_INIT v${pkg.version}`)

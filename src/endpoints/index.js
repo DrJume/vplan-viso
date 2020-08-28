@@ -24,12 +24,12 @@ const router = express.Router()
 }) */
 
 // Define routes
-router.use(express.static('../frontend/dist'))
+router.use(express.static('src/frontend/dist'))
 router.use('/api', api)
 
 // Serve SPA with frontend router in history mode
 router.get('*', (req, res) => {
-  res.sendFile(path.resolve('../frontend/dist/index.html'))
+  res.sendFile(path.resolve('src/frontend/dist/index.html'))
 })
 
 module.exports = router

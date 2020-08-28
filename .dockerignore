@@ -6,9 +6,8 @@
 
 **/node_modules/
 
-backend/share/
-
-frontend/dist/
+share/
+src/frontend/dist/
 
 README.md
 TODO.md
