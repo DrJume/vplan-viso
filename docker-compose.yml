@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.5'
 services:
   vplan-viso:
     build: .
@@ -12,3 +12,9 @@ services:
     restart: unless-stopped
     volumes:
       - /opt/vplan-viso/share:/app/share
+    networks:
+      - vplan-viso
+
+networks:
+  vplan-viso:
+    name: vplan-viso
