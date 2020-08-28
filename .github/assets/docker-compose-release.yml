@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
   vplan-viso:
     image: drjume/vplan-viso:{{VERSION}}
@@ -6,7 +6,8 @@ services:
     environment:
       - TZ=Europe/Berlin
     ports:
-      - "8080:3000"
+      - target: 3000
+        published: 8080
     restart: unless-stopped
     volumes:
       - /opt/vplan-viso/share:/app/share
