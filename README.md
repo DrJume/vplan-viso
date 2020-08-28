@@ -12,7 +12,7 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
     **_Hinweis:_**
     _Docker sollte nicht mit root-Rechten genutzt werden!_
     Damit ein normaler User auf Docker zugreifen kann, muss er zur Docker-Gruppe hinzugefügt werden:
-    
+
     ```bash
     $ sudo usermod -aG docker <user>
     ```
@@ -22,6 +22,11 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
 2. `docker-compose.vplan-viso.yml` gegebenenfalls anpassen:
     - externer Port _(Standardwert: `8080`)_
     - Pfad zum Volume _(Standardwert: `/opt/vplan-viso/share`)_
+
+        Für dieses Verzeichnis müssen die Zugriffrechte richtig gesetzt werden:
+        ```bash
+        $ chown -R <user> /opt/vplan-viso
+        ```
 
 3. Mit **docker-compose** starten:
     ```bash
@@ -44,9 +49,8 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
     Im Log zeigt sich neben der wichtigen Informationen auch die Addresse, unter welcher vplan-viso erreichbar ist.
     Die Monitoransichten sind unter `/display/students` bzw. `/display/teachers` zugänglich.
 
-    Das Datenverzeichnis `share/` befindet sich im Volume des Docker Containers und ist im eingestellten Pfad, ersichtlich aus der `docker-compose.yml`, eingebunden.
+    Das Datenverzeichnis `share/` befindet sich im Volume des Docker Containers und ist im definierten Pfad, ersichtlich aus der `docker-compose.yml`, eingebunden. Darin befinden sich:
 
-    Es besteht aus:
     - `upload/` - Vetretungsplandateien werden hier hochgeladen.
     - `display/` - Gespeicherte VPlan-Dateien. Können gelöscht werden.
     - `logs/` - Weitere Logs (falls aktiviert)
