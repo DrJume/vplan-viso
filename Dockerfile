@@ -24,7 +24,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --only=production
 
-COPY src/ src/
+COPY . .
 
 COPY --from=frontend /build/dist/ src/frontend/dist/
 
@@ -33,4 +33,4 @@ EXPOSE 3000
 
 VOLUME /app/share/
 
-CMD [ "npx", "pm2-runtime", "--raw", "src/pm2.config.js" ]
+CMD [ "npx", "pm2-runtime", "--raw", "pm2.config.js" ]
