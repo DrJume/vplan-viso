@@ -47,7 +47,7 @@
   const moment = require('moment')
   moment.locale('de')
 
-  const pkg = require('package.json')
+  const pkg = require('../package.json')
   log.info(`VPLAN-VISO_INIT v${pkg.version}`)
 
   // Running TaskScheduler
