@@ -4,23 +4,65 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
 
 ---
 
-## Install
+## Installation
 
-1. Install [Docker](https://get.docker.com/) (stable)
+- [Docker](https://get.docker.com/) (stable: >19.03.12)
+- [docker-compose](https://docs.docker.com/compose/install/) (>1.26.2)
 
-2. Download [docker-compose.yml](https://github.com/DrJume/vplan-viso/blob/master/docker-compose.yml)
-
-3. Run commands:
-
+    **_Hinweis:_**
+    _Docker sollte nicht mit root-Rechten genutzt werden!_
+    Damit ein normaler User auf Docker zugreifen kann, muss er zur Docker-Gruppe hinzugefügt werden:
+    
     ```bash
-    docker-compose up --build -d
+    $ sudo usermod -aG docker <user>
     ```
 
-4. The application is accessible under [http://localhost:8080](http://localhost:8080)
+1. `docker-compose.vplan-viso.yml` aus dem [aktuellsten Release](https://github.com/DrJume/vplan-viso/releases/latest) herunterladen.
 
-## Documentation
+2. `docker-compose.vplan-viso.yml` gegebenenfalls anpassen:
+    - externer Port _(Standardwert: `8080`)_
+    - Pfad zum Volume _(Standardwert: `/opt/vplan-viso/share`)_
 
-[**`Go to Wiki`**](https://github.com/DrJume/vplan-viso/wiki)
+3. Mit **docker-compose** starten:
+    ```bash
+    $ docker-compose -f docker-compose.vplan-viso.yml up -d
+    ```
+
+    Das fertige Docker-Image wird von [DockerHub](https://hub.docker.com/repository/docker/drjume/vplan-viso) heruntergeladen und gestartet.
+
+    Falls der Zugriff auf DockerHub nicht möglich ist, sind exportierte Docker-Images im komprimierten Tarball-Format jedem Release beigefügt. Das zur Prozessorarchitektur passende Image kann zuvor heruntergeladen und über
+    ```bash
+    $ docker image load -i <docker-image-tarball>
+    ```
+    reingeladen werden.
+
+4. Fertigstellung
+
+    ```bash
+    $ docker logs vplan-viso
+    ```
+    Im Log zeigt sich neben der wichtigen Informationen auch die Addresse, unter welcher vplan-viso erreichbar ist.
+    Die Monitoransichten sind unter `/display/students` bzw. `/display/teachers` zugänglich.
+
+    Das Datenverzeichnis `share/` befindet sich im Volume des Docker Containers und ist im eingestellten Pfad, ersichtlich aus der `docker-compose.yml`, eingebunden.
+
+    Es besteht aus:
+    - `upload/` - Vetretungsplandateien werden hier hochgeladen.
+    - `display/` - Gespeicherte VPlan-Dateien. Können gelöscht werden.
+    - `logs/` - Weitere Logs (falls aktiviert)
+    - `config.json` - Programm-Konfiguration. Damit Änderungen wirksam werden, muss vplan-viso neugestartet werden.
+
+        ```bash
+        $ docker restart vplan-viso
+        ```
+
+### Deinstallation
+
+```bash
+$ docker-compose -f docker-compose.vplan-viso.yml down
+```
+
+---
 
 ## Project structure
 
