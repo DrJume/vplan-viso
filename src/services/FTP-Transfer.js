@@ -10,6 +10,7 @@ class FTPClient {
     this.client = new PromiseFTP()
 
     this.tasks = []
+    this.running = false
     this.debouncedRunTasks = debounce(() => this._runTasks(), 2000)
   }
 
@@ -59,11 +60,22 @@ class FTPClient {
 
   async _runTasks() {
     if (this.tasks.length === 0) return
-    if (!await this._isConnected()) return
+    if (this.running) {
+      log.warn('FTP_TASKS_ALREADY_RUNNING')
+      return
+    }
+    this.running = true
 
-    log.debug('FTP_TASKS', this.tasks.map(task => task.path))
+    if (!await this._isConnected()) {
+      this.running = false
+      return
+    }
+
+    const poppedTasks = this.tasks.splice(0)
+    log.debug('FTP_TASKS', poppedTasks.map(task => task.path))
+
     // eslint-disable-next-line no-restricted-syntax
-    for await (const [index, task] of Object.entries(this.tasks)) {
+    for await (const task of poppedTasks) {
       const combinedPath = pathTools.join('/', Config.ftp.baseDir, task.path)
 
       let err
@@ -71,22 +83,26 @@ class FTPClient {
       [err] = await try_(this.client.cwd(pathTools.dirname(combinedPath)), 'FTP_CHDIR_ERR')
       if (err) {
         await try_(this.client.end(), 'FTP_END_ERR')
+        this.running = false
         return
       }
 
       await task.callback({ client: this.client, combinedPath })
-      this.tasks.splice(index)
     }
 
     if (this.tasks.length > 0) {
+      log.debug('FTP_FOUND_MORE_TASKS')
+      this.running = false
       await this._runTasks()
     } else {
-      log.debug('FTP_DISCONNECTING')
+      log.debug('FTP_DISCONNECT')
       await try_(this.client.end(), 'FTP_END_ERR')
     }
+    this.running = false
   }
 
   async upload(path, data) {
+    log.debug('FTP_UPLOAD_QUEUED', path)
     this.tasks.push({
       path,
       callback: async ({ client, combinedPath }) => {
@@ -95,7 +111,7 @@ class FTPClient {
         await try_(client.put(
           data,
           pathTools.basename(path),
-        ), 'FTP_PUT_ERR')
+        ), 'FTP_UPLOAD_ERR')
       },
     })
 
@@ -103,6 +119,7 @@ class FTPClient {
   }
 
   async delete(path) {
+    log.debug('FTP_DELETE_QUEUED', path)
     this.tasks.push({
       path,
       callback: async ({ client, combinedPath }) => {
@@ -110,7 +127,7 @@ class FTPClient {
 
         await try_(client.delete(
           pathTools.basename(path),
-        ), 'FTP_WEB_SYNC_DELETE_ERR')
+        ), 'FTP_DELETE_ERR')
       },
     })
 
