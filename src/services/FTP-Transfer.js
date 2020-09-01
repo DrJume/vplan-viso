@@ -16,7 +16,7 @@ class FTPClient {
   async _isConnected() {
     if (Config.ftp.host === '') return false
 
-    log.debug('FTP_CONNECTION_STATUS', this.client.getConnectionStatus())
+    log.debug('FTP_CURRENT_CONNECTION_STATUS', this.client.getConnectionStatus())
 
     switch (this.client.getConnectionStatus()) {
       case PromiseFTP.STATUSES.NOT_YET_CONNECTED: {
@@ -42,15 +42,12 @@ class FTPClient {
       }
 
       case PromiseFTP.STATUSES.CONNECTING:
-      case PromiseFTP.STATUSES.RECONNECTING: {
-        log.err('FTP_CONNECTION_DANGLING', this.client.getConnectionStatus())
-        return false
-      }
-
+      case PromiseFTP.STATUSES.RECONNECTING:
       case PromiseFTP.STATUSES.DISCONNECTING:
       case PromiseFTP.STATUSES.LOGGING_OUT: {
-        log.err('FTP_CONNECTION_CLOSING', this.client.getConnectionStatus())
-        return false
+        log.warn('FTP_CONNECTION_DANGLING', this.client.getConnectionStatus())
+        await new Promise(r => setTimeout(r, 2000)) // wait for 2s
+        return this._isConnected
       }
 
       default: {
