@@ -9,33 +9,41 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
 - [Docker](https://get.docker.com/) (stable: >19.03.12)
 - [docker-compose](https://docs.docker.com/compose/install/) (>1.26.2)
 
-    **_Hinweis:_**
-    _Docker sollte nicht mit root-Rechten genutzt werden!_
+    > **_Hinweis:_**
+    _Docker sollte nicht mit root-Rechten genutzt werden!_ <br>
     Damit ein normaler User auf Docker zugreifen kann, muss er zur Docker-Gruppe hinzugefügt werden:
 
     ```bash
     $ sudo usermod -aG docker <user>
     ```
 
-1. `docker-compose.vplan-viso.yml` aus dem [aktuellsten Release](https://github.com/DrJume/vplan-viso/releases/latest) herunterladen.
+1. `docker-compose.vplan-viso.yml` aus dem [aktuellsten Release](https://github.com/DrJume/vplan-viso/releases/latest) herunterladen _(in ein eigenes Verzeichnis!)_
 
-2. `docker-compose.vplan-viso.yml` gegebenenfalls anpassen:
-    - externer Port _(Standardwert: `8080`)_
-    - Pfad zum Volume _(Standardwert: `/opt/vplan-viso/share`)_
+2. Eine `.env`-Datei im _gleichen_ Verzeichnis erstellen:
 
-        Für dieses Verzeichnis müssen die Zugriffrechte richtig gesetzt werden:
-        ```bash
-        $ chown -R <user> /opt/vplan-viso
-        ```
+    ```sh
+    VPLAN_VISO_PORT=8080
+    VPLAN_VISO_VOLUME=/opt/vplan-viso/share
+    ```
 
-3. Mit **docker-compose** starten:
+    Umgebungsvariable | Erklärung
+    --- | ---
+    `VPLAN_VISO_PORT` | Port, auf welchem vplan-viso erreichbar sein soll
+    `VPLAN_VISO_VOLUME` | Pfad, wo das Docker Volume eingebunden wird
+
+    Für diesen Pfad müssen die Zugriffrechte richtig gesetzt sein:
+    ```bash
+    $ chown -R <user> /opt/vplan-viso
+    ```
+
+3. Mit **docker-compose** starten
     ```bash
     $ docker-compose -f docker-compose.vplan-viso.yml up -d
     ```
 
     Das fertige Docker-Image wird von [DockerHub](https://hub.docker.com/repository/docker/drjume/vplan-viso) heruntergeladen und gestartet.
 
-    Falls der Zugriff auf DockerHub nicht möglich ist, sind exportierte Docker-Images im komprimierten Tarball-Format jedem Release beigefügt. Das zur Prozessorarchitektur passende Image kann zuvor heruntergeladen und über
+    Falls der Zugriff auf DockerHub nicht möglich ist, sind exportierte Docker-Images im komprimierten Tarball-Format jedem Release beigefügt. Das zur Prozessorarchitektur passende Image kann zuvor heruntergeladen und mit
     ```bash
     $ docker image load -i <docker-image-tarball>
     ```
@@ -59,6 +67,10 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
         ```bash
         $ docker restart vplan-viso
         ```
+
+### Upgrade
+
+Schritte **`1`** bis **`3`** der [Installation](https://github.com/DrJume/vplan-viso#installation) ausführen.
 
 ### Deinstallation
 

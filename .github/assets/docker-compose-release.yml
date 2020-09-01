@@ -7,10 +7,10 @@ services:
       - TZ=Europe/Berlin
     ports:
       - target: 3000
-        published: 8080 # externer Port
+        published: ${VPLAN_VISO_PORT} # externer Port
     restart: unless-stopped
     volumes: # HOST:CONTAINER
-      - /opt/vplan-viso/share:/app/share
+      - ${VPLAN_VISO_VOLUME}:/app/share
     networks:
       - vplan-viso
 
