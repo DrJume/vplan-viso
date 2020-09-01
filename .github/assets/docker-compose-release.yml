@@ -7,10 +7,10 @@ services:
       - TZ=Europe/Berlin
     ports:
       - target: 3000
-        published: ${VPLAN_VISO_PORT} # externer Port
+        published: ${VPLAN_VISO_PORT:?Externer Port muss angegeben werden!}
     restart: unless-stopped
     volumes: # HOST:CONTAINER
-      - ${VPLAN_VISO_VOLUME}:/app/share
+      - ${VPLAN_VISO_VOLUME:?Volumepfad muss angegeben werden!}:/app/share
     networks:
       - vplan-viso
 
