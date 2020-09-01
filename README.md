@@ -54,8 +54,8 @@ Vertretungsplan-Visualisierungssoftware für den Einsatz an öffentlichen Monito
     ```bash
     $ docker logs vplan-viso
     ```
-    Im Log zeigt sich neben der wichtigen Informationen auch die Addresse, unter welcher vplan-viso erreichbar ist.
-    Die Monitoransichten sind unter `/display/students` bzw. `/display/teachers` zugänglich.
+    Im Log kann man sehen, ob das Starten geklappt hat. vplan-viso ist jetzt unter der lokalen IP-Adresse des Servers und Port `VPLAN_VISO_PORT` erreichbar.
+    Die Monitoransichten befinden sich bei `/display/students` bzw. `/display/teachers`.
 
     Das Datenverzeichnis `share/` befindet sich im Volume des Docker Containers und ist im definierten Pfad, ersichtlich aus der `docker-compose.yml`, eingebunden. Darin befinden sich:
 
