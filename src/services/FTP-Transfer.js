@@ -10,13 +10,13 @@ class FTPClient {
     this.client = new PromiseFTP()
 
     this.tasks = []
-    this.debouncedRunTasks = debounce(() => this._runTasks(), 1000)
+    this.debouncedRunTasks = debounce(() => this._runTasks(), 2000)
   }
 
-  async _connect() {
+  async _isConnected() {
     if (Config.ftp.host === '') return false
 
-    log.debug('FTP_STATUS', this.client.getConnectionStatus())
+    log.debug('FTP_CONNECTION_STATUS', this.client.getConnectionStatus())
 
     switch (this.client.getConnectionStatus()) {
       case PromiseFTP.STATUSES.NOT_YET_CONNECTED: {
@@ -24,20 +24,21 @@ class FTPClient {
           ...Config.ftp,
           autoReconnect: true,
         }), 'FTP_CONNECT_ERR')
+        if (!err) log.debug('FTP_CONNECTED')
 
-        return !!err
+        return !err
       }
 
       case PromiseFTP.STATUSES.DISCONNECTED: {
         const [err] = await try_(this.client.reconnect(), 'FTP_RECONNECT_ERR')
+        if (!err) log.debug('FTP_RECONNECTED')
 
-        return !!err
+        return !err
       }
 
       case PromiseFTP.STATUSES.CONNECTED: {
         log.debug('FTP_ALREADY_CONNECTED')
-
-        return false
+        return true
       }
 
       case PromiseFTP.STATUSES.CONNECTING:
@@ -60,7 +61,8 @@ class FTPClient {
   }
 
   async _runTasks() {
-    if (!await this._connect()) return
+    if (this.tasks.length === 0) return
+    if (!await this._isConnected()) return
 
     log.debug('FTP_TASKS', this.tasks.map(task => task.path))
     // eslint-disable-next-line no-restricted-syntax
@@ -79,15 +81,19 @@ class FTPClient {
       this.tasks.splice(index)
     }
 
-    await try_(this.client.end(), 'FTP_END_ERR')
-    if (Object.entries(this.tasks).length > 0) this.runTasks()
+    if (this.tasks.length > 0) {
+      await this._runTasks()
+    } else {
+      log.debug('FTP_DISCONNECTING')
+      await try_(this.client.end(), 'FTP_END_ERR')
+    }
   }
 
   async upload(path, data) {
     this.tasks.push({
       path,
       callback: async ({ client, combinedPath }) => {
-        log.debug('FTP_UPLOAD', combinedPath)
+        log.info('FTP_UPLOAD', combinedPath)
 
         await try_(client.put(
           data,
@@ -103,7 +109,7 @@ class FTPClient {
     this.tasks.push({
       path,
       callback: async ({ client, combinedPath }) => {
-        log.debug('FTP_DELETE', combinedPath)
+        log.info('FTP_DELETE', combinedPath)
 
         await try_(client.delete(
           pathTools.basename(path),
